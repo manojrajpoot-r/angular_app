@@ -1,0 +1,32 @@
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+
+  <div class="card shadow-lg border-0 p-4" style="width: 420px; border-radius: 15px;">
+
+    <h3 class="text-center mb-4 fw-bold">Admin Login</h3>
+
+    <!-- Email -->
+    <input class="form-control mb-3" placeholder="Email" [(ngModel)]="email">
+
+    <!-- Password with eye -->
+    <div class="input-group mb-3">
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        class="form-control"
+        placeholder="Password"
+        [(ngModel)]="password"
+      >
+
+      <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+      </button>
+    </div>
+
+    <!-- Button -->
+    <button class="btn btn-primary w-100 py-2 fw-bold" (click)="login()" [disabled]="loading">
+      {{ loading ? 'Loading...' : 'Login' }}
+    </button>
+
+  </div>
+
+</div>
