@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-login',
+  standalone: true,
   templateUrl: './login.component.html',
   imports: [FormsModule, CommonModule]
 })
@@ -14,12 +15,21 @@ export class LoginComponent {
   email = '';
   password = '';
   loading = false;
+  showPassword: boolean = false;
 
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
   constructor(private authService: AuthService, private router: Router) { }
+
 
   login() {
     if (!this.email || !this.password) {
-      alert('Email and Password required');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Validation Error',
+        text: 'Email and Password required'
+      });
       return;
     }
 
@@ -30,20 +40,42 @@ export class LoginComponent {
       password: this.password
     }).subscribe({
       next: (res: any) => {
+        //console.log("LOGIN RESPONSE =>", res);
+        this.loading = false;
 
         if (res.success) {
+
           this.authService.saveToken(res);
 
-          this.router.navigate(['/admin/dashboard']);
-        } else {
-          alert(res.message);
-        }
+          Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: res.message || 'Welcome back!',
+            confirmButtonText: 'Continue'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/admin/dashboard']);
+            }
+          });
 
-        this.loading = false;
+        } else {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: res.message
+          });
+        }
       },
+
       error: () => {
-        alert('Login failed');
         this.loading = false;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Server Error',
+          text: 'Login failed, please try again'
+        });
       }
     });
   }

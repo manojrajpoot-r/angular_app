@@ -1,0 +1,51 @@
+<div class="card shadow-lg border-0 mt-4" style="max-width: 500px; margin:auto;">
+  <div class="card-body">
+
+    <h4 class="mb-4 text-center fw-bold">
+      {{ isEdit ? 'Edit User' : 'Add User' }}
+    </h4>
+
+    <form (ngSubmit)="saveUser()">
+
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-control"
+               [(ngModel)]="user.name"
+               name="name"
+               required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control"
+               [(ngModel)]="user.email"
+               name="email"
+               required>
+      </div>
+
+      <div class="mb-3" *ngIf="!isEdit">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control"
+               [(ngModel)]="user.password"
+               name="password"
+               required>
+      </div>
+
+      <div class="d-flex justify-content-between">
+
+        <button type="button"
+                class="btn btn-light"
+                (click)="router.navigate(['/admin/users'])">
+          Cancel
+        </button>
+
+        <button type="submit" class="btn btn-primary shadow-sm">
+          {{ isEdit ? 'Update' : 'Save' }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>

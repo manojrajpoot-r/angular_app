@@ -1,0 +1,10 @@
+a {
+  cursor: pointer;
+}
+
+.sidebar a {
+  cursor: pointer;
+}
+a:hover {
+  background: red;
+}

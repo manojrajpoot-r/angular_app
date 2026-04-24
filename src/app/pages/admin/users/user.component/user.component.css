@@ -1,0 +1,12 @@
+table tr:hover {
+  transform: scale(1.01);
+  transition: 0.2s;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.btn {
+  border-radius: 8px;
+}

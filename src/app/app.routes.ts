@@ -4,6 +4,9 @@ import { LoginComponent } from './pages/auth/login.component/login.component';
 import { DashboardComponent } from './pages/admin/dashboard.component/dashboard.component';
 import { AdminLayoutComponent } from './layouts/admin-layout.component/admin-layout.component';
 import { AuthGuard } from './guards/auth.guard';
+import { UserComponent } from './pages/admin/users/user.component/user.component';
+import { UserFormComponent } from './pages/admin/users/user-form.component/user-form.component';
+
 export const routes: Routes = [
 
   { path: '', component: HomeComponent },
@@ -12,16 +15,18 @@ export const routes: Routes = [
 
   {
     path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: 'login', component: LoginComponent },
-
+      { path: 'dashboard', component: DashboardComponent },
+      { path: "users", component: UserComponent },
       {
-        path: '',
-        component: AdminLayoutComponent,
-        canActivate: [AuthGuard],
-        children: [
-          { path: 'dashboard', component: DashboardComponent }
-        ]
+        path: 'users/add',
+        component: UserFormComponent
+      },
+      {
+        path: 'users/edit/:id',
+        component: UserFormComponent
       }
     ]
   }

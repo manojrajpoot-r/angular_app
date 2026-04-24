@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private apiUrl = 'https://localhost:5001/api/auth';
+  private apiUrl = environment.apiUrl + '/auth';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   logoutApi() {
-    return this.http.post(`${this.apiUrl}/logout`, {
+    return this.http.post(`${this.apiUrl}/logout-all`, {
       refreshToken: this.getRefreshToken()
     });
   }

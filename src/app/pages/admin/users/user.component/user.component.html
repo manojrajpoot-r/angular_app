@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="fw-bold">Users</h4>
+
+  <button class="btn btn-primary shadow-sm" (click)="goToAdd()">
+    <i class="bi bi-plus-lg"></i> Add User
+  </button>
+</div>
+
+<!-- Search -->
+<div class="input-group mb-3 shadow-sm">
+  <span class="input-group-text bg-white">
+    <i class="bi bi-search"></i>
+  </span>
+  <input
+    type="text"
+    class="form-control border-start-0"
+    placeholder="Search users..."
+    [(ngModel)]="search"
+    (input)="onSearch()">
+</div>
+
+<!-- Table -->
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th width="150">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let user of users; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="fw-semibold">{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-2"
+                    (click)="editUser(user.id)">
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger"
+                    (click)="deleteUser(user.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="users?.length === 0">
+          <td colspan="4" class="text-center text-muted py-4">
+            No users found
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>

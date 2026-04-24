@@ -3,11 +3,11 @@
   <!-- Sidebar -->
   <div class="bg-dark text-white p-3" style="width: 250px; height: 100vh;">
     <h4>Admin Panel</h4>
-    <ul class="list-unstyled">
-      <li><a routerLink="/admin/dashboard" class="text-white">Dashboard</a></li>
-      <li><a href="#" class="text-white">Users</a></li>
-      <li><a href="#" class="text-white">Settings</a></li>
-    </ul>
+
+      <ul class="list-unstyled sidebar">
+        <li><a routerLink="/admin/dashboard" class="text-white">Dashboard</a></li>
+        <li><a routerLink="/admin/users" class="text-white">Users</a></li>
+      </ul>
   </div>
 
   <!-- Main Content -->
@@ -16,7 +16,13 @@
     <!-- Header -->
     <nav class="navbar navbar-dark bg-primary px-3">
       <span>Header</span>
-      <button class="btn btn-danger" (click)="logout()">Logout</button>
+     <button class="btn btn-danger" (click)="logout()" [disabled]="isLoggingOut">
+
+        <span *ngIf="isLoggingOut" class="spinner-border spinner-border-sm me-2"></span>
+
+         {{ isLoggingOut ? 'Logging out...' : 'Logout' }}
+
+      </button>
     </nav>
 
     <!-- Page Content -->
