@@ -1,0 +1,63 @@
+<div class="card border-0 shadow-sm rounded-4">
+
+  <div class="card-body">
+
+    <ngx-dropzone
+      [multiple]="multiple"
+      (change)="onSelect($event)"
+      class="border rounded-4 bg-light">
+
+      <ngx-dropzone-label>
+
+        <div class="text-center py-4">
+
+          <div class="fs-1 mb-2">
+            📸
+          </div>
+
+          <h6 class="fw-semibold">
+            Upload Images
+          </h6>
+
+          <small class="text-muted">
+            Drag & Drop or Click
+          </small>
+
+        </div>
+
+      </ngx-dropzone-label>
+
+    </ngx-dropzone>
+
+    <!-- Preview -->
+    <div class="row mt-4">
+
+      <div
+        class="col-md-3 mb-3"
+        *ngFor="let img of previews; let i = index">
+
+        <div class="position-relative">
+
+          <img
+            [src]="img"
+            class="img-fluid rounded-4 border shadow-sm w-100"
+            style="height: 200px; object-fit: cover;">
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 m-2"
+            (click)="removeImage(i)">
+
+            ✕
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

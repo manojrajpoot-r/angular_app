@@ -4,7 +4,8 @@ import { AuthService } from '../../core/services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'
+import { RouterModule } from '@angular/router';
+import { PermissionAuthService } from '../../core/services/permission-auth';
 @Component({
 
   selector: 'app-admin-layout',
@@ -15,8 +16,20 @@ import { RouterModule } from '@angular/router'
 })
 export class AdminLayoutComponent {
 
-  constructor(private authService: AuthService, private router: Router) { }
+
+  constructor(private authService: AuthService, private router: Router, public permissionAuth: PermissionAuthService) { }
+  user: any;
   isLoggingOut = false;
+
+
+  ngOnInit() {
+
+    this.authService.user$.subscribe((res) => {
+      this.user = res;
+    });
+
+  }
+
 
   logout() {
 
@@ -46,6 +59,7 @@ export class AdminLayoutComponent {
             this.isLoggingOut = true;
 
             // 👉 Ab actual logout hoga
+            this.authService.logout();
             this.authService.logoutApi().subscribe({
               next: () => {
 

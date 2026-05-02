@@ -1,0 +1,143 @@
+<div class="container-fluid py-4">
+
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+    <div class="card-header bg-white border-0 p-4">
+
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+
+
+
+        <div>
+          <h3 class="fw-bold mb-1">
+            <i class="bi bi-shield-lock-fill text-primary me-2"></i>
+            Role Permission Management
+          </h3>
+
+          <p class="text-muted mb-0">
+            Manage and assign permissions for selected role
+          </p>
+        </div>
+
+        <div class="bg-light px-4 py-2 rounded-3 border">
+          <span class="text-muted small d-block">Selected Role</span>
+
+          <span class="fw-bold fs-5 text-dark">
+            {{ roleName }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card-body p-4">
+
+      <div *ngIf="loading && permissions.length == 0" class="text-center py-5">
+
+         <div class="spinner-border text-primary mb-3"></div>
+
+          <p class="text-muted mb-0">
+            Loading permissions...
+          </p>
+
+        </div>
+
+      <div *ngIf="!loading && permissions.length > 0">
+
+        <div *ngFor="let group of permissions"
+             class="card border-0 shadow-sm rounded-4 mb-4">
+
+          <div class="card-header bg-light border-0 py-3 px-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+              <h5 class="fw-bold mb-0 text-dark">
+                <i class="bi bi-folder2-open text-warning me-2"></i>
+                {{ group.groupName }}
+              </h5>
+
+              <div class="form-check form-switch">
+
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [checked]="isAllSelected(group.items)"
+                  (change)="toggleGroup(group.items, $event)">
+
+                <label class="form-check-label fw-semibold">
+                  Check All
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card-body p-4">
+
+            <div class="row g-3">
+
+              <div class="col-md-6 col-lg-4" *ngFor="let item of group.items">
+
+                <div class="border rounded-4 p-3 h-100 permission-box">
+
+                  <div class="form-check d-flex align-items-center gap-2">
+
+                    <input
+                      class="form-check-input custom-checkbox"
+                      type="checkbox"
+                      [(ngModel)]="item.checked"
+                      [id]="'permission_' + item.id">
+
+                    <label
+                      class="form-check-label fw-semibold text-dark w-100 cursor-pointer"
+                      [for]="'permission_' + item.id">
+
+                      {{ item.name }}
+
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="text-end mt-4">
+
+          <button
+            class="btn btn-primary btn-lg px-5 rounded-4 shadow-sm"
+            (click)="savePermissions()">
+
+            <i class="bi bi-check2-circle me-2"></i>
+
+            Save Permissions
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="!loading && permissions.length == 0"
+          class="text-center py-5 text-muted">
+
+        No Permissions Found
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>

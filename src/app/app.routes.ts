@@ -6,12 +6,24 @@ import { AdminLayoutComponent } from './layouts/admin-layout.component/admin-lay
 import { AuthGuard } from './guards/auth.guard';
 import { UserComponent } from './pages/admin/users/user.component/user.component';
 import { UserFormComponent } from './pages/admin/users/user-form.component/user-form.component';
+import { RoleComponent } from './pages/admin/roles/roles.component/roles.component';
+import { RoleFormComponent } from './pages/admin/roles/role-form.component/role-form.component';
+import { PermissionComponent } from './pages/admin/permissions/permission.component/permission.component';
+import { PermissionFormComponent } from './pages/admin/permissions/permission-form.component/permission-form.component';
+import { RolePermissionComponent } from './pages/admin/roles/role-permission/role-permission';
+import { UserRole } from './pages/admin/users/user-role/user-role';
+import { loginGuard } from './guards/login-guard';
+import { CategoriesComponent } from './pages/admin/categories/categories.component/categories.component';
+import { CategoryFormComponent } from './pages/admin/categories/category-form.component/category-form.component';
+import { SubCategoriesComponent } from './pages/admin/subCategories/sub-categories.component/sub-categories.component';
+import { SubCategoryFormComponent } from './pages/admin/subCategories/sub-category-form.component/sub-category-form.component';
 
 export const routes: Routes = [
 
   { path: '', component: HomeComponent },
 
-  { path: 'admin/login', component: LoginComponent },
+  { path: 'admin/login', component: LoginComponent, canActivate: [loginGuard] },
+
 
   {
     path: 'admin',
@@ -20,14 +32,27 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: "users", component: UserComponent },
-      {
-        path: 'users/add',
-        component: UserFormComponent
-      },
-      {
-        path: 'users/edit/:id',
-        component: UserFormComponent
-      }
+      { path: 'users/add', component: UserFormComponent },
+      { path: 'users/edit/:id', component: UserFormComponent },
+      { path: 'user/role/:id', component: UserRole },
+      { path: "roles", component: RoleComponent },
+      { path: 'roles/add', component: RoleFormComponent },
+      { path: 'roles/edit/:id', component: RoleFormComponent },
+      { path: 'roles/permissions/:id', component: RolePermissionComponent },
+      { path: 'permissions', component: PermissionComponent },
+      { path: 'permissions/add', component: PermissionFormComponent },
+      { path: 'permissions/edit/:id', component: PermissionFormComponent },
+
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'categories/add', component: CategoryFormComponent },
+      { path: 'categories/edit/:id', component: CategoryFormComponent },
+
+      { path: 'subCategories', component: SubCategoriesComponent },
+      { path: 'subCategories/add', component: SubCategoryFormComponent },
+      { path: 'subCategories/edit/:id', component: SubCategoryFormComponent }
+
+
+
     ]
   }
 

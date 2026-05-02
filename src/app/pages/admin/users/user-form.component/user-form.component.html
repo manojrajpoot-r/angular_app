@@ -25,10 +25,9 @@
 
       <div class="mb-3" *ngIf="!isEdit">
         <label class="form-label">Password</label>
-        <input type="password" class="form-control"
-               [(ngModel)]="user.password"
-               name="password"
-               required>
+        <app-password-input
+          [(model)]="user.password">
+        </app-password-input>
       </div>
 
       <div class="d-flex justify-content-between">

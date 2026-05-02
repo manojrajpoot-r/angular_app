@@ -1,0 +1,117 @@
+<div class="card shadow border-0">
+
+  <!-- Header -->
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0 fw-semibold">Sub Categorys</h5>
+
+    <button   *ngIf="permissionAuth.hasPermission('add_sub_category')" class="btn btn-primary btn-sm" (click)="goToAdd()">
+      + Add Sub Category
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="p-3 border-bottom">
+    <div class="input-group">
+      <span class="input-group-text bg-white">
+        🔍
+      </span>
+      <input type="text"
+             class="form-control"
+             placeholder="Search SubCategorys..."
+             (keyup)="onSearch($event.target.value)">
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table align-middle mb-0 table-hover">
+
+      <thead class="table-light sticky-top">
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th>Category Name</th>
+          <th (click)="sort('name')" style="cursor:pointer">
+            Name ⬍
+          </th>
+          <th (click)="sort('description')" style="cursor:pointer">
+            Description ⬍
+          </th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <!-- Loader -->
+        <tr *ngIf="loading">
+          <td colspan="4" class="text-center py-4">
+            <div class="spinner-border text-primary"></div>
+          </td>
+        </tr>
+
+        <!-- Data -->
+        <tr *ngFor="let u of subCategories">
+          <td>{{u.id}}</td>
+          <td>
+            <img
+              [src]="imageBaseUrl + '/' + u.image"
+              width="60"
+              height="60"
+              class="rounded border object-fit-cover">
+          </td>
+
+          <td>{{u.categoryName}}</td>
+
+            <td class="fw-medium">
+              {{u.name}}
+            </td>
+          <td class="fw-medium">{{u.description}}</td>
+          <td class="text-center">
+         <button *ngIf="permissionAuth.hasPermission('edit_sub_category')"
+            class="btn btn-sm btn-outline-primary me-2"
+            title="Edit"
+            (click)="editSubCategory(u.id)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+
+
+           <button *ngIf="permissionAuth.hasPermission('delete_sub_category')"
+              class="btn btn-sm btn-outline-danger"
+              title="Delete"
+              (click)="deleteSubCategory(u.id)">
+              <i class="bi bi-trash3"></i>
+            </button>
+          </td>
+        </tr>
+
+        <!-- No Data -->
+        <tr *ngIf="!loading && subCategories.length === 0">
+          <td colspan="4" class="text-center text-muted py-4">
+            🚫 No SubCategorys found
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer d-flex justify-content-between align-items-center">
+
+    <!-- Records Info -->
+    <small class="text-muted">
+      Showing {{subCategories.length}} of {{totalRecords}} records
+    </small>
+
+    <!-- Pagination -->
+    <app-pagination
+      [totalRecords]="totalRecords"
+      [pageSize]="params.pageSize"
+      [currentPage]="params.pageNumber"
+      (pageChange)="changePage($event)">
+    </app-pagination>
+
+  </div>
+
+</div>

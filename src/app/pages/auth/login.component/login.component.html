@@ -9,18 +9,12 @@
     <input class="form-control mb-3" placeholder="Email" [(ngModel)]="email">
 
     <!-- Password with eye -->
-    <div class="input-group mb-3">
-      <input
-        [type]="showPassword ? 'text' : 'password'"
-        class="form-control"
-        placeholder="Password"
-        [(ngModel)]="password"
-      >
 
-      <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
-        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-      </button>
-    </div>
+      <app-password-input
+        [(model)]="password">
+      </app-password-input>
+
+
 
     <!-- Button -->
     <button class="btn btn-primary w-100 py-2 fw-bold" (click)="login()" [disabled]="loading">

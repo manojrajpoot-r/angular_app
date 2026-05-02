@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -8,9 +8,14 @@ export class UserService {
   private apiUrl = environment.apiUrl + '/User';
 
   constructor(private http: HttpClient) { }
-
-  getUsers(page: number, search: string) {
-    return this.http.get(`${this.apiUrl}?page=${page}&search=${search}`);
+  getUsers(pageNumber: number, pageSize: number, search: string) {
+    return this.http.get<any>(this.apiUrl, {
+      params: {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        search: search
+      }
+    });
   }
 
   getUserById(id: number) {

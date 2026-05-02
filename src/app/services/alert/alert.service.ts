@@ -20,8 +20,8 @@ export class AlertService {
       icon: 'success',
       title: 'Success',
       text: message,
-      timer: 1200,
-      showConfirmButton: false
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#0d6efd'
     });
   }
 

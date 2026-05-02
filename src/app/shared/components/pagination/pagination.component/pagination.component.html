@@ -1,0 +1,24 @@
+<button
+  class="btn btn-sm btn-light me-1"
+  [disabled]="currentPage === 1"
+  (click)="changePage(currentPage - 1)">
+  Prev
+</button>
+
+<button
+  *ngFor="let p of pages"
+  class="btn btn-sm me-1"
+  [ngClass]="{
+    'btn-primary text-white': currentPage === p,
+    'btn-light': currentPage !== p
+  }"
+  (click)="changePage(p)">
+  {{p}}
+</button>
+
+<button
+  class="btn btn-sm btn-light"
+  [disabled]="currentPage === pages.length"
+  (click)="changePage(currentPage + 1)">
+  Next
+</button>
