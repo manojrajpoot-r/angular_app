@@ -1,23 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { PermissionAuthService } from '../../core/services/permission-auth';
+
 @Component({
-
-  selector: 'app-admin-layout',
-  standalone: true,
-  imports: [RouterOutlet, CommonModule, RouterModule],
-  templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.css'
+  selector: 'app-header',
+  imports: [],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css',
 })
-export class AdminLayoutComponent {
-
-
-  constructor(private authService: AuthService, private router: Router, public permissionAuth: PermissionAuthService) { }
+export class HeaderComponent {
+  constructor(private authService: AuthService, private router: Router) { }
   user: any;
   isLoggingOut = false;
 

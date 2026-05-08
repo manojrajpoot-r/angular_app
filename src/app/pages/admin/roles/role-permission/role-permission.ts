@@ -34,11 +34,8 @@ export class RolePermissionComponent implements OnInit {
   ngOnInit(): void {
 
     this.route.paramMap.subscribe(params => {
-
       this.roleId = Number(params.get('id'));
-
       this.loadRole();
-
       this.loadData();
 
     });
@@ -46,26 +43,17 @@ export class RolePermissionComponent implements OnInit {
   }
 
   loadData() {
-
     this.loading = true;
-
     this.permissions = [];
-
     this.permissionService.getPermission(1, 100, '')
       .subscribe({
-
         next: (res: any) => {
-
           const data = res.data || [];
-
           const grouped: any = {};
-
           data.forEach((item: any) => {
-
             if (!grouped[item.groupName]) {
               grouped[item.groupName] = [];
             }
-
             grouped[item.groupName].push({
               id: item.id,
               name: item.name,
@@ -80,17 +68,13 @@ export class RolePermissionComponent implements OnInit {
           }));
 
           this.cdr.detectChanges();
-
           this.loadAssignedPermissions();
 
         },
 
         error: (err) => {
-
           console.log(err);
-
           this.loading = false;
-
           this.cdr.detectChanges();
 
         }
@@ -103,15 +87,12 @@ export class RolePermissionComponent implements OnInit {
     this.roleService
       .getRoleById(this.roleId)
       .subscribe({
-
         next: (res: any) => {
           this.roleName =
             res?.data?.name || '';
-
         },
 
         error: (err) => {
-
           console.log(err);
 
         }
@@ -120,18 +101,11 @@ export class RolePermissionComponent implements OnInit {
 
   }
 
-
-
   loadAssignedPermissions() {
-
     this.assignRolePermissionService
       .getRolePermissions(this.roleId)
       .subscribe({
-
         next: (res: any) => {
-
-          console.log('Assigned Permissions:', res.data);
-
           const assignedPermissions =
             (res?.data || [])
               .map((x: string) =>
@@ -139,9 +113,7 @@ export class RolePermissionComponent implements OnInit {
               );
 
           this.permissions.forEach(group => {
-
             group.items.forEach((item: any) => {
-
               item.checked =
                 assignedPermissions.includes(
                   item.name.trim().toLowerCase()
@@ -150,25 +122,14 @@ export class RolePermissionComponent implements OnInit {
             });
 
           });
-
-          console.log(this.permissions);
-
           this.loading = false;
-
           this.cdr.detectChanges();
-
         },
-
         error: (err) => {
-
           console.log('Permission Error:', err);
-
           this.loading = false;
-
           this.cdr.detectChanges();
-
         }
-
       });
 
   }
@@ -182,46 +143,32 @@ export class RolePermissionComponent implements OnInit {
       );
 
     const payload = {
-
       roleId: this.roleId,
-
       permissionIds: selectedPermissions
 
     };
-
-    console.log(payload);
-
     this.assignRolePermissionService
       .assignPermission(payload)
       .subscribe({
         next: (res: any) => {
-
           this.alert.success('Permissions Assigned Successfully!')
             .then(() => {
-
               this.router.navigate(['/admin/roles']);
-
             });
         },
 
         error: (err) => {
           console.log(err);
         }
-
       });
-
   }
 
   isAllSelected(items: any[]): boolean {
-
     return items.every(x => x.checked);
-
   }
 
   toggleGroup(items: any[], event: any) {
-
     const checked = event.target.checked;
-
     items.forEach(item => {
       item.checked = checked;
     });

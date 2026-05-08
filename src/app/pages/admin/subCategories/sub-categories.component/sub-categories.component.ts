@@ -47,7 +47,6 @@ export class SubCategoriesComponent implements OnInit {
     ).subscribe({
       next: (res: any) => {
         this.subCategories = res;
-        console.log(this.subCategories);
         this.totalRecords = res.totalRecords;
         this.loading = false;
         this.cd.detectChanges();
@@ -98,11 +97,11 @@ export class SubCategoriesComponent implements OnInit {
 
 
   goToAdd() {
-    this.router.navigate(['/admin/subCategories/add']);
+    this.router.navigate(['/admin/sub-categories/add']);
   }
 
   editSubCategory(id: number) {
-    this.router.navigate(['/admin/subCategories/edit', id]);
+    this.router.navigate(['/admin/sub-categories/edit', id]);
   }
 
 

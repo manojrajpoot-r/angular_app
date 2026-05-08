@@ -1,27 +1,24 @@
-<div class="card shadow-lg border-0 mt-4" style="max-width: 500px; margin:auto;">
-  <div class="card-body">
 
-    <h4 class="mb-4 text-center fw-bold">
-      {{ isEdit ? 'Edit Category' : 'Add Category' }}
-    </h4>
+   <app-form-wrapper-component [title]="isEdit ? 'Edit Category' : 'Add Category'">
 
-    <form (ngSubmit)="saveCategory()">
+    <form [formGroup]="form" (ngSubmit)="saveCategory()">
 
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="category.name"
-               name="name"
-               required>
-      </div>
+   <!-- Name -->
+  <div class="mb-3">
+    <label>Name</label>
 
-       <div class="mb-3">
-        <label class="form-label">Description</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="category.description"
-               name="description"
-               required>
-      </div>
+    <input type="text" class="form-control" formControlName="name">
+
+    <app-validation-error-component
+      [control]="form.get('name')">
+    </app-validation-error-component>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-3">
+    <label>Description</label>
+    <input type="text" class="form-control" formControlName="description">
+  </div>
 
       <div class="d-flex justify-content-between">
 
@@ -31,13 +28,16 @@
           Cancel
         </button>
 
-        <button type="submit" class="btn btn-primary shadow-sm">
-          {{ isEdit ? 'Update' : 'Save' }}
-        </button>
+      <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
 
       </div>
 
     </form>
+</app-form-wrapper-component>
 
-  </div>
-</div>
+

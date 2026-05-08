@@ -1,0 +1,19 @@
+<div class="sidebar">
+
+  <div class="sidebar-logo">
+    <h2>Admin</h2>
+  </div>
+
+  <ul class="sidebar-menu">
+      <li><a routerLink="/admin/dashboard" class="text-white">Dashboard</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_user')"><a routerLink="/admin/users" class="text-white">Users</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_role')"><a routerLink="/admin/roles" class="text-white">Roles</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_permission')"><a routerLink="/admin/permissions" class="text-white">Permissions</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_category')"><a routerLink="/admin/categories" class="text-white">Categories</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_SubCategory')"><a routerLink="/admin/sub-categories" class="text-white">Sub Categories</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_brand')"><a routerLink="/admin/brands" class="text-white">Brands</a></li>
+        <li *ngIf="permissionAuth.hasPermission('view_product')"><a routerLink="/admin/products" class="text-white">Products</a></li>
+  </ul>
+
+</div>
+

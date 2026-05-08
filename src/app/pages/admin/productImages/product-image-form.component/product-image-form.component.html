@@ -1,1 +1,40 @@
-<p>product-image-form.component works!</p>
+<app-form-wrapper-component [title]="isEdit ? 'Edit Product Image' : 'Add Product Image'">
+
+<form [formGroup]="form" (ngSubmit)="saveProductImage()">
+
+  <!-- Image -->
+  <div class="mb-3">
+
+    <app-image-upload
+     [multiple]="true"
+      [imageUrls]="imageUrls"
+      (fileChange)="onFileSelected($event)">
+    </app-image-upload>
+
+    <app-validation-error-component
+      [control]="form.get('image')">
+    </app-validation-error-component>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+
+    <button type="button" class="btn btn-light"
+      (click)="router.navigate(['/admin/products-images',this.productId])">
+      Cancel
+    </button>
+
+
+     <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
+
+
+  </div>
+
+</form>
+</app-form-wrapper-component>

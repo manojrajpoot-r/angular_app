@@ -19,6 +19,7 @@ export class SubCategoryService {
     });
   }
 
+
   getSubCategoryById(id: number) {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
@@ -34,4 +35,7 @@ export class SubCategoryService {
   deleteSubCategory(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+
+
 }

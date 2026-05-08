@@ -1,0 +1,30 @@
+<header class="header">
+  <div class="logo-section">
+    <button class="menu-btn">
+      ☰
+    </button>
+
+    <h2 class="logo">Admin Panel</h2>
+  </div>
+
+  <div class="header-right">
+    <div class="search-box">
+      <input type="text" placeholder="Search...">
+    </div>
+    <nav class="navbar navbar-dark bg-primary px-3">
+
+     <button class="btn btn-danger" (click)="logout()" [disabled]="isLoggingOut">
+
+        <span *ngIf="isLoggingOut" class="spinner-border spinner-border-sm me-2"></span>
+
+         {{ isLoggingOut ? 'Logging out...' : 'Logout' }}
+
+      </button>
+    </nav>
+    <div class="profile-section">
+      <img src="https://i.pravatar.cc/40" alt="user">
+      <span> {{ user?.name }}</span>
+    </div>
+  </div>
+
+</header>

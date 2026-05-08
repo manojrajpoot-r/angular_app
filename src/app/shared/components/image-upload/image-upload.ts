@@ -1,13 +1,10 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output
-} from '@angular/core';
-
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-
+import { environment } from '../../../environments/environment';
+import { ValidationErrorComponent } from '../../../shared/components/validation-error-component/validation-error-component';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-image-upload',
   standalone: true,
@@ -17,26 +14,36 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
   ],
   templateUrl: './image-upload.html'
 })
-export class ImageUploadComponent {
 
+export class ImageUploadComponent implements OnChanges {
+  constructor(private cdr: ChangeDetectorRef) { }
   @Input() multiple = false;
-
   @Input() imageUrls: string[] = [];
 
   @Output() fileChange = new EventEmitter<File[]>();
+  form!: FormGroup;
 
   previews: string[] = [];
-
   files: File[] = [];
-
-  ngOnInit() {
-
-    if (this.imageUrls?.length) {
+  imageBaseUrl = environment.apiUrlImage;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['imageUrls'] && this.imageUrls?.length) {
       this.previews = [...this.imageUrls];
     }
-
   }
 
+
+  getImageUrl(img: string): string {
+    if (!img) return '';
+
+    //  base64 image
+    if (img.startsWith('data:')) {
+      return img;
+    }
+
+    // server image
+    return this.imageBaseUrl + '/' + img;
+  }
   onSelect(event: any) {
 
     if (!this.multiple) {
@@ -52,6 +59,8 @@ export class ImageUploadComponent {
 
       reader.onload = () => {
         this.previews.push(reader.result as string);
+
+        this.cdr.detectChanges();
       };
 
       reader.readAsDataURL(file);
@@ -63,10 +72,9 @@ export class ImageUploadComponent {
   removeImage(index: number) {
 
     this.previews.splice(index, 1);
-
     this.files.splice(index, 1);
 
     this.fileChange.emit(this.files);
   }
-
 }
+

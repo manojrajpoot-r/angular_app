@@ -1,48 +1,73 @@
-<div class="card shadow-lg border-0 mt-4" style="max-width: 500px; margin:auto;">
-  <div class="card-body">
+<app-form-wrapper-component [title]="isEdit ? 'Edit SubCategory' : 'Add SubCategory'">
 
-    <h4 class="mb-4 text-center fw-bold">
-      {{ isEdit ? 'Edit SubCategory' : 'Add SubCategory' }}
-    </h4>
+<form [formGroup]="form" (ngSubmit)="saveSubCategory()">
 
-    <form (ngSubmit)="saveSubCategory()">
+  <!-- Category -->
+  <div class="mb-3">
+    <label>Select Category</label>
 
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="subcategory.name"
-               name="name"
-               required>
-      </div>
+    <select formControlName="categoryId" class="form-control">
+      <option value="">Select Category</option>
+      <option *ngFor="let c of categories" [value]="c.id">
+        {{ c.name }}
+      </option>
+    </select>
 
-       <div class="mb-3">
-        <label class="form-label">Description</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="subcategory.description"
-               name="description"
-               required>
-      </div>
-      <app-image-upload
-        [multiple]="false"
-        [imageUrls]="subcategory.image ? [subcategory.image] : []"
-        (fileChange)="onFileSelected($event)">
-      </app-image-upload>
+    <app-validation-error-component
+      [control]="form.get('categoryId')">
+    </app-validation-error-component>
+  </div>
 
-      <div class="d-flex justify-content-between">
+  <!-- Name -->
+  <div class="mb-3">
+    <label>Name</label>
 
-        <button type="button"
-                class="btn btn-light"
-                (click)="router.navigate(['/admin/subCategories'])">
-          Cancel
-        </button>
+    <input type="text" class="form-control" formControlName="name">
 
-        <button type="submit" class="btn btn-primary shadow-sm">
-          {{ isEdit ? 'Update' : 'Save' }}
-        </button>
+    <app-validation-error-component
+      [control]="form.get('name')">
+    </app-validation-error-component>
+  </div>
 
-      </div>
+  <!-- Description -->
+  <div class="mb-3">
+    <label>Description</label>
+    <input type="text" class="form-control" formControlName="description">
+  </div>
 
-    </form>
+  <!-- Image -->
+  <div class="mb-3">
+
+    <app-image-upload
+      [multiple]="false"
+      [imageUrls]="imageUrls"
+      (fileChange)="onFileSelected($event)">
+    </app-image-upload>
+
+    <app-validation-error-component
+      [control]="form.get('image')">
+    </app-validation-error-component>
 
   </div>
-</div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+
+    <button type="button" class="btn btn-light"
+      (click)="router.navigate(['/admin/sub-categories'])">
+      Cancel
+    </button>
+
+
+     <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
+
+
+  </div>
+
+</form>
+</app-form-wrapper-component>

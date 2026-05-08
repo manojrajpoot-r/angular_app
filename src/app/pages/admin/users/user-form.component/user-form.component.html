@@ -1,50 +1,61 @@
-<div class="card shadow-lg border-0 mt-4" style="max-width: 500px; margin:auto;">
-  <div class="card-body">
+<app-form-wrapper-component [title]="isEdit ? 'Edit User' : 'Add User'">
 
-    <h4 class="mb-4 text-center fw-bold">
-      {{ isEdit ? 'Edit User' : 'Add User' }}
-    </h4>
+<form [formGroup]="form" (ngSubmit)="saveUser()">
 
-    <form (ngSubmit)="saveUser()">
 
-      <div class="mb-3">
-        <label class="form-label">Name</label>
-        <input type="text" class="form-control"
-               [(ngModel)]="user.name"
-               name="name"
-               required>
-      </div>
 
-      <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-control"
-               [(ngModel)]="user.email"
-               name="email"
-               required>
-      </div>
+  <!-- Name -->
+  <div class="mb-3">
+    <label>Name</label>
 
-      <div class="mb-3" *ngIf="!isEdit">
-        <label class="form-label">Password</label>
-        <app-password-input
-          [(model)]="user.password">
-        </app-password-input>
-      </div>
+    <input type="text" class="form-control" formControlName="name">
 
-      <div class="d-flex justify-content-between">
+    <app-validation-error-component
+      [control]="form.get('name')">
+    </app-validation-error-component>
+  </div>
 
-        <button type="button"
-                class="btn btn-light"
-                (click)="router.navigate(['/admin/users'])">
-          Cancel
-        </button>
 
-        <button type="submit" class="btn btn-primary shadow-sm">
-          {{ isEdit ? 'Update' : 'Save' }}
-        </button>
+  <!-- Name -->
+  <div class="mb-3">
+    <label>Email</label>
 
-      </div>
+    <input type="text" class="form-control" formControlName="email">
 
-    </form>
+    <app-validation-error-component
+      [control]="form.get('email')">
+    </app-validation-error-component>
+  </div>
+
+    <!-- Name -->
+  <div class="mb-3">
+    <label>Password</label>
+
+  <input type="password" class="form-control" formControlName="password">
+
+    <app-validation-error-component
+      [control]="form.get('password')">
+    </app-validation-error-component>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+
+    <button type="button" class="btn btn-light"
+      (click)="router.navigate(['/admin/users'])">
+      Cancel
+    </button>
+
+
+     <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
+
 
   </div>
-</div>
+
+</form>
+</app-form-wrapper-component>

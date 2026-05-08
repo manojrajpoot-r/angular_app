@@ -1,1 +1,135 @@
-<p>product-images.component works!</p>
+<div class="card shadow border-0">
+
+  <!-- Header -->
+  <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+    <h5 class="mb-0 fw-semibold">
+      Product Images
+
+      <span class="text-primary">
+        #{{productId}}
+      </span>
+
+      <small class="text-muted ms-2">
+        {{productName}}
+      </small>
+
+    </h5>
+    <button
+      class="btn btn-primary btn-sm"
+      (click)="productShow()">
+      Back Product
+    </button>
+    <button
+      *ngIf="permissionAuth.hasPermission('add_product_image')"
+      class="btn btn-primary btn-sm"
+      (click)="goToAdd()">
+
+      + Upload Images
+    </button>
+
+  </div>
+
+  <!-- Search -->
+  <div class="p-3 border-bottom">
+
+    <div class="input-group">
+
+      <span class="input-group-text bg-white">
+        🔍
+      </span>
+
+      <input type="text"
+             class="form-control"
+             placeholder="Search Product Images..."
+             (keyup)="onSearch($event.target.value)">
+
+    </div>
+
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading"
+       class="text-center py-5">
+
+    <div class="spinner-border text-primary"></div>
+
+  </div>
+
+  <!-- Empty -->
+  <div *ngIf="!loading && product_images.length === 0"
+       class="text-center py-5 text-muted">
+
+    🚫 No Product Images Found
+
+  </div>
+
+  <!-- Image Grid -->
+  <div class="row g-3 p-3"
+       *ngIf="!loading && product_images.length > 0">
+
+    <div class="col-md-3 col-sm-6"
+         *ngFor="let item of product_images">
+
+      <div class="card h-100 border-0 shadow-sm">
+
+        <!-- Image -->
+       <img
+          [src]="imageBaseUrl + '/' + item.imageUrl"
+          class="card-img-top"
+          style="height:220px; object-fit:cover;">
+
+        <!-- Body -->
+        <div class="card-body">
+
+          <h6 class="fw-semibold mb-1">
+            {{ item.productName }}
+          </h6>
+
+          <small class="text-muted">
+            ID : {{ item.id }}
+          </small>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer bg-white border-0 text-center">
+
+          <button
+            *ngIf="permissionAuth.hasPermission('delete_product_image')"
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteProductImage(item.id)">
+
+            <i class="bi bi-trash3"></i>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer d-flex justify-content-between align-items-center">
+
+    <small class="text-muted">
+
+      Showing {{product_images.length}}
+      of {{totalRecords}} records
+
+    </small>
+
+    <app-pagination
+      [totalRecords]="totalRecords"
+      [pageSize]="params.pageSize"
+      [currentPage]="params.pageNumber"
+      (pageChange)="changePage($event)">
+
+    </app-pagination>
+
+  </div>
+
+</div>

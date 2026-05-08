@@ -1,48 +1,43 @@
-<div class="card shadow-lg border-0 mt-4" style="max-width: 500px; margin:auto;">
-  <div class="card-body">
+<app-form-wrapper-component [title]="isEdit ? 'Edit Permission' : 'Add Permission'">
 
-    <h4 class="mb-4 text-center fw-bold">
-      {{ isEdit ? 'Edit Permission' : 'Add Permission' }}
-    </h4>
+<form [formGroup]="form" (ngSubmit)="savePermission()">
 
-    <form (ngSubmit)="savePermission()">
-
-      <div class="mb-3">
-
-        <label class="form-label">
-          Group Name
-        </label>
-
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="permission.groupName"
-          name="groupName">
-
-      </div>
-
-      <app-dynamic-input
-        label="Permissions"
-        [(items)]="permission.permissions"
-         [showAddButton]="!isEdit">
-      </app-dynamic-input>
+  <div class="mb-3">
+    <label class="form-label">Group Name</label>
+    <input type="text" class="form-control" formControlName="groupName">
+  </div>
+   <app-validation-error-component
+      [control]="form.get('groupName')">
+    </app-validation-error-component>
 
 
-      <div class="d-flex justify-content-between">
+  <app-dynamic-input
+    label="Permissions"
+    [items]="permissionsArray.value"
+    (itemsChange)="permissionsArray.clear(); $event.forEach(p => permissionsArray.push(fb.control(p)))"
+    [showAddButton]="!isEdit">
+  </app-dynamic-input>
 
-        <button type="button"
-                class="btn btn-light"
-                (click)="router.navigate(['/admin/permissions'])">
-          Cancel
-        </button>
+   <app-validation-error-component
+  [control]="permissionsArray.at(0)">
+</app-validation-error-component>
 
-        <button type="submit" class="btn btn-primary shadow-sm">
-          {{ isEdit ? 'Update' : 'Save' }}
-        </button>
+  <div class="d-flex justify-content-between">
+    <button type="button"
+            class="btn btn-light"
+            (click)="router.navigate(['/admin/permissions'])">
+      Cancel
+    </button>
 
-      </div>
+     <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
 
-    </form>
 
   </div>
-</div>
+
+</form>
+</app-form-wrapper-component>

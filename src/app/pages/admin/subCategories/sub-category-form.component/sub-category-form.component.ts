@@ -1,122 +1,142 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Inject } from '@angular/core';
-import Swal from 'sweetalert2';
-import { AlertService } from '../../../../services/alert/alert.service';
 import { SubCategoryService } from '../../../../services/subCategory/sub-category.service';
 import { CategoryService } from '../../../../services/category/category.service';
+import { AlertService } from '../../../../services/alert/alert.service';
 import { ImageUploadComponent } from '../../../../shared/components/image-upload/image-upload';
+import { ValidationErrorComponent } from '../../../../shared/components/validation-error-component/validation-error-component';
+import { SubmitButtonComponent } from '../../../../shared/components/submit-button-component/submit-button-component';
+import { FormWrapperComponent } from '../../../../shared/components/form-wrapper-component/form-wrapper-component';
+import { environment } from '../../../../environments/environment';
+
 @Component({
   standalone: true,
   selector: 'app-sub-category-form',
-  imports: [CommonModule, FormsModule, ImageUploadComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ImageUploadComponent,
+    ValidationErrorComponent,
+    SubmitButtonComponent,
+    FormWrapperComponent
+  ],
   templateUrl: './sub-category-form.component.html'
 })
 export class SubCategoryFormComponent implements OnInit {
 
-  subcategory: any = {
-    name: '',
-  };
+  loading = false;
+  form!: FormGroup;
+  categories: any[] = [];
+  selectedFile!: File;
 
   isEdit = false;
-  id: number = 0;
-
+  id = 0;
+  imageUrls: string[] = [];
   constructor(
+    private fb: FormBuilder,
+    private service: SubCategoryService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute,
     public router: Router,
-    private subcategoryService: SubCategoryService,
-    private alert: AlertService,
+    private alert: AlertService
   ) { }
 
+
+
   ngOnInit() {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      description: [''],
+      categoryId: ['', Validators.required],
+      image: [null, Validators.required]
+    });
+
     this.id = Number(this.route.snapshot.paramMap.get('id'));
+    this.loadCategories();
     if (this.id) {
       this.isEdit = true;
-      this.getSubCategoryById();
+      this.getById();
     }
   }
 
-  getSubCategoryById() {
-    this.subcategoryService.getSubCategoryById(this.id).subscribe((res: any) => {
-      this.subcategory = res;
-      console.log(this.subcategory);
+  loadCategories() {
+    this.categoryService.getCategorys(1, 100, '').subscribe((res: any) => {
+      this.categories = res;
     });
   }
 
+  getById() {
+    this.service.getSubCategoryById(this.id).subscribe((res: any) => {
 
+      this.form.patchValue({
+        name: res.name,
+        description: res.description,
+        categoryId: res.categoryId
+      });
 
-  selectedFile?: File;
+      //  image preview ke liye
+      if (res.image) {
+        this.imageUrls = [res.image];
 
-  onFileSelected(files: File[]) {
-
-    if (files.length > 0) {
-      this.selectedFile = files[0];
-    }
-
+        // edit mode → image required nahi
+        this.form.get('image')?.clearValidators();
+        this.form.get('image')?.updateValueAndValidity();
+      }
+    });
   }
 
-  private buildFormData(): FormData {
+  onFileSelected(files: File[]) {
+    if (files.length > 0) {
+      this.selectedFile = files[0];
+
+      this.form.patchValue({
+        image: this.selectedFile
+      });
+
+      this.form.get('image')?.markAsTouched();
+    }
+  }
+
+  buildFormData(): FormData {
 
     const formData = new FormData();
 
-    Object.keys(this.subcategory).forEach((key) => {
-
-      const value = this.subcategory[key];
-
-      if (value !== null && value !== undefined) {
-        formData.append(key, value);
-      }
-
-    });
+    formData.append('Name', this.form.value.name);
+    formData.append('Description', this.form.value.description || '');
+    formData.append('CategoryId', this.form.value.categoryId);
 
     if (this.selectedFile) {
-      formData.append('image', this.selectedFile);
+      formData.append('Image', this.selectedFile);
     }
 
     return formData;
   }
 
+
   saveSubCategory() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
+    this.loading = true;
     const formData = this.buildFormData();
-
     const request = this.isEdit
-      ? this.subcategoryService.updateSubCategory(this.id, formData)
-      : this.subcategoryService.addSubCategory(formData);
+      ? this.service.updateSubCategory(this.id, formData)
+      : this.service.addSubCategory(formData);
 
     request.subscribe({
-
       next: () => {
-
-        const message = this.isEdit
-          ? 'SubCategory updated successfully!'
-          : 'SubCategory added successfully!';
-
-        this.alert.success(message).then(() => {
-
-          this.router.navigate(['/admin/subcategories']);
-
-        });
-
+        this.loading = false;
+        this.alert.success('Saved successfully');
+        this.router.navigate(['/admin/sub-categories']);
       },
-
       error: () => {
-
+        this.loading = false;
         this.alert.error('Something went wrong');
-
       }
-
     });
-
   }
 }
-
-
-
-
-
-
-
-

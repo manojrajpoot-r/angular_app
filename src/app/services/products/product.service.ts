@@ -1,6 +1,45 @@
-import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ProductService {}
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class ProductService {
+
+  private apiUrl = environment.apiUrl + '/Products';
+  constructor(private http: HttpClient) { }
+  getProducts(pageNumber: number, pageSize: number, search: string) {
+    console.log(this.apiUrl);
+    return this.http.get<any>(this.apiUrl, {
+      params: {
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        search: search
+      }
+    });
+
+
+  }
+
+
+  getProductById(id: number) {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
+  addProduct(data: any) {
+    return this.http.post(`${this.apiUrl}`, data);
+  }
+
+  updateProduct(id: number, data: any) {
+    return this.http.put(`${this.apiUrl}/${id}`, data);
+  }
+
+  deleteProduct(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+
+
+}
+
+

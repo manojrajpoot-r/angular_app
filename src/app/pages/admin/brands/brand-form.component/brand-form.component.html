@@ -1,1 +1,59 @@
-<p>brand-form.component works!</p>
+<app-form-wrapper-component [title]="isEdit ? 'Edit Brand' : 'Add Brand'">
+
+<form [formGroup]="form" (ngSubmit)="saveBrand()">
+
+
+
+  <!-- Name -->
+  <div class="mb-3">
+    <label>Name</label>
+
+    <input type="text" class="form-control" formControlName="name">
+
+    <app-validation-error-component
+      [control]="form.get('name')">
+    </app-validation-error-component>
+  </div>
+
+  <!-- Description -->
+  <div class="mb-3">
+    <label>Description</label>
+    <input type="text" class="form-control" formControlName="description">
+  </div>
+
+  <!-- Image -->
+  <div class="mb-3">
+
+    <app-image-upload
+      [multiple]="false"
+      [imageUrls]="imageUrls"
+      (fileChange)="onFileSelected($event)">
+    </app-image-upload>
+
+    <app-validation-error-component
+      [control]="form.get('image')">
+    </app-validation-error-component>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+
+    <button type="button" class="btn btn-light"
+      (click)="router.navigate(['/admin/brands'])">
+      Cancel
+    </button>
+
+
+     <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
+
+
+  </div>
+
+</form>
+</app-form-wrapper-component>

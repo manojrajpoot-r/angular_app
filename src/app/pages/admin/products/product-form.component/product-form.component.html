@@ -1,1 +1,164 @@
-<p>product-form.component works!</p>
+<app-form-wrapper-component [title]="isEdit ? 'Edit Product' : 'Add Product'">
+
+<form [formGroup]="form" (ngSubmit)="saveProduct()">
+
+<!-- Category -->
+<div class="mb-3">
+  <label>Category</label>
+
+  <select class="form-control" formControlName="categoryId">
+    <option value="">Select Category</option>
+
+    <option *ngFor="let item of categories" [value]="item.id">
+      {{ item.name }}
+    </option>
+  </select>
+
+    <app-validation-error-component
+      [control]="form.get('categoryId')">
+    </app-validation-error-component>
+
+</div>
+
+<!-- Sub Category -->
+<div class="mb-3">
+  <label>Sub Category</label>
+
+  <select class="form-control" formControlName="subCategoryId">
+    <option value="">Select Sub Category</option>
+
+    <option *ngFor="let item of subCategories" [value]="item.id">
+      {{ item.name }}
+    </option>
+  </select>
+
+   <app-validation-error-component
+      [control]="form.get('subCategoryId')">
+    </app-validation-error-component>
+
+</div>
+
+<!-- Brand -->
+<div class="mb-3">
+  <label>Brand</label>
+
+  <select class="form-control" formControlName="brandId">
+    <option value="">Select Brand</option>
+
+    <option *ngFor="let item of brands" [value]="item.id">
+      {{ item.name }}
+    </option>
+  </select>
+
+   <app-validation-error-component
+      [control]="form.get('brandId')">
+    </app-validation-error-component>
+
+</div>
+
+  <!-- Product Name -->
+  <div class="mb-3">
+    <label>Product Name</label>
+    <input type="text" class="form-control" formControlName="name">
+    <app-validation-error-component
+      [control]="form.get('name')">
+    </app-validation-error-component>
+  </div>
+
+<!-- Price -->
+<div class="mb-3">
+  <label>Price</label>
+  <input type="number" class="form-control" formControlName="price">
+   <app-validation-error-component
+      [control]="form.get('price')">
+    </app-validation-error-component>
+
+</div>
+<!-- Discount Percent -->
+<div class="mb-3">
+  <label>Discount %</label>
+  <input type="number"
+         class="form-control"
+         formControlName="discountPercentage"
+         (input)="calculateDiscountPrice()">
+       <app-validation-error-component
+      [control]="form.get('discountPercentage')">
+    </app-validation-error-component>
+</div>
+<!-- Discount Price -->
+<div class="mb-3">
+  <label>Discount Price</label>
+  <input type="number" class="form-control" formControlName="discountPrice">
+  <app-validation-error-component
+      [control]="form.get('discountPrice')" readonly>
+    </app-validation-error-component>
+</div>
+
+<!-- Quantity -->
+<div class="mb-3">
+  <label>Quantity</label>
+  <input type="number" class="form-control" formControlName="quantity">
+    <app-validation-error-component
+      [control]="form.get('quantity')">
+    </app-validation-error-component>
+</div>
+
+<!-- Short Description -->
+<div class="mb-3">
+  <label>Short Description</label>
+  <textarea class="form-control" formControlName="shortDescription"></textarea>
+</div>
+
+
+ <!-- Description -->
+  <div class="mb-3">
+    <label>Description</label>
+    <textarea type="text" class="form-control" formControlName="description"></textarea>
+  </div>
+<!-- Featured -->
+<div class="form-check mb-3">
+  <input type="checkbox" class="form-check-input"
+    formControlName="isFeatured">
+
+  <label class="form-check-label">
+    Is Featured
+  </label>
+</div>
+
+
+  <!-- Image -->
+  <div class="mb-3">
+
+    <app-image-upload
+      [multiple]="false"
+      [imageUrls]="imageUrls"
+      (fileChange)="onFileSelected($event)">
+    </app-image-upload>
+
+    <app-validation-error-component
+      [control]="form.get('image')">
+    </app-validation-error-component>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-between">
+
+    <button type="button" class="btn btn-light"
+      (click)="router.navigate(['/admin/products'])">
+      Cancel
+    </button>
+
+
+     <app-submit-button-component
+       type="submit"
+       class="btn btn-primary"
+      [loading]="loading"
+      [text]="isEdit ? 'Update' : 'Save'">
+     </app-submit-button-component>
+
+
+  </div>
+
+</form>
+</app-form-wrapper-component>
