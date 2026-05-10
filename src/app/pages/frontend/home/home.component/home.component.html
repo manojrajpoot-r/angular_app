@@ -1,2 +1,109 @@
-<p>home.component works!</p>
-<div><h1>Frontend</h1></div>
+<!-- Hero Banner -->
+<app-hero-slider></app-hero-slider>
+
+<!-- Categories -->
+<section class="container mt-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Shop By Categories</h2>
+    <a href="#" class="btn btn-outline-dark">View All</a>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-3 mb-4" *ngFor="let category of categories">
+
+      <app-category-card
+        [category]="category">
+      </app-category-card>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Featured Products -->
+<section class="container mt-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Featured Products</h2>
+    <a href="#" class="btn btn-outline-dark">View All</a>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-3 mb-4" *ngFor="let product of featuredProducts">
+
+      <app-product-card
+        [product]="product">
+      </app-product-card>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Latest Products -->
+<section class="container mt-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Latest Products</h2>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-3 mb-4" *ngFor="let product of latestProducts">
+
+      <app-product-card
+        [product]="product">
+      </app-product-card>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Brands -->
+<section class="container mt-5">
+
+  <h2 class="mb-4">Top Brands</h2>
+
+  <div class="row">
+
+    <div class="col-md-3 mb-4" *ngFor="let brand of brands">
+
+      <app-brand-slider
+        [brand]="brand">
+      </app-brand-slider>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- Offer Banner -->
+<section class="container mt-5">
+
+  <div class="bg-dark text-white p-5 rounded text-center">
+
+    <h2>Big Summer Sale</h2>
+
+    <p>Up To 50% OFF</p>
+
+    <button class="btn btn-warning">
+      Shop Now
+    </button>
+
+  </div>
+
+</section>
+
+<!-- Newsletter -->
+<section class="mt-5">
+  <app-newsletter></app-newsletter>
+</section>

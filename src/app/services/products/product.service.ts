@@ -38,6 +38,13 @@ export class ProductService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  getFeaturedProducts() {
+    return this.http.get(`${this.apiUrl}/featured`);
+  }
+
+  getlatestProducts() {
+    return this.http.get(`${this.apiUrl}/latest`);
+  }
 
 
 }

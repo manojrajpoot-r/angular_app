@@ -8,6 +8,7 @@ import { PaginationComponent } from '../../../../shared/components/pagination/pa
 import { ChangeDetectorRef } from '@angular/core';
 import { PermissionAuthService } from '../../../../core/services/permission-auth';
 import { environment } from '../../../../environments/environment';
+import {CartService} from '../../../../services/frontend/cart/cart.service';   
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -36,7 +37,8 @@ export class ProductsComponent implements OnInit {
     private alert: AlertService,
     private router: Router,
     private cd: ChangeDetectorRef,
-    public permissionAuth: PermissionAuthService
+    public permissionAuth: PermissionAuthService,
+     private cartService: CartService
   ) { }
 
   loadProducts() {
@@ -128,5 +130,9 @@ export class ProductsComponent implements OnInit {
     });
 
   }
+
+
+
+
 }
 
