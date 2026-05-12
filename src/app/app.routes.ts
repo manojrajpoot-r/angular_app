@@ -28,6 +28,24 @@ import { ProductImageFormComponent } from './pages/admin/productImages/product-i
 export const routes: Routes = [
 
   { path: '', component: HomeComponent },
+  {
+    path: 'wishlist', loadComponent: () =>
+      import('./pages/frontend/components/wishlist/wishlist')
+        .then(m => m.WishlistComponent)
+  },
+
+  {
+    path: 'cart', loadComponent: () =>
+      import('./pages/frontend/components/cart/cart')
+        .then(m => m.CartComponent)
+  },
+
+  {
+    path: 'checkout',
+    loadComponent: () =>
+      import('./pages/frontend/components/checkout/checkout')
+        .then(m => m.CheckoutComponent)
+  },
 
   { path: 'admin/login', component: LoginComponent, canActivate: [loginGuard] },
 

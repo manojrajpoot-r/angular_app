@@ -1,0 +1,15 @@
+.cart-card {
+  transition: 0.3s ease;
+}
+
+.cart-card:hover {
+  transform: translateY(-5px);
+}
+
+.quantity-box button {
+  border: none;
+}
+
+.order-summary {
+  top: 100px;
+}

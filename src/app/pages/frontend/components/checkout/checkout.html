@@ -1,0 +1,298 @@
+<form [formGroup]="checkoutForm" class="container py-5">
+
+  <div class="row g-4">
+
+    <div class="col-lg-8">
+
+      <div class="card border-0 shadow-lg rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+          <h3 class="fw-bold mb-4">
+            Billing Address
+          </h3>
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Full Name
+              </label>
+
+              <input
+                type="text"
+                class="form-control rounded-3"
+               formControlName="fullName">
+                <div class="text-danger small mt-1"
+              *ngIf="checkoutForm.get('fullName')?.touched && checkoutForm.get('fullName')?.invalid">
+              Full Name is required
+            </div>
+
+            </div>
+
+
+
+
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Email Address
+              </label>
+              <input
+                type="email"
+                class="form-control rounded-3"
+              formControlName="email">
+                <div class="text-danger small mt-1"
+              *ngIf="checkoutForm.get('email')?.touched && checkoutForm.get('email')?.invalid">
+              Valid email is required
+            </div>
+            </div>
+
+
+
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Phone Number
+              </label>
+
+              <input
+                type="text"
+                class="form-control rounded-3"
+                formControlName="phone">
+                 <div class="text-danger small mt-1"
+              *ngIf="checkoutForm.get('phone')?.touched && checkoutForm.get('phone')?.invalid">
+              Phone Number is required
+            </div>
+
+            </div>
+
+
+
+
+
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                City
+              </label>
+
+              <input
+                type="text"
+                class="form-control rounded-3"
+                formControlName="city">
+
+            <div class="text-danger small mt-1"
+              *ngIf="checkoutForm.get('city')?.touched && checkoutForm.get('city')?.invalid">
+              City is required
+            </div>
+            </div>
+
+
+
+            <div class="col-12">
+              <label class="form-label fw-semibold">
+                Address
+              </label>
+                 <textarea
+                rows="3"
+                class="form-control rounded-3"
+                formControlName="address"></textarea>
+                    <div class="text-danger small mt-1"
+            *ngIf="
+              checkoutForm.get('address')?.touched &&
+              checkoutForm.get('address')?.invalid">
+            Address is required
+          </div>
+            </div>
+
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                State
+              </label>
+
+              <input
+                type="text"
+                class="form-control rounded-3"
+                formControlName="state">
+                  <div class="text-danger small mt-1"
+              *ngIf="
+                checkoutForm.get('state')?.touched &&
+                checkoutForm.get('state')?.invalid">
+              State is required
+            </div>
+            </div>
+
+
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">
+                Zip Code
+              </label>
+
+              <input
+                type="text"
+                class="form-control rounded-3"
+                formControlName="zipCode">
+                   <div
+              class="text-danger small mt-1"
+              *ngIf="
+                checkoutForm.get('zipCode')?.touched &&
+                checkoutForm.get('zipCode')?.invalid">
+              Zip Code is required
+            </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+   <div class="card border-0 shadow-lg rounded-4">
+
+  <div class="card-body p-4">
+
+    <h3 class="fw-bold mb-4">
+      Payment Method
+    </h3>
+
+    <div class="form-check mb-3">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        value="cod"
+        formControlName="paymentMethod"
+        id="cod">
+
+      <label
+        class="form-check-label fw-semibold"
+        for="cod">
+
+        Cash On Delivery
+
+      </label>
+
+    </div>
+
+    <div class="form-check mb-3">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        value="razorpay"
+        formControlName="paymentMethod"
+        id="razorpay">
+
+      <label
+        class="form-check-label fw-semibold"
+        for="razorpay">
+
+        Razorpay
+
+      </label>
+
+    </div>
+
+    <div class="form-check">
+
+      <input
+        class="form-check-input"
+        type="radio"
+        value="stripe"
+        formControlName="paymentMethod"
+        id="stripe">
+
+      <label
+        class="form-check-label fw-semibold"
+        for="stripe">
+
+        Stripe Card Payment
+
+      </label>
+
+    </div>
+
+  </div>
+
+</div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+      <div class="card border-0 shadow-lg rounded-4 sticky-top checkout-summary">
+
+        <div class="card-body p-4">
+
+          <h4 class="fw-bold mb-4">
+            Order Summary
+          </h4>
+
+          <div
+            class="d-flex align-items-center mb-3" *ngFor="let product of cartProducts">
+          <img
+            [src]="imageBaseUrl + '/' + product.image"
+              width="60"
+              height="60"
+              class="rounded-3 me-3"
+              style="object-fit: cover;">
+
+            <div class="flex-grow-1">
+
+              <h6 class="mb-1 fw-semibold">
+                {{ product.productName }}
+              </h6>
+
+              <small class="text-muted">
+                Qty : {{ product.quantity }}
+              </small>
+
+            </div>
+
+            <strong>
+              ₹{{ (product.discountPrice * product.quantity) | number:'1.2-2' }}
+            </strong>
+
+          </div>
+
+          <hr>
+
+          <div class="d-flex justify-content-between mb-3">
+            <span>Subtotal</span>
+            <strong>
+              ₹{{ subtotal | number:'1.2-2' }}
+            </strong>
+          </div>
+           <div class="d-flex justify-content-between mb-3">
+            <span>Shipping</span>
+            <strong>
+              ₹{{ shipping | number:'1.2-2' }}
+            </strong>
+          </div>
+
+          <hr>
+
+          <div class="d-flex justify-content-between mb-4">
+            <h5 class="fw-bold">Total</h5>
+            <h5 class="fw-bold text-danger">
+              ₹{{ total | number:'1.2-2' }}
+            </h5>
+          </div>
+
+         <button
+            type="submit"
+            class="btn btn-dark w-100 rounded-pill py-3 fw-semibold"
+            (click)="placeOrder()">
+            Place Order
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</form>

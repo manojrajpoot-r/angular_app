@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Navbar } from './pages/frontend/components/navbar/navbar';
-import { Footer } from './pages/frontend/components/footer/footer';
+import { HeaderComponent } from './layouts/frontend/header.component/header.component';
+import { FooterComponent } from './layouts/frontend/footer.component/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Navbar, Footer],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

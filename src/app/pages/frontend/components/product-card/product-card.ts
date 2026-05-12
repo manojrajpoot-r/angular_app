@@ -1,56 +1,166 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {CartService} from '../../../../services/frontend/cart/cart.service';   
-import { ChangeDetectorRef } from '@angular/core';
+import { CartService } from '../../../../services/frontend/cart/cart.service';
+import { WishlistService } from '../../../../services/frontend/wishlist/wishlist.service';
 import { PermissionAuthService } from '../../../../core/services/permission-auth';
 import { AlertService } from '../../../../services/alert/alert.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+import { HeaderComponent } from '../../../../layouts/frontend/header.component/header.component';
+
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent],
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.css']
 })
-export class ProductCardComponent {
-
+export class ProductCardComponent implements OnInit {
+  @Input() showWishlistRemove: boolean = false;
   @Input() product: any;
-  
+  imageBaseUrl = environment.apiUrlImage;
+  isWishlist: boolean = false;
+
+  @Output() wishlistRemoved = new EventEmitter<void>();
+
   constructor(
-   
+
     private alert: AlertService,
     private router: Router,
-    private cd: ChangeDetectorRef,
     public permissionAuth: PermissionAuthService,
-     private cartService: CartService
+    private cartService: CartService,
+    private wishlistService: WishlistService
   ) { }
-addToCart(productId:number){
 
-  const payload = {
+  ngOnInit(): void {
 
-    productId: productId,
+    this.wishlistService
+      .wishlistProducts$
+      .subscribe((ids: number[]) => {
 
-    quantity: 1
+        this.isWishlist =
+          ids.includes(
+            this.product.productId || this.product.id
+          );
 
-  };
+      });
 
-  this.cartService.addToCart(payload)
-    .subscribe({
+  }
+  addToCart(productId: number) {
 
-      next:(res)=>{
+    const payload = {
+      productId: productId,
+      quantity: 1
+    };
 
-        console.log(res);
-        this.alert.success('Added To Cart successfully');
-    
-      },
+    this.cartService
+      .addToCart(payload)
+      .subscribe({
 
-      error:(err)=>{
+        next: (res: any) => {
 
-        console.log(err);
+          this.alert.success('Added To Cart Successfully');
 
-      }
+          this.cartService
+            .getCart()
+            .subscribe((cart: any) => {
 
-    });
+              this.cartService
+                .updateCartCount(cart.length);
 
-}
+            });
+
+        },
+
+        error: (err) => {
+
+          this.alert.error(
+            err?.error?.message
+          );
+
+        }
+
+      });
+
+  }
+
+  addToWishlist(productId: number) {
+
+    const data = {
+      productId: productId,
+      userId: 1
+    };
+
+    this.wishlistService
+      .addWishlist(data)
+      .subscribe({
+
+        next: (res: any) => {
+
+          this.alert.success(res.message);
+
+          this.loadWishlistProducts();
+
+        },
+
+        error: (err) => {
+
+          this.alert.error(
+            err?.error?.message ||
+            'Something went wrong'
+          );
+
+        }
+
+      });
+
+  }
+
+  loadWishlistProducts() {
+
+    this.wishlistService
+      .getWishlist(1)
+      .subscribe((res: any) => {
+
+        const ids = res.map(
+          (x: any) => x.productId
+        );
+
+        this.wishlistService
+          .updateWishlistProducts(ids);
+
+        this.wishlistService
+          .updateWishlistCount(res.length);
+
+      });
+
+  }
+
+  removeWishlist(productId: number) {
+    this.wishlistService
+      .removeWishlist(productId)
+      .subscribe({
+
+        next: (res: any) => {
+
+          this.alert.success(res.message);
+
+          this.loadWishlistProducts();
+
+          this.wishlistRemoved.emit();
+
+        },
+
+        error: (err) => {
+
+          this.alert.error(
+            err?.error?.message ||
+            'Something went wrong'
+          );
+
+        }
+
+      });
+
+  }
 }

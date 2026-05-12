@@ -1,0 +1,14 @@
+.wishlist-card {
+  transition: 0.3s ease;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-8px);
+}
+
+.remove-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+}

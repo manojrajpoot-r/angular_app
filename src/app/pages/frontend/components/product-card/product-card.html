@@ -1,15 +1,23 @@
 <div class="card h-100 shadow-sm border-0 position-relative">
 
   <!-- Wishlist Button -->
-  <button
-    class="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle shadow-sm">
+<button
+  class="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle shadow-sm"
+  (click)="addToWishlist(product.productId || product.id)">
 
-<i
-  class="bi"
-  [ngClass]="product.isWishlist ? 'bi-heart-fill text-danger' : 'bi-heart'">
-</i>
+  <i
+    class="bi"
+    [ngClass]="isWishlist
+      ? 'bi-heart-fill text-danger'
+      : 'bi-heart'">
+  </i>
 
-  </button>
+</button>
+
+
+
+
+
 
   <!-- Discount Badge -->
   <span *ngIf="product.discountPrice" class="badge bg-danger position-absolute top-0 start-0 m-2">
@@ -22,7 +30,7 @@
 
   <!-- Product Image -->
   <img
-    [src]="product.image"
+    [src]="imageBaseUrl + '/' + product.image"
     class="card-img-top p-3"
     height="250"
     style="object-fit: contain;">
@@ -59,12 +67,21 @@
     <!-- Add To Cart -->
  <button
   class="btn btn-dark w-100 mt-3"
-  (click)="addToCart(product.id)">
+  (click)="addToCart(product.productId || product.id)">
 
   Add To Cart
 
 </button>
 
+
+<button
+  *ngIf="showWishlistRemove"
+  class="btn btn-danger w-100 mt-2"
+  (click)="removeWishlist(product.id)">
+
+  Remove Wishlist
+
+</button>
   </div>
 
 </div>

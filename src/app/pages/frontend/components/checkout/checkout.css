@@ -1,0 +1,19 @@
+.form-control,
+textarea {
+  border: 1px solid #e5e5e5;
+  padding: 12px;
+}
+
+.form-control:focus,
+textarea:focus {
+  box-shadow: none;
+  border-color: #000;
+}
+
+.checkout-summary {
+  top: 100px;
+}
+
+.card {
+  overflow: hidden;
+}

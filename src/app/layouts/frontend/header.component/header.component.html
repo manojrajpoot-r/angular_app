@@ -1,1 +1,212 @@
-<p>header.component works!</p>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+
+  <div class="container">
+
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold fs-4" routerLink="/">
+      MyStore
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav">
+
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+
+      <!-- Menu -->
+      <ul class="navbar-nav mx-auto">
+
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/">
+            Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/shop">
+            Shop
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/categories">
+            Categories
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/brands">
+            Brands
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- Search -->
+      <form class="d-flex me-3">
+
+        <input
+          class="form-control"
+          type="search"
+          placeholder="Search products...">
+
+      </form>
+
+      <!-- Wishlist -->
+      <button
+        class="btn btn-outline-light position-relative me-2"
+        routerLink="/wishlist">
+
+        <i class="bi bi-heart"></i>
+
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+          {{ wishlistCount$ | async }}
+
+        </span>
+
+      </button>
+
+      <!-- Cart -->
+      <button
+        class="btn btn-warning position-relative me-3"
+        routerLink="/cart">
+
+        <i class="bi bi-cart3"></i>
+
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+          {{ cartCount$ | async }}
+
+        </span>
+
+      </button>
+
+      <!-- If User Not Logged In -->
+      <button
+        class="btn btn-outline-light me-2"
+        data-bs-toggle="modal"
+        data-bs-target="#loginModal">
+
+        Login
+
+      </button>
+
+      <!-- Profile Dropdown -->
+      <div class="dropdown">
+
+        <button
+          class="btn btn-light dropdown-toggle"
+          data-bs-toggle="dropdown">
+
+          <i class="bi bi-person-circle"></i>
+          Manoj
+
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end">
+
+          <li>
+            <a class="dropdown-item" href="#">
+              My Account
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="#">
+              My Orders
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="#">
+              Wishlist
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="#">
+              Cart
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="#">
+              Addresses
+            </a>
+          </li>
+
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <button class="dropdown-item text-danger">
+              Logout
+            </button>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</nav>
+<div
+  class="modal fade"
+  id="loginModal"
+  tabindex="-1">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h5 class="modal-title">
+          Login
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal">
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <input
+          type="email"
+          class="form-control mb-3"
+          placeholder="Email">
+
+        <input
+          type="password"
+          class="form-control mb-3"
+          placeholder="Password">
+
+        <button class="btn btn-dark w-100">
+
+          Login
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
