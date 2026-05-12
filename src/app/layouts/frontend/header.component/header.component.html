@@ -92,70 +92,65 @@
       </button>
 
       <!-- If User Not Logged In -->
-      <button
-        class="btn btn-outline-light me-2"
-        data-bs-toggle="modal"
-        data-bs-target="#loginModal">
+   <div *ngIf="!isLoggedIn">
 
-        Login
+  <button
+    class="btn btn-outline-light me-2"
+    data-bs-toggle="modal"
+    data-bs-target="#loginModal">
 
-      </button>
+    Login
+
+  </button>
+
+  <button
+    class="btn btn-outline-light me-2"
+    data-bs-toggle="modal"
+    data-bs-target="#registerModal">
+
+    Register
+
+  </button>
+
+</div>
 
       <!-- Profile Dropdown -->
-      <div class="dropdown">
+   <div
+  class="dropdown"
+  *ngIf="isLoggedIn">
 
-        <button
-          class="btn btn-light dropdown-toggle"
-          data-bs-toggle="dropdown">
+  <button
+  class="btn btn-light dropdown-toggle"
+  type="button"
+  data-bs-toggle="dropdown"
+  aria-expanded="false">
 
-          <i class="bi bi-person-circle"></i>
-          Manoj
+  <i class="bi bi-person-circle me-1"></i>
 
-        </button>
+  {{ (user$ | async)?.name }}
 
-        <ul class="dropdown-menu dropdown-menu-end">
+</button>
+  <ul class="dropdown-menu dropdown-menu-end">
 
-          <li>
-            <a class="dropdown-item" href="#">
-              My Account
-            </a>
-          </li>
+    <li>
+      <a class="dropdown-item">
+        My Account
+      </a>
+    </li>
 
-          <li>
-            <a class="dropdown-item" href="#">
-              My Orders
-            </a>
-          </li>
+    <li>
+      <button
+        class="dropdown-item text-danger"
+        (click)="logout()">
 
-          <li>
-            <a class="dropdown-item" href="#">
-              Wishlist
-            </a>
-          </li>
+        Logout
 
-          <li>
-            <a class="dropdown-item" href="#">
-              Cart
-            </a>
-          </li>
+      </button>
+    </li>
 
-          <li>
-            <a class="dropdown-item" href="#">
-              Addresses
-            </a>
-          </li>
+  </ul>
 
-          <li><hr class="dropdown-divider"></li>
-
-          <li>
-            <button class="dropdown-item text-danger">
-              Logout
-            </button>
-          </li>
-
-        </ul>
-
-      </div>
+</div>
 
     </div>
 
@@ -187,21 +182,251 @@
 
       <div class="modal-body">
 
-        <input
-          type="email"
-          class="form-control mb-3"
-          placeholder="Email">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onLogin()">
 
-        <input
-          type="password"
-          class="form-control mb-3"
-          placeholder="Password">
+          <!-- EMAIL -->
 
-        <button class="btn btn-dark w-100">
+          <div class="mb-3">
 
-          Login
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Email"
+              formControlName="email">
 
+            <small
+              class="text-danger"
+              *ngIf="
+                l['email'].touched &&
+                l['email'].invalid">
+
+              Valid email required
+
+            </small>
+
+          </div>
+
+          <!-- PASSWORD -->
+
+          <div class="mb-3">
+
+            <div class="input-group">
+
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                class="form-control"
+                placeholder="Password"
+                formControlName="password">
+
+            </div>
+
+            <small
+              class="text-danger"
+              *ngIf="
+                l['password'].touched &&
+                l['password'].invalid
+              ">
+
+              Password minimum 6 characters
+
+            </small>
+
+          </div>
+
+          <!-- REMEMBER -->
+
+          <div class="form-check mb-3">
+
+            <input
+              type="checkbox"
+              class="form-check-input"
+              formControlName="rememberMe">
+
+            <label class="form-check-label">
+
+              Remember Me
+
+            </label>
+
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+
+          <app-submit-button-component
+            [loading]="loading"
+            text="Login">
+          </app-submit-button-component>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div
+  class="modal fade"
+  id="registerModal"
+  tabindex="-1"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered">
+
+    <div class="modal-content border-0 shadow-lg">
+
+      <div class="modal-header">
+
+        <h5 class="modal-title fw-bold">
+          Create Account
+        </h5>
+
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal">
         </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onSubmit()">
+
+          <!-- Name -->
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter full name"
+              formControlName="name">
+
+            <small
+              class="text-danger"
+              *ngIf="f['name'].touched && f['name'].invalid">
+
+              Name is required
+
+            </small>
+
+          </div>
+
+          <!-- Email -->
+
+          <div class="mb-3">
+
+            <label class="form-label">
+              Email
+            </label>
+
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Enter email"
+              formControlName="email">
+
+            <small
+              class="text-danger"
+              *ngIf="f['email'].touched && f['email'].invalid">
+
+              Valid email required
+
+            </small>
+
+          </div>
+            <!-- CONFIRM PASSWORD -->
+
+             <div class="mb-3">
+                <label class="form-label">
+                  Password
+                </label>
+               
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    class="form-control"
+                    placeholder="Password"
+                    formControlName="password">
+
+                   
+                   <div>
+                    <small
+                      class="text-danger"
+                      *ngIf="
+                        l['password'].touched &&
+                        l['password'].invalid
+                      ">
+
+                      Password minimum 6 characters
+
+                    </small>
+                  </div>
+                 </div>
+
+
+
+
+
+
+
+
+
+
+
+            <div class="mb-3">
+
+              <label class="form-label">
+                Confirm Password
+              </label>
+
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                class="form-control"
+                formControlName="confirmPassword">
+              <div
+                *ngIf="
+                  registerForm.errors?.['passwordMismatch']
+                "
+                class="text-danger">
+
+                Password does not match
+
+              </div>
+
+            </div>
+      
+
+      
+        <!-- REMEMBER ME -->
+
+        <div class="form-check mb-3">
+
+          <input
+            type="checkbox"
+            class="form-check-input"
+            formControlName="rememberMe">
+
+          <label class="form-check-label">
+            Remember Me
+          </label>
+
+        </div>
+          <app-submit-button-component
+              [loading]="loading"
+              text="Register">
+            </app-submit-button-component>
+        </form>
 
       </div>
 

@@ -1,35 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { CartService } from '../../../../services/frontend/cart/cart.service';
 import { environment } from '../../../../environments/environment';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './checkout.html',
   styleUrls: ['./checkout.css']
 })
 export class CheckoutComponent implements OnInit {
+
   checkoutForm!: FormGroup;
+
   cartProducts: any[] = [];
+
   subtotal: number = 0;
+
   shipping: number = 100;
+
   total: number = 0;
-  paymentMethod: string = 'cod';
+
   imageBaseUrl = environment.apiUrlImage;
 
-  billing = {
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: ''
-  };
+  isLoading: boolean = false;
+
   constructor(
     private cartService: CartService,
     private fb: FormBuilder,
@@ -37,81 +46,146 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadCart();
-    this.calculateTotal();
-    this.checkoutForm =
-      this.fb.group({
 
-        fullName: [
-          '',
-          Validators.required
-        ],
-
-        email: [
-          '',
-          [
-            Validators.required,
-            Validators.email
-          ]
-        ],
-
-        phone: [
-          '',
-          Validators.required
-        ],
-
-        address: [
-          '',
-          Validators.required
-        ],
-
-        city: [
-          '',
-          Validators.required
-        ],
-
-        state: [
-          '',
-          Validators.required
-        ],
-
-        zipCode: [
-          '',
-          Validators.required
-        ],
-
-        paymentMethod: [
-          'cod',
-          Validators.required
-        ]
-
-      });
+    this.initializeForm();
 
     this.loadCart();
 
   }
 
+  initializeForm(): void {
 
-  loadCart() {
-    this.cartService.getCart().subscribe((res: any) => {
-      this.cartProducts = res;
-      console.log(res);
-      this.calculateTotal();
+    this.checkoutForm = this.fb.group({
+
+      fullName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
+      ],
+
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.email
+        ]
+      ],
+
+      phone: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]{10}$')
+        ]
+      ],
+
+      address: [
+        '',
+        Validators.required
+      ],
+
+      city: [
+        '',
+        Validators.required
+      ],
+
+      state: [
+        '',
+        Validators.required
+      ],
+
+      zipCode: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]{6}$')
+        ]
+      ],
+
+      paymentMethod: [
+        'cod',
+        Validators.required
+      ]
 
     });
 
   }
 
-  calculateTotal() {
+  loadCart(): void {
+
+    this.isLoading = true;
+
+    this.cartService.getCart().subscribe({
+
+      next: (res: any) => {
+
+        console.log('Cart Response:', res);
+
+        this.cartProducts = Array.isArray(res)
+          ? res
+          : [];
+
+        this.calculateTotal();
+
+        this.isLoading = false;
+
+      },
+
+      error: (err) => {
+
+        console.log('Cart Load Error:', err);
+
+        this.cartProducts = [];
+
+        this.calculateTotal();
+
+        this.isLoading = false;
+
+      }
+
+    });
+
+  }
+
+  calculateTotal(): void {
+
     this.subtotal = 0;
+
     this.cartProducts.forEach((item: any) => {
-      this.subtotal += item.discountPrice * item.quantity;
+
+      const price =
+        item.discountPrice && item.discountPrice > 0
+          ? item.discountPrice
+          : item.price;
+
+      const quantity = item.quantity || 1;
+
+      this.subtotal += price * quantity;
+
     });
 
     this.total = this.subtotal + this.shipping;
 
   }
-  placeOrder() {
+
+  removeItem(productId: number): void {
+
+    this.cartProducts = this.cartProducts.filter(
+      x => x.productId !== productId
+    );
+
+    localStorage.setItem(
+      'cart',
+      JSON.stringify(this.cartProducts)
+    );
+
+    this.calculateTotal();
+
+  }
+
+  placeOrder(): void {
 
     if (this.checkoutForm.invalid) {
 
@@ -121,51 +195,77 @@ export class CheckoutComponent implements OnInit {
 
     }
 
-    const data = {
+    if (this.cartProducts.length === 0) {
 
-      billing:
-        this.checkoutForm.value,
+      alert('Cart is empty');
 
-      products:
-        this.cartProducts,
+      return;
+
+    }
+
+    const orderData = {
+
+      billingDetails: this.checkoutForm.value,
+
+      products: this.cartProducts,
+
+      subtotal: this.subtotal,
+
+      shipping: this.shipping,
+
+      total: this.total,
 
       paymentMethod:
-        this.checkoutForm.value.paymentMethod
+        this.checkoutForm.value.paymentMethod,
+
+      orderDate: new Date()
 
     };
 
-    console.log(data);
+    console.log('Order Data:', orderData);
 
-    if (
-      this.checkoutForm.value.paymentMethod
-      === 'cod'
-    ) {
+    const paymentMethod =
+      this.checkoutForm.value.paymentMethod;
 
-      alert('Order Placed Successfully');
+    switch (paymentMethod) {
 
-      this.router.navigate([
-        '/order-success'
-      ]);
+      case 'cod':
+
+        alert('Order Placed Successfully');
+
+        localStorage.removeItem('cart');
+
+        this.router.navigate([
+          '/order-success'
+        ]);
+
+        break;
+
+      case 'razorpay':
+
+        alert('Redirecting To Razorpay');
+
+        break;
+
+      case 'stripe':
+
+        alert('Redirecting To Stripe');
+
+        break;
+
+      default:
+
+        alert('Invalid Payment Method');
+
+        break;
 
     }
 
-    else if (
-      this.checkoutForm.value.paymentMethod
-      === 'razorpay'
-    ) {
+  }
 
-      alert('Open Razorpay Payment');
+  get f() {
 
-    }
-
-    else if (
-      this.checkoutForm.value.paymentMethod
-      === 'stripe'
-    ) {
-
-      alert('Open Stripe Payment');
-
-    }
+    return this.checkoutForm.controls;
 
   }
 
