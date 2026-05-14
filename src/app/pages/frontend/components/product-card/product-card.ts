@@ -7,11 +7,12 @@ import { AlertService } from '../../../../services/alert/alert.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { HeaderComponent } from '../../../../layouts/frontend/header.component/header.component';
-
+import { ActivatedRoute } from '@angular/router';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, RouterModule],
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.css']
 })
@@ -24,7 +25,7 @@ export class ProductCardComponent implements OnInit {
   @Output() wishlistRemoved = new EventEmitter<void>();
 
   constructor(
-
+    private route: ActivatedRoute,
     private alert: AlertService,
     private router: Router,
     public permissionAuth: PermissionAuthService,
@@ -44,6 +45,8 @@ export class ProductCardComponent implements OnInit {
           );
 
       });
+
+    const slug = this.route.snapshot.paramMap.get('slug');
 
   }
   addToCart(productId: number) {
@@ -88,7 +91,6 @@ export class ProductCardComponent implements OnInit {
 
     const data = {
       productId: productId,
-      userId: 1
     };
 
     this.wishlistService

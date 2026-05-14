@@ -281,12 +281,27 @@
             </h5>
           </div>
 
-         <button
-            type="submit"
-            class="btn btn-dark w-100 rounded-pill py-3 fw-semibold"
-            (click)="placeOrder()">
+        <button
+          type="submit"
+          class="btn btn-dark w-100 rounded-pill py-3 fw-semibold"
+          (click)="placeOrder()"
+          [disabled]="isLoading">
+
+          <span *ngIf="!isLoading">
             Place Order
-          </button>
+          </span>
+
+          <span *ngIf="isLoading">
+
+            <span
+              class="spinner-border spinner-border-sm me-2">
+            </span>
+
+            Processing...
+
+          </span>
+
+        </button>
         </div>
 
       </div>

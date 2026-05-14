@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
 import { CartService } from '../../../../services/frontend/cart/cart.service';
 import { environment } from '../../../../environments/environment';
-
+declare var Razorpay: any;
+import { PaymentService } from '../../../../services/frontend/payment/payment.service';
+import { AlertService } from '../../../../services/alert/alert.service';
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -42,10 +38,14 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private paymentService: PaymentService,
+    private alert: AlertService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    await this.loadRazorpayScript();
 
     this.initializeForm();
 
@@ -185,6 +185,69 @@ export class CheckoutComponent implements OnInit {
 
   }
 
+
+  loadRazorpayScript(): Promise<boolean> {
+
+    return new Promise((resolve) => {
+
+      // already loaded
+
+      if (document.getElementById('razorpay-script')) {
+
+        resolve(true);
+
+        return;
+
+      }
+
+      const script = document.createElement('script');
+
+      script.id = 'razorpay-script';
+
+      script.src =
+        'https://checkout.razorpay.com/v1/checkout.js';
+
+      script.onload = () => {
+
+        console.log('Razorpay Loaded');
+
+        resolve(true);
+
+      };
+
+      script.onerror = () => {
+
+        console.log('Razorpay Failed To Load');
+
+        resolve(false);
+
+      };
+
+      document.body.appendChild(script);
+
+    });
+
+  }
+
+
+
+
+  ngOnDestroy(): void {
+
+    const script =
+      document.getElementById('razorpay-script');
+
+    if (script) {
+
+      script.remove();
+
+    }
+
+  }
+
+
+
+
   placeOrder(): void {
 
     if (this.checkoutForm.invalid) {
@@ -205,20 +268,29 @@ export class CheckoutComponent implements OnInit {
 
     const orderData = {
 
-      billingDetails: this.checkoutForm.value,
+      fullName:
+        this.checkoutForm.value.fullName,
 
-      products: this.cartProducts,
+      email:
+        this.checkoutForm.value.email,
 
-      subtotal: this.subtotal,
+      phone:
+        this.checkoutForm.value.phone,
 
-      shipping: this.shipping,
+      address:
+        this.checkoutForm.value.address,
 
-      total: this.total,
+      city:
+        this.checkoutForm.value.city,
+
+      state:
+        this.checkoutForm.value.state,
+
+      zipCode:
+        this.checkoutForm.value.zipCode,
 
       paymentMethod:
-        this.checkoutForm.value.paymentMethod,
-
-      orderDate: new Date()
+        this.checkoutForm.value.paymentMethod
 
     };
 
@@ -231,19 +303,40 @@ export class CheckoutComponent implements OnInit {
 
       case 'cod':
 
-        alert('Order Placed Successfully');
+        this.paymentService
+          .checkout(orderData)
+          .subscribe({
 
-        localStorage.removeItem('cart');
+            next: (res: any) => {
 
-        this.router.navigate([
-          '/order-success'
-        ]);
+              this.alert.success(
+                'Order Placed Successfully'
+              );
+
+              localStorage.removeItem('cart');
+
+              this.router.navigate([
+                '/order-success'
+              ]);
+
+            },
+
+            error: (err: any) => {
+
+              console.log(err);
+
+              this.alert.error(
+                'Order Failed'
+              );
+
+            }
+
+          });
 
         break;
 
       case 'razorpay':
-
-        alert('Redirecting To Razorpay');
+        this.payWithRazorpay(orderData);
 
         break;
 
@@ -266,6 +359,206 @@ export class CheckoutComponent implements OnInit {
   get f() {
 
     return this.checkoutForm.controls;
+
+  }
+
+
+  payWithRazorpay(orderData: any): void {
+
+    this.isLoading = true;
+
+    // STEP 1
+    // Create Local Order
+
+    this.paymentService.checkout(orderData)
+      .subscribe({
+
+        next: (orderRes: any) => {
+
+          console.log('Checkout Response', orderRes);
+
+          // STEP 2
+          // Create Razorpay Order
+
+          this.paymentService
+            .createOrder(this.total)
+            .subscribe({
+
+              next: (res: any) => {
+
+                console.log('Razorpay Order', res);
+                const options = {
+
+                  key: res.key,
+
+                  amount: res.amount,
+
+                  currency: res.currency,
+
+                  name: 'My Company',
+
+                  description: 'Order Payment',
+
+                  order_id: res.orderId,
+
+                  prefill: {
+
+                    name: this.checkoutForm.value.fullName,
+
+                    email: this.checkoutForm.value.email,
+
+                    contact: this.checkoutForm.value.phone
+
+                  },
+
+                  theme: {
+                    color: '#000000'
+                  },
+
+                  handler: (response: any) => {
+
+                    console.log(response);
+
+                    const verifyData = {
+
+                      orderId: orderRes.orderId,
+
+                      razorpayOrderId:
+                        response.razorpay_order_id,
+
+                      razorpayPaymentId:
+                        response.razorpay_payment_id,
+
+                      razorpaySignature:
+                        response.razorpay_signature
+
+                    };
+
+                    this.paymentService
+                      .verifyPayment(verifyData)
+                      .subscribe({
+
+                        next: (verifyRes: any) => {
+
+                          console.log(
+                            'VERIFY SUCCESS',
+                            verifyRes
+                          );
+
+                          this.isLoading = false;
+
+                          this.alert.success(
+                            'Payment Success'
+                          );
+
+                          localStorage.removeItem('cart');
+
+                          this.router.navigate([
+                            '/order-success'
+                          ]);
+
+                        },
+
+                        error: (err: any) => {
+
+                          console.log(
+                            'VERIFY ERROR',
+                            err
+                          );
+
+                          this.isLoading = false;
+
+                          this.alert.error(
+                            'Verification Failed'
+                          );
+
+                        }
+
+                      });
+
+                  }
+
+                };
+
+                const razorpay = new Razorpay(options);
+
+                // PAYMENT FAILED EVENT
+
+                razorpay.on(
+                  'payment.failed',
+                  (response: any) => {
+
+                    console.log(
+                      'Payment Failed',
+                      response
+                    );
+
+                    // DATABASE UPDATE
+                    this.paymentService
+                      .paymentFailed(orderRes.orderId)
+                      .subscribe({
+
+                        next: (res: any) => {
+
+                          console.log(
+                            'FAILED STATUS UPDATED',
+                            res
+                          );
+
+                        },
+
+                        error: (err: any) => {
+
+                          console.log(
+                            'FAILED UPDATE ERROR',
+                            err
+                          );
+
+                        }
+
+                      });
+
+                    this.isLoading = false;
+
+                    this.alert.error(
+                      "Payment Failed"
+                    );
+
+                    this.router.navigate([
+                      '/payment-failed'
+                    ]);
+
+                  }
+                );
+
+                razorpay.open();
+
+              },
+
+              error: (err: any) => {
+
+                console.log(
+                  'Create Order Error',
+                  err
+                );
+
+                this.isLoading = false;
+                this.alert.error("Unable To Create Razorpay Order");
+              }
+
+            });
+
+        },
+
+        error: (err: any) => {
+
+          console.log('Checkout Error', err);
+
+          this.isLoading = false;
+          this.alert.error("Checkout Failed");
+        }
+
+      });
 
   }
 

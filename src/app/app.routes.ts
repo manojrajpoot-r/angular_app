@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/frontend/home/home.component/home.component';
 import { LoginComponent } from './pages/auth/login.component/login.component';
 import { DashboardComponent } from './pages/admin/dashboard.component/dashboard.component';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component/admin-layout.component';
@@ -27,7 +26,29 @@ import { ProductImageFormComponent } from './pages/admin/productImages/product-i
 
 export const routes: Routes = [
 
-  { path: '', component: HomeComponent },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./pages/frontend/home/home.component//home.component')
+        .then(m => m.HomeComponent)
+  },
+
+  {
+    path: 'shop',
+    loadComponent: () =>
+      import('./pages/frontend/components/shop/shop')
+        .then(m => m.ShopComponent)
+  },
+
+  {
+    path: 'product/:slug',
+    loadComponent: () =>
+      import('./pages/frontend/components/product-details/product-details')
+        .then(m => m.ProductDetailsComponent)
+  },
+
+
+
   {
     path: 'wishlist', loadComponent: () =>
       import('./pages/frontend/components/wishlist/wishlist')
@@ -46,6 +67,40 @@ export const routes: Routes = [
       import('./pages/frontend/components/checkout/checkout')
         .then(m => m.CheckoutComponent)
   },
+
+  {
+    path: 'order-success',
+
+    loadComponent: () =>
+      import(
+        './pages/frontend/components/order-success/order-success'
+      ).then(
+        m => m.OrderSuccessComponent
+      )
+  },
+
+  {
+    path: 'payment-failed',
+
+    loadComponent: () =>
+      import(
+        './pages/frontend/components/payment-failed/payment-failed'
+      ).then(
+        m => m.PaymentFailedCompnent
+      )
+  },
+
+
+
+
+
+
+
+
+
+
+
+
 
   { path: 'admin/login', component: LoginComponent, canActivate: [loginGuard] },
 

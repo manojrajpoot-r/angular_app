@@ -17,9 +17,9 @@ import { AuthService } from '../../../core/services/auth.service';
 import { AlertService } from '../../../services/alert/alert.service';
 
 import { SubmitButtonComponent }
-from '../../../shared/components/submit-button-component/submit-button-component';
+  from '../../../shared/components/submit-button-component/submit-button-component';
 
-import {passwordMatchValidator} from '../../../shared/components/validators/confirm-password.validator';
+import { passwordMatchValidator } from '../../../shared/components/validators/confirm-password.validator';
 import * as bootstrap from 'bootstrap';
 @Component({
   selector: 'app-header',
@@ -35,7 +35,7 @@ import * as bootstrap from 'bootstrap';
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
- user$!: Observable<any>;
+  user$!: Observable<any>;
   registerForm!: FormGroup;
   loginForm!: FormGroup;
   wishlistCount$!: Observable<number>;
@@ -53,35 +53,35 @@ export class HeaderComponent implements OnInit {
     private alertService: AlertService
   ) { }
 
-ngOnInit(): void {
+  ngOnInit(): void {
 
-  this.user$ =
-    this.authService.user$;
+    this.user$ =
+      this.authService.user$;
 
-  this.initializeForms();
+    this.initializeForms();
 
-  this.wishlistCount$ =
-    this.wishlistService.wishlistCount$;
+    this.wishlistCount$ =
+      this.wishlistService.wishlistCount$;
 
-  this.cartCount$ =
-    this.cartService.cartCount$;
+    this.cartCount$ =
+      this.cartService.cartCount$;
 
-  this.loadCartCount();
+    this.loadCartCount();
 
-  this.loadWishlistCount();
+    this.loadWishlistCount();
 
     this.isLoggedIn =
-    this.authService.isLoggedIn();
+      this.authService.isLoggedIn();
 
-  this.authService.user$
-    .subscribe(user => {
+    this.authService.user$
+      .subscribe(user => {
 
-      this.isLoggedIn = !!user;
+        this.isLoggedIn = !!user;
 
-    });
+      });
 
-}
-  
+  }
+
   logout() {
 
     this.authService.logout();
@@ -117,13 +117,20 @@ ngOnInit(): void {
       confirmPassword: [
         '',
         Validators.required
-      ]
+      ],
+
+      rememberMe: [false],
 
     },
-    {
-      validators:
-        passwordMatchValidator
-    });
+      {
+        validators:
+          passwordMatchValidator
+      });
+
+
+
+
+
 
     // LOGIN FORM
 
@@ -177,8 +184,7 @@ ngOnInit(): void {
       .getCart()
       .subscribe((res: any) => {
 
-        this.cartService
-          .updateCartCount(res.length);
+        this.cartService.updateCartCount(res.length);
 
       });
 
@@ -198,8 +204,7 @@ ngOnInit(): void {
 
     this.loading = true;
 
-    this.authService
-      .register(this.registerForm.value)
+    this.authService.register(this.registerForm.value)
       .subscribe({
 
         next: () => {
@@ -210,19 +215,19 @@ ngOnInit(): void {
             .success('Registration Successful');
 
           this.registerForm.reset();
-           const modal =
+          const modal =
             document.getElementById(
               'registerModal'
             );
 
-        if (modal) {
+          if (modal) {
 
-          const modalInstance =
-            bootstrap.Modal.getInstance(modal);
+            const modalInstance =
+              bootstrap.Modal.getInstance(modal);
 
-          modalInstance?.hide();
+            modalInstance?.hide();
 
-        }
+          }
 
 
         },
@@ -238,87 +243,85 @@ ngOnInit(): void {
             );
 
         }
-
       });
-
   }
 
   // LOGIN
 
- onLogin(): void {
+  onLogin(): void {
 
-  if (this.loginForm.invalid) {
+    if (this.loginForm.invalid) {
 
-    this.loginForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched();
 
-    return;
+      return;
 
-  }
+    }
 
-  this.loading = true;
-  rememberMe: [false]
-  this.authService
-    .login(this.loginForm.value)
-    .subscribe({
+    this.loading = true;
 
-      next: (res: any) => {
+    this.authService
+      .login(this.loginForm.value)
+      .subscribe({
 
-        this.loading = false;
+        next: (res: any) => {
 
-        // Remember Me
+          this.loading = false;
 
-        if (
-          this.loginForm.value.rememberMe
-        ) {
+          // Remember Me
 
-          this.authService
-            .rememberMe(
-              this.loginForm.value.email
-            );
+          if (
+            this.loginForm.value.rememberMe
+          ) {
 
-        }
+            this.authService
+              .rememberMe(
+                this.loginForm.value.email
+              );
 
-        this.alertService
-          .success('Login Success');
+          }
 
-        this.loginForm.reset();
+          this.alertService
+            .success('Login Success');
+
+          this.loginForm.reset();
           const modal =
             document.getElementById(
               'loginModal'
             );
 
-        if (modal) {
+          if (modal) {
 
-          const modalInstance =
-            bootstrap.Modal.getInstance(modal);
+            const modalInstance =
+              bootstrap.Modal.getInstance(modal);
 
-          modalInstance?.hide();
+            modalInstance?.hide();
+
+          }
+
+        },
+
+        error: (err) => {
+
+          this.loading = false;
+
+          this.alertService
+            .error(
+              err?.error?.message ||
+              'Login Failed'
+            );
 
         }
 
-      },
+      });
 
-      error: (err) => {
+  }
 
-        this.loading = false;
-
-        this.alertService
-          .error(
-            err?.error?.message ||
-            'Login Failed'
-          );
-
-      }
-
-    });
-
-}
   get f() {
 
     return this.registerForm.controls;
 
   }
-
   get l() {
 
     return this.loginForm.controls;

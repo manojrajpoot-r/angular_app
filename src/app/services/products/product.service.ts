@@ -46,6 +46,28 @@ export class ProductService {
     return this.http.get(`${this.apiUrl}/latest`);
   }
 
+  getProductBySlug(slug: any) {
+
+    return this.http.get(
+      `${this.apiUrl}/slug/${slug}`
+    );
+
+  }
+
+  getRelatedProducts(categoryId: number, productId: number) {
+    return this.http.get(
+      `${this.apiUrl}/related/${categoryId}/${productId}`
+    );
+  }
+
+  filterProducts(data: any) {
+
+    return this.http.post(
+      `${this.apiUrl}/filter`,
+      data
+    );
+
+  }
 
 }
 

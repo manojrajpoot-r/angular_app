@@ -29,11 +29,15 @@
   </span>
 
   <!-- Product Image -->
+<a [routerLink]="['/product', product.slug]">
+
   <img
     [src]="imageBaseUrl + '/' + product.image"
     class="card-img-top p-3"
     height="250"
     style="object-fit: contain;">
+
+</a>
 
   <div class="card-body d-flex flex-column">
 

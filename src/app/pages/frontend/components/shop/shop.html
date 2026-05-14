@@ -1,0 +1,282 @@
+<div class="container py-5">
+
+  <div class="row">
+
+    <!-- SIDEBAR -->
+
+    <div class="col-lg-3">
+
+      <div class="bg-white shadow rounded-4 p-4">
+
+        <h4 class="fw-bold mb-4">
+          Filters
+        </h4>
+
+        <!-- SEARCH -->
+
+        <div class="mb-4">
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search..."
+            [(ngModel)]="search"
+            (keyup)="onSearch()">
+
+        </div>
+
+        <!-- CATEGORY -->
+
+        <div class="mb-4">
+
+          <h6 class="fw-bold">
+            Categories
+          </h6>
+
+          <div
+            *ngFor="
+              let category of categories
+            ">
+
+            <input
+              type="checkbox"
+              (change)="
+                onCategoryChange(
+                  $event,
+                  category.id
+                )
+              ">
+
+            {{ category.name }}
+
+          </div>
+
+        </div>
+
+        <!-- BRAND -->
+
+        <div class="mb-4">
+
+          <h6 class="fw-bold">
+            Brands
+          </h6>
+
+          <div
+            *ngFor="
+              let brand of brands
+            ">
+
+            <input
+              type="checkbox"
+              (change)="
+                onBrandChange(
+                  $event,
+                  brand.id
+                )
+              ">
+
+            {{ brand.name }}
+
+          </div>
+
+        </div>
+
+        <!-- PRICE -->
+
+        <div class="mb-4">
+
+          <h6 class="fw-bold">
+            Price
+          </h6>
+
+          <input
+            type="number"
+            class="form-control mb-2"
+            placeholder="Min"
+            [(ngModel)]="minPrice">
+
+          <input
+            type="number"
+            class="form-control mb-2"
+            placeholder="Max"
+            [(ngModel)]="maxPrice">
+
+          <button
+            class="btn btn-dark w-100"
+            (click)="applyPriceFilter()">
+
+            Apply
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- PRODUCTS -->
+
+    <div class="col-lg-9">
+
+      <!-- TOP BAR -->
+
+      <div
+        class="d-flex justify-content-between align-items-center mb-4">
+
+        <h4 class="fw-bold">
+          Shop Products
+        </h4>
+
+        <select
+          class="form-select w-auto"
+          [(ngModel)]="sortBy"
+          (change)="onSortChange()">
+
+          <option value="">
+            Sort By
+          </option>
+
+          <option value="latest">
+            Latest
+          </option>
+
+          <option value="lowToHigh">
+            Price Low To High
+          </option>
+
+          <option value="highToLow">
+            Price High To Low
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- LOADER -->
+
+      <div
+        *ngIf="isLoading"
+        class="text-center py-5">
+
+        Loading...
+
+      </div>
+
+      <!-- PRODUCT GRID -->
+
+      <div
+        class="row g-4"
+        *ngIf="!isLoading">
+
+        <div
+          class="col-md-4"
+          *ngFor="
+            let product of products
+          ">
+
+          <div
+            class="card border-0 shadow rounded-4 h-100 overflow-hidden">
+
+            <a
+              [routerLink]="[
+                '/product',
+                product.slug
+              ]">
+
+              <img
+                [src]="
+                  imageBaseUrl +
+                  '/' +
+                  product.image
+                "
+                class="card-img-top p-3"
+                height="250"
+                style="object-fit: contain;">
+
+            </a>
+
+            <div class="card-body">
+
+              <h5 class="fw-bold">
+                {{ product.name }}
+              </h5>
+
+              <p
+                class="text-muted small">
+
+                {{
+                  product.shortDescription
+                }}
+
+              </p>
+
+              <div
+                class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                  <span
+                    class="fw-bold text-danger fs-5">
+
+                    ₹{{
+                      product.discountPrice
+                      ||
+                      product.price
+                    }}
+
+                  </span>
+
+                </div>
+
+                <button
+                  class="btn btn-dark rounded-pill">
+
+                  Add To Cart
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PAGINATION -->
+
+      <div
+        class="d-flex justify-content-center gap-3 mt-5">
+
+        <button
+          class="btn btn-outline-dark"
+          (click)="previousPage()">
+
+          Previous
+
+        </button>
+
+        <span class="fw-bold pt-2">
+
+          {{ pageNumber }}
+
+        </span>
+
+        <button
+          class="btn btn-outline-dark"
+          (click)="nextPage()">
+
+          Next
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
