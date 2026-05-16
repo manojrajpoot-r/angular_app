@@ -1,19 +1,176 @@
-<div class="sidebar">
 
-  <div class="sidebar-logo">
-    <h2>Admin</h2>
+<div class="" [class.sidebar-collapsed]="sidebarCollapsed">
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar">
+
+    <div class="sidebar-logo">
+      <h2 *ngIf="!sidebarCollapsed">Admin Panel</h2>
+
+      <button class="collapse-btn"
+              (click)="sidebarCollapsed = !sidebarCollapsed">
+
+        <i class="fa-solid fa-bars"></i>
+
+      </button>
+    </div>
+
+    <ul class="sidebar-menu">
+
+      <li>
+        <a routerLink="/admin/dashboard"
+           routerLinkActive="active-link">
+
+          <i class="fa-solid fa-house"></i>
+
+          <span *ngIf="!sidebarCollapsed">
+            Dashboard
+          </span>
+
+        </a>
+      </li>
+
+      <!-- USER MANAGEMENT -->
+
+      <li>
+
+        <div class="dropdown-btn"
+             (click)="userOpen = !userOpen">
+
+          <div>
+            <i class="fa-solid fa-users"></i>
+
+            <span *ngIf="!sidebarCollapsed">
+              User Management
+            </span>
+          </div>
+
+          <i *ngIf="!sidebarCollapsed"
+             class="fa-solid"
+             [ngClass]="userOpen ? 'fa-chevron-down' : 'fa-chevron-right'">
+          </i>
+
+        </div>
+
+        <ul *ngIf="userOpen && !sidebarCollapsed"
+            class="submenu animated-menu">
+
+          <li>
+            <a routerLink="/admin/users"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-user"></i>
+              Users
+
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/admin/roles"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-user-shield"></i>
+              Roles
+
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/admin/permissions"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-key"></i>
+              Permissions
+
+            </a>
+          </li>
+
+        </ul>
+
+      </li>
+
+      <!-- PRODUCT MANAGEMENT -->
+
+      <li>
+
+        <div class="dropdown-btn"
+             (click)="productOpen = !productOpen">
+
+          <div>
+            <i class="fa-solid fa-box"></i>
+
+            <span *ngIf="!sidebarCollapsed">
+              Product Management
+            </span>
+          </div>
+
+          <i *ngIf="!sidebarCollapsed"
+             class="fa-solid"
+             [ngClass]="productOpen ? 'fa-chevron-down' : 'fa-chevron-right'">
+          </i>
+
+        </div>
+
+        <ul *ngIf="productOpen && !sidebarCollapsed"
+            class="submenu animated-menu">
+
+          <li>
+            <a routerLink="/admin/categories"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-layer-group"></i>
+              Categories
+
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/admin/sub-categories"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-sitemap"></i>
+              Sub Categories
+
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/admin/brands"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-tags"></i>
+              Brands
+
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/admin/products"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-cart-shopping"></i>
+              Products
+
+            </a>
+          </li>
+
+        </ul>
+
+      </li>
+
+    </ul>
+
   </div>
 
-  <ul class="sidebar-menu">
-      <li><a routerLink="/admin/dashboard" class="text-white">Dashboard</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_user')"><a routerLink="/admin/users" class="text-white">Users</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_role')"><a routerLink="/admin/roles" class="text-white">Roles</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_permission')"><a routerLink="/admin/permissions" class="text-white">Permissions</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_category')"><a routerLink="/admin/categories" class="text-white">Categories</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_SubCategory')"><a routerLink="/admin/sub-categories" class="text-white">Sub Categories</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_brand')"><a routerLink="/admin/brands" class="text-white">Brands</a></li>
-        <li *ngIf="permissionAuth.hasPermission('view_product')"><a routerLink="/admin/products" class="text-white">Products</a></li>
-  </ul>
+
+
 
 </div>
+
+
+
+
+
+
 

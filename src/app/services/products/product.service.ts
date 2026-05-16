@@ -9,7 +9,7 @@ export class ProductService {
   private apiUrl = environment.apiUrl + '/Products';
   constructor(private http: HttpClient) { }
   getProducts(pageNumber: number, pageSize: number, search: string) {
-    console.log(this.apiUrl);
+
     return this.http.get<any>(this.apiUrl, {
       params: {
         pageNumber: pageNumber,
@@ -47,7 +47,6 @@ export class ProductService {
   }
 
   getProductBySlug(slug: any) {
-
     return this.http.get(
       `${this.apiUrl}/slug/${slug}`
     );
@@ -61,7 +60,6 @@ export class ProductService {
   }
 
   filterProducts(data: any) {
-
     return this.http.post(
       `${this.apiUrl}/filter`,
       data

@@ -1,3 +1,45 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+.dark-theme {
+
+  background: #0f172a;
+
+  color: white;
+
+}
+
+.dark-theme .topbar {
+
+  background: #1e293b;
+
+  color: white;
+
+}
+
+.dark-theme .main-content {
+
+  background: #0f172a;
+
+}
+
+.dark-theme .stats-card {
+
+  background: #1e293b;
+
+  color: white;
+
+}
+
+.dark-theme .profile-menu {
+
+  background: #1e293b;
+
+}
+
+.dark-theme .profile-menu a,
+.dark-theme .profile-menu button {
+
+  color: white;
+
+}

@@ -5,3 +5,14 @@
 .card:hover {
   transform: translateY(-5px);
 }
+.product-card {
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  background: #f8f9fa;
+}

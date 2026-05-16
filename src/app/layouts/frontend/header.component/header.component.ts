@@ -2,23 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { RouterModule } from '@angular/router';
-
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule
-} from '@angular/forms';
-
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CartService } from '../../../services/frontend/cart/cart.service';
 import { WishlistService } from '../../../services/frontend/wishlist/wishlist.service';
 import { AuthService } from '../../../core/services/auth.service';
-
 import { AlertService } from '../../../services/alert/alert.service';
-
-import { SubmitButtonComponent }
-  from '../../../shared/components/submit-button-component/submit-button-component';
-
+import { SubmitButtonComponent } from '../../../shared/components/submit-button-component/submit-button-component';
 import { passwordMatchValidator } from '../../../shared/components/validators/confirm-password.validator';
 import * as bootstrap from 'bootstrap';
 @Component({

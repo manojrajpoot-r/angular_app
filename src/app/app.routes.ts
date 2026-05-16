@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login.component/login.component';
 import { DashboardComponent } from './pages/admin/dashboard.component/dashboard.component';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component/admin-layout.component';
+import { FrontendLayoutComponent } from './layouts/frontend/frontend-layout.component/frontend-layout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserComponent } from './pages/admin/users/user.component/user.component';
 import { UserFormComponent } from './pages/admin/users/user-form.component/user-form.component';
@@ -25,80 +26,76 @@ import { ProductImageFormComponent } from './pages/admin/productImages/product-i
 
 
 export const routes: Routes = [
-
   {
-    path: '',
-    loadComponent: () =>
-      import('./pages/frontend/home/home.component//home.component')
-        .then(m => m.HomeComponent)
+
+    path: '', component: FrontendLayoutComponent,
+
+    children: [
+
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/frontend/home/home.component//home.component')
+            .then(m => m.HomeComponent)
+      },
+
+      {
+        path: 'shop',
+        loadComponent: () =>
+          import('./pages/frontend/components/shop/shop')
+            .then(m => m.ShopComponent)
+      },
+
+      {
+        path: 'product/:slug',
+        loadComponent: () =>
+          import('./pages/frontend/components/product-details/product-details')
+            .then(m => m.ProductDetailsComponent)
+      },
+
+      {
+        path: 'wishlist', loadComponent: () =>
+          import('./pages/frontend/components/wishlist/wishlist')
+            .then(m => m.WishlistComponent)
+      },
+
+
+      {
+        path: 'cart', loadComponent: () =>
+          import('./pages/frontend/components/cart/cart')
+            .then(m => m.CartComponent)
+      },
+
+      {
+        path: 'checkout',
+        loadComponent: () =>
+          import('./pages/frontend/components/checkout/checkout')
+            .then(m => m.CheckoutComponent)
+      },
+
+      {
+        path: 'order-success',
+        loadComponent: () =>
+          import(
+            './pages/frontend/components/order-success/order-success'
+          ).then(
+            m => m.OrderSuccessComponent
+          )
+      },
+
+      {
+        path: 'payment-failed',
+        loadComponent: () =>
+          import(
+            './pages/frontend/components/payment-failed/payment-failed'
+          ).then(
+            m => m.PaymentFailedCompnent
+          )
+      },
+
+
+    ]
   },
-
-  {
-    path: 'shop',
-    loadComponent: () =>
-      import('./pages/frontend/components/shop/shop')
-        .then(m => m.ShopComponent)
-  },
-
-  {
-    path: 'product/:slug',
-    loadComponent: () =>
-      import('./pages/frontend/components/product-details/product-details')
-        .then(m => m.ProductDetailsComponent)
-  },
-
-
-
-  {
-    path: 'wishlist', loadComponent: () =>
-      import('./pages/frontend/components/wishlist/wishlist')
-        .then(m => m.WishlistComponent)
-  },
-
-  {
-    path: 'cart', loadComponent: () =>
-      import('./pages/frontend/components/cart/cart')
-        .then(m => m.CartComponent)
-  },
-
-  {
-    path: 'checkout',
-    loadComponent: () =>
-      import('./pages/frontend/components/checkout/checkout')
-        .then(m => m.CheckoutComponent)
-  },
-
-  {
-    path: 'order-success',
-
-    loadComponent: () =>
-      import(
-        './pages/frontend/components/order-success/order-success'
-      ).then(
-        m => m.OrderSuccessComponent
-      )
-  },
-
-  {
-    path: 'payment-failed',
-
-    loadComponent: () =>
-      import(
-        './pages/frontend/components/payment-failed/payment-failed'
-      ).then(
-        m => m.PaymentFailedCompnent
-      )
-  },
-
-
-
-
-
-
-
-
-
-
 
 
 

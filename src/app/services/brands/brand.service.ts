@@ -36,6 +36,13 @@ export class BrandService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  // frontend
+  getAllBrands() {
 
+    return this.http.get(
+      `${this.apiUrl}/frontend`
+    );
+
+  }
 
 }

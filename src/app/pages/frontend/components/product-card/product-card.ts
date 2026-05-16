@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../../services/frontend/cart/cart.service';
 import { WishlistService } from '../../../../services/frontend/wishlist/wishlist.service';
@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { HeaderComponent } from '../../../../layouts/frontend/header.component/header.component';
 import { ActivatedRoute } from '@angular/router';
 import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-product-card',
   standalone: true,
@@ -16,7 +17,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.css']
 })
-export class ProductCardComponent implements OnInit {
+export class ProductCardComponent implements OnInit, OnChanges {
   @Input() showWishlistRemove: boolean = false;
   @Input() product: any;
   imageBaseUrl = environment.apiUrlImage;
@@ -34,19 +35,22 @@ export class ProductCardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.wishlistService
       .wishlistProducts$
       .subscribe((ids: number[]) => {
-
         this.isWishlist =
           ids.includes(
             this.product.productId || this.product.id
           );
-
       });
-
     const slug = this.route.snapshot.paramMap.get('slug');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(
+      'PRODUCT CHANGED',
+      this.product
+    );
 
   }
   addToCart(productId: number) {

@@ -34,4 +34,9 @@ export class CategoryService {
   deleteCategory(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  getAllCategories() {
+    return this.http.get(`${this.apiUrl}/frontend`);
+
+  }
 }

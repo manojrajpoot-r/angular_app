@@ -8,7 +8,12 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -16,8 +21,17 @@ export class HeaderComponent {
   constructor(private authService: AuthService, private router: Router) { }
   user: any;
   isLoggingOut = false;
+  profileOpen = false;
+  sidebarCollapsed = false;
+  darkMode = false;
 
+  toggleDarkMode() {
+    this.darkMode = !this.darkMode;
+    document.body.classList.toggle(
+      'dark-theme'
+    );
 
+  }
   ngOnInit() {
 
     this.authService.user$.subscribe((res) => {

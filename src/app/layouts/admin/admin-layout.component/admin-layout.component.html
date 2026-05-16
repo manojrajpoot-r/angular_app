@@ -1,15 +1,22 @@
-<div class="layout-wrapper">
+<div class="admin-layout">
 
+  <!-- SIDEBAR -->
   <app-sidebar></app-sidebar>
 
-  <div class="main-content">
+  <!-- RIGHT SIDE -->
+  <div class="admin-content">
 
+    <!-- HEADER -->
     <app-header></app-header>
 
+    <!-- PAGE CONTENT -->
     <div class="page-content">
+
       <router-outlet></router-outlet>
+
     </div>
 
+    <!-- FOOTER -->
     <app-footer></app-footer>
 
   </div>

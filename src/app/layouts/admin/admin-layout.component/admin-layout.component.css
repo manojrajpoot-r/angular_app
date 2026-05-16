@@ -1,26 +1,31 @@
-a {
-  cursor: pointer;
-}
+.admin-layout {
 
-.sidebar a {
-  cursor: pointer;
-}
-a:hover {
-  background: red;
-}
-.layout-wrapper {
   display: flex;
+
   min-height: 100vh;
+
+  background: #f1f5f9;
+
 }
 
-.main-content {
-  flex: 1;
+.admin-content {
+
+  margin-left: 280px;
+
+  width: calc(100% - 280px);
+
   display: flex;
+
   flex-direction: column;
-  background: #f5f6fa;
+
+  transition: 0.3s;
+
 }
 
 .page-content {
-  flex: 1;
+
   padding: 20px;
+
+  flex: 1;
+
 }

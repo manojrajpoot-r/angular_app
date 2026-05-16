@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { HeroSliderComponent } from '../../../../pages/frontend/components/hero-slider/hero-slider';
 import { CategoryCardComponent } from '../../../../pages/frontend/components/category-card/category-card';
 import { ProductCardComponent } from '../../../../pages/frontend/components/product-card/product-card';
 import { BrandSliderComponent } from '../../../../pages/frontend/components/brand-slider/brand-slider';
 import { NewsletterComponent } from '../../../../pages/frontend/components/newsletter/newsletter';
-
 import { CategoryService } from '../../../../services/category/category.service';
 import { ProductService } from '../../../../services/products/product.service';
 import { BrandService } from '../../../../services/brands/brand.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { AlertService } from '../../../../services/alert/alert.service';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -41,104 +41,115 @@ export class HomeComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private cd: ChangeDetectorRef,
-  ) {}
+    private alert: AlertService
+  ) { }
 
   ngOnInit(): void {
 
     this.loadCategories();
-
     this.loadFeaturedProducts();
-
     this.loadLatestProducts();
-
     this.loadBrands();
   }
 
   // Categories
-loadCategories() {
+  loadCategories() {
 
-  this.categoryService.getCategorys(1,10,'')
-    .subscribe({
+    this.categoryService
+      .getAllCategories()
+      .subscribe({
 
-      next: (res: any) => {
+        next: (res: any) => {
 
-        this.categories = res;
-        console.log(res);
-        this.loading = false;
-        this.cd.detectChanges();
-      },
+          this.categories = res.data;
+          this.loading = false;
+          this.cd.detectChanges();
 
-      error: (err) => {
+        },
 
-        console.log(err);
-         this.loading = false;
-      }
+        error: (err) => {
 
-    });
-}
+          this.loading = false;
+          this.alert.error(err);
+
+        }
+
+      });
+
+  }
 
   // Featured Products
-loadFeaturedProducts() {
+  loadFeaturedProducts() {
 
-  this.productService.getFeaturedProducts()
-    .subscribe({
+    this.loading = true;
 
-      next: (res: any) => {
-        this.loading = false;
-        this.cd.detectChanges();
-        console.log('featured', res);
+    this.productService
+      .getFeaturedProducts()
+      .subscribe({
+        next: (res: any) => {
 
-        this.featuredProducts = res.data;
-      },
+          this.featuredProducts = res.data;
+          this.loading = false;
+          this.cd.detectChanges();
 
-      error: (err) => {
-      this.loading = false;
-        console.log(err);
-      }
+        },
 
-    });
-}
+        error: (err) => {
+          this.loading = false;
+          this.alert.error(
+            err?.error?.message ||
+            'Something went wrong'
+          );
+
+        }
+
+      });
+
+  }
 
   // Latest Products
-loadLatestProducts() {
+  loadLatestProducts() {
+    this.productService.getlatestProducts()
+      .subscribe({
+        next: (res: any) => {
+          this.latestProducts = res.data;
+          this.loading = false;
+          this.cd.detectChanges();
 
-  this.productService.getlatestProducts()
-    .subscribe({
+        },
 
-      next: (res: any) => {
-        this.latestProducts = res.data;
-         this.loading = false;
-        this.cd.detectChanges();
+        error: (err) => {
+          this.loading = false;
+          this.alert.error(err)
+        }
 
-      },
-
-      error: (err) => {
-        this.loading = false;
-        console.log(err);
-      }
-
-    });
-}
+      });
+  }
 
   // Brands
   loadBrands() {
 
-    this.brandService.getBrands(1,100,'')
+    this.brandService
+      .getAllBrands()
       .subscribe({
 
         next: (res: any) => {
 
           this.brands = res.data;
-           this.loading = false;
-        this.cd.detectChanges();
+          this.loading = false;
+          this.cd.detectChanges();
+
         },
 
         error: (err) => {
+
           this.loading = false;
-          console.log(err);
+          this.alert.error(err);
+
         }
 
       });
+
   }
 
 }

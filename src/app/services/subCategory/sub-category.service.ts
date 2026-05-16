@@ -36,6 +36,13 @@ export class SubCategoryService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  // frontend
+  getAllSubCategories() {
 
+    return this.http.get(
+      `${this.apiUrl}/frontend`
+    );
+
+  }
 
 }

@@ -1,58 +1,161 @@
-.header {
-  height: 70px;
-  background: #ffffff;
-  border-bottom: 1px solid #e5e5e5;
+.topbar {
+
+  width: 100%;
+
+  height: 80px;
+
+  background: white;
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
-  padding: 0 20px;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+
+  padding: 0 25px;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+
 }
 
-.logo-section {
+.topbar-left {
+
   display: flex;
+
   align-items: center;
-  gap: 15px;
+
 }
 
-.logo {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
+.topbar-right {
+
+  margin-left: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
 }
 
-.menu-btn {
+.icon-btn {
+
+  width: 45px;
+
+  height: 45px;
+
   border: none;
-  background: transparent;
-  font-size: 24px;
+
+  border-radius: 12px;
+
+  background: #eff6ff;
+
   cursor: pointer;
+
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+.notification-wrapper {
+
+  position: relative;
+
 }
 
-.search-box input {
-  width: 250px;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-}
+.notification-badge {
 
-.profile-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
+  position: absolute;
 
-.profile-section img {
-  width: 40px;
-  height: 40px;
+  top: -5px;
+
+  right: -5px;
+
+  background: red;
+
+  color: white;
+
+  width: 20px;
+
+  height: 20px;
+
   border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 11px;
+
+}
+
+.profile-dropdown {
+
+  position: relative;
+
+}
+
+.profile-btn {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  cursor: pointer;
+
+}
+
+.profile-btn img {
+
+  width: 42px;
+
+  height: 42px;
+
+  border-radius: 50%;
+
+}
+
+.profile-menu {
+
+  position: absolute;
+
+  top: 60px;
+
+  right: 0;
+
+  width: 220px;
+
+  background: white;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+}
+
+.profile-menu a,
+.profile-menu button {
+
+  width: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  padding: 14px 16px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover {
+
+  background: #f1f5f9;
+
 }

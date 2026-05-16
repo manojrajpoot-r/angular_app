@@ -1,43 +1,43 @@
-<div class="card h-100 shadow-sm border-0 position-relative">
+<div class="card h-100 shadow border-0 rounded-4 overflow-hidden product-card">
 
-  <!-- Wishlist Button -->
-<button
-  class="btn btn-light position-absolute top-0 end-0 m-2 rounded-circle shadow-sm"
-  (click)="addToWishlist(product.productId || product.id)">
+  <!-- Wishlist -->
+  <button
+    class="btn btn-light position-absolute top-0 end-0 m-3 rounded-circle shadow-sm z-3"
+    (click)="addToWishlist(product.id)">
 
-  <i
-    class="bi"
-    [ngClass]="isWishlist
-      ? 'bi-heart-fill text-danger'
-      : 'bi-heart'">
-  </i>
+    <i
+      class="bi"
+      [ngClass]="
+        isWishlist
+          ? 'bi-heart-fill text-danger'
+          : 'bi-heart'
+      ">
+    </i>
 
-</button>
+  </button>
 
+  <!-- Discount -->
+  <span
+    *ngIf="product.discountPercentage"
+    class="badge bg-danger position-absolute top-0 start-0 m-3 z-3">
 
-
-
-
-
-  <!-- Discount Badge -->
-  <span *ngIf="product.discountPrice" class="badge bg-danger position-absolute top-0 start-0 m-2">
-
-    {{
-      product.discountPercentage
-    }}% OFF
+    {{ product.discountPercentage }}% OFF
 
   </span>
 
-  <!-- Product Image -->
-<a [routerLink]="['/product', product.slug]">
+  <!-- IMAGE -->
 
-  <img
-    [src]="imageBaseUrl + '/' + product.image"
-    class="card-img-top p-3"
-    height="250"
-    style="object-fit: contain;">
+  <a [routerLink]="['/product', product.slug]">
 
-</a>
+    <img
+      [src]="imageBaseUrl + '/' + product.image"
+      class="card-img-top p-4"
+      height="260"
+      style="object-fit: contain;">
+
+  </a>
+
+  <!-- BODY -->
 
   <div class="card-body d-flex flex-column">
 
@@ -49,10 +49,11 @@
       {{ product.shortDescription }}
     </p>
 
-    <!-- Price -->
+    <!-- PRICE -->
+
     <div class="d-flex align-items-center gap-2">
 
-      <h5 class="text-danger mb-0">
+      <h5 class="text-dark fw-bold mb-0">
 
         ₹{{ product.discountPrice || product.price }}
 
@@ -68,14 +69,19 @@
 
     </div>
 
-    <!-- Add To Cart -->
- <button
-  class="btn btn-dark w-100 mt-3"
-  (click)="addToCart(product.productId || product.id)">
+    <!-- BUTTON -->
 
-  Add To Cart
+    <button
+      class="btn btn-dark rounded-pill w-100 mt-4"
+      (click)="addToCart(product.id)">
 
-</button>
+      Add To Cart
+
+    </button>
+
+  </div>
+
+</div>
 
 
 <button
@@ -86,6 +92,4 @@
   Remove Wishlist
 
 </button>
-  </div>
 
-</div>

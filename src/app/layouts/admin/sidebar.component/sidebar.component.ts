@@ -19,6 +19,11 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+  sidebarCollapsed = false;
+  userOpen = false;
+  productOpen = false;
+  profileOpen = false;
+
 
   constructor(
     private authService: AuthService,

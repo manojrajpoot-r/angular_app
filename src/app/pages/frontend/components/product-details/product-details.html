@@ -7,29 +7,23 @@
     <div class="col-lg-6">
 
       <div class="bg-white shadow-lg rounded-4 p-4 border product-image-wrapper">
-
+         <!-- MAIN IMAGE -->
         <img
           [src]="selectedImage"
           class="img-fluid main-product-image w-100">
 
-      </div>
+          <img
+            [src]="imageBaseUrl + '/' + product.image"
+            class="thumb-image border rounded-3 p-2"
+            (click)="selectedImage = imageBaseUrl + '/' + product.image">
 
-      <div class="d-flex gap-3 mt-4">
+            <!-- EXTRA IMAGES -->
 
-        <img
-          [src]="imageBaseUrl + '/' + product.image"
-          class="thumb-image border rounded-3 p-2"
-          (click)="selectedImage = imageBaseUrl + '/' + product.image">
-
-        <img
-          [src]="imageBaseUrl + '/' + product.image"
-          class="thumb-image border rounded-3 p-2"
-          (click)="selectedImage = imageBaseUrl + '/' + product.image">
-
-        <img
-          [src]="imageBaseUrl + '/' + product.image"
-          class="thumb-image border rounded-3 p-2"
-          (click)="selectedImage = imageBaseUrl + '/' + product.image">
+            <img
+              *ngFor="let img of product.images"
+              [src]="imageBaseUrl + '/' + img.imageUrl"
+              class="thumb-image border rounded-3 p-2"
+              (click)="selectedImage = imageBaseUrl + '/' + img.imageUrl">
 
       </div>
 
@@ -37,35 +31,65 @@
 
     <!-- RIGHT -->
 
-    <div class="col-lg-6">
+      <div class="col-lg-6">
 
-      <span class="badge bg-dark px-3 py-2 rounded-pill mb-3">
-        Premium Product
-      </span>
+        <span class="badge bg-dark px-3 py-2 rounded-pill mb-3">
+          Premium Product
+        </span>
 
-      <h1 class="fw-bold display-6 mb-3">
-        {{ product.name }}
-      </h1>
+        <h1 class="fw-bold display-6 mb-3">
+          {{ product.name }}
+        </h1>
 
-      <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <h2 class="fw-bold text-danger mb-0">
+            ₹{{ product.discountPrice || product.price }}
+          </h2>
 
-        <h2 class="fw-bold text-danger mb-0">
-          ₹{{ product.discountPrice || product.price }}
-        </h2>
+          <del class="text-muted fs-5">
+            ₹{{ product.price }}
+          </del>
+        </div>
 
-        <del class="text-muted fs-5">
-          ₹{{ product.price }}
-        </del>
+        <p class="text-muted fs-5 lh-lg">
+          {{ product.description }}
+        </p>
+
+        <div class="mb-4">
+          <h6 class="fw-bold mb-3">
+            Available Colors
+          </h6>
+        </div>
+
+
 
       </div>
 
-      <p class="text-muted fs-5 lh-lg">
-        {{ product.description }}
-      </p>
 
-      <div class="mb-4">
+      <!-- RELATED PRODUCTS -->
 
-        <h6 class="fw-bold mb-3">
-          Available Colors
-        </h6>
-</div>
+      <section
+        class="mt-5" *ngIf="relatedProducts?.length">
+
+        <h3 class="fw-bold mb-4">
+          Related Products
+        </h3>
+
+        <div class="row g-4">
+
+          <div
+            class="col-lg-3 col-md-4 col-sm-6"
+            *ngFor="let product of relatedProducts">
+
+            <app-product-card
+              [product]="product">
+            </app-product-card>
+
+          </div>
+
+        </div>
+
+      </section>
+    </div>
+
+  </div>

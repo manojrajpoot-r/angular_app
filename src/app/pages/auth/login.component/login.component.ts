@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/services/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { PasswordInputComponent } from '../../../shared/password-input/password-input';
+import { AlertService } from '../../../services/alert/alert.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,18 +24,16 @@ export class LoginComponent {
   private userSubject = new BehaviorSubject<any>(
     JSON.parse(localStorage.getItem('user') || 'null')
   );
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private alertService: AlertService) { }
 
 
   login() {
 
     if (!this.email || !this.password) {
 
-      Swal.fire({
-        icon: 'warning',
-        title: 'Validation Error',
-        text: 'Email and Password required'
-      });
+      this.alertService.error(
+        'Email and Password required'
+      );
 
       return;
     }
@@ -42,52 +41,41 @@ export class LoginComponent {
     this.loading = true;
 
     this.authService.login({
+
       email: this.email,
       password: this.password
+
     }).subscribe({
 
       next: (res: any) => {
 
         this.loading = false;
 
-        if (res.success) {
+        this.alertService.success(
+          'Login Successful'
+        );
 
-          Swal.fire({
-            icon: 'success',
-            title: 'Login Successful',
-            text: res.message || 'Welcome back!',
-            confirmButtonText: 'Continue'
-          }).then((result) => {
+        // ROLE CHECK
 
-            if (result.isConfirmed) {
+        const role =
+          localStorage.getItem('role');
 
-              this.router.navigate(['/admin/dashboard']);
-
-            }
-
-          });
-
-        } else {
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Login Failed',
-            text: res.message
-          });
-
-        }
-
+        this.router.navigate([
+          '/admin/dashboard'
+        ]);
       },
 
-      error: () => {
+      error: (err) => {
 
         this.loading = false;
 
-        Swal.fire({
-          icon: 'error',
-          title: 'Server Error',
-          text: 'Login failed, please try again'
-        });
+        this.alertService.error(
+
+          err?.error?.message ||
+
+          'Login Failed'
+
+        );
 
       }
 

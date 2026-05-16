@@ -8,6 +8,10 @@ import { WishlistService } from '../../../../services/frontend/wishlist/wishlist
 import { AlertService } from '../../../../services/alert/alert.service';
 import { environment } from '../../../../environments/environment';
 import { RouterModule } from '@angular/router';
+import { ProductCardComponent } from '../../../../pages/frontend/components/product-card/product-card';
+import {
+  ChangeDetectorRef
+} from '@angular/core';
 @Component({
   selector: 'app-product-details',
   standalone: true,
@@ -15,7 +19,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterLink,
     CommonModule,
-    RouterModule
+    RouterModule,
+    ProductCardComponent
   ],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css'
@@ -40,7 +45,8 @@ export class ProductDetailsComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private wishlistService: WishlistService,
-    private alert: AlertService
+    private alert: AlertService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -54,35 +60,41 @@ export class ProductDetailsComponent implements OnInit {
     }
 
   }
-
   loadProduct(): void {
 
-    const slug =
-      this.route.snapshot.paramMap.get('slug');
+    this.route.paramMap.subscribe(params => {
 
-    if (!slug) return;
+      const slug = params.get('slug');
 
-    this.productService
-      .getProductBySlug(slug)
-      .subscribe({
+      if (!slug) return;
 
-        next: (res: any) => {
+      this.productService
+        .getProductBySlug(slug)
+        .subscribe({
 
-          this.product = res;
-          this.selectedImage =
-            this.imageBaseUrl + '/' + this.product.image;
-          console.log('PRODUCT', this.product);
+          next: (res: any) => {
 
-          // RELATED PRODUCTS CALL
+            this.product = res.data;
 
-          this.loadRelatedProducts(
-            this.product.categoryId,
-            this.product.id
-          );
+            this.selectedImage =
+              this.imageBaseUrl + '/' + this.product.image;
+            this.cd.detectChanges();
+            // RELATED PRODUCTS
 
-        }
+            this.loadRelatedProducts(
+              this.product.categoryId,
+              this.product.id
+            );
 
-      });
+          },
+
+          error: (err) => {
+            console.log(err);
+          }
+
+        });
+
+    });
 
   }
 
@@ -97,37 +109,15 @@ export class ProductDetailsComponent implements OnInit {
         productId
       )
       .subscribe({
-
         next: (res: any) => {
-
-          this.relatedProducts = res;
-
-          console.log(
-            'RELATED PRODUCTS',
-            res
-          );
-
+          this.relatedProducts = res.data;
         }
 
       });
 
   }
 
-  increaseQty(): void {
 
-    this.quantity++;
-
-  }
-
-  decreaseQty(): void {
-
-    if (this.quantity > 1) {
-
-      this.quantity--;
-
-    }
-
-  }
 
   addToCart(productId: number): void {
 

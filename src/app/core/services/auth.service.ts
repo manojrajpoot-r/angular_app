@@ -19,7 +19,7 @@ import {
 import { Router } from '@angular/router';
 
 import { environment }
-from '../../environments/environment';
+  from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -34,14 +34,14 @@ export class AuthService {
       this.getStoredUser()
     );
 
-    user$ = this.userSubject.asObservable();
+  user$ = this.userSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) { }
 
-    // ============================================
+  // ============================================
   // GET USER
   // ============================================
 
@@ -188,32 +188,34 @@ export class AuthService {
   // SAVE TOKEN
   // ============================================
 
-saveToken(res: any) {
+  saveToken(res: any) {
 
-  localStorage.setItem(
-    'accessToken',
-    res.data.accessToken
-  );
+    localStorage.setItem(
+      'accessToken',
+      res.data.accessToken
+    );
 
-  localStorage.setItem(
-    'refreshToken',
-    res.data.refreshToken
-  );
+    localStorage.setItem(
+      'refreshToken',
+      res.data.refreshToken
+    );
 
-  localStorage.setItem(
-    'user',
-    JSON.stringify(
-      res.data.user
-    )
-  );
+    localStorage.setItem(
+      'user',
+      JSON.stringify(res.data.user)
+    );
 
-  // IMPORTANT
+    localStorage.setItem(
+      'roles',
+      JSON.stringify(res.data.user.roles)
+    );
 
-  this.userSubject.next(
-    res.data.user
-  );
+    localStorage.setItem(
+      'permissions',
+      JSON.stringify(res.data.user.permissions)
+    );
 
-}
+  }
 
   // ============================================
   // GET TOKEN
@@ -279,22 +281,22 @@ saveToken(res: any) {
   // LOGOUT
   // ============================================
 
-logout() {
+  logout() {
 
-  this.logoutApi().subscribe({
-    next: () => {},
-    error: () => {}
-  });
+    this.logoutApi().subscribe({
+      next: () => { },
+      error: () => { }
+    });
 
-  localStorage.clear();
+    localStorage.clear();
 
-  this.userSubject.next(null);
+    this.userSubject.next(null);
 
-  this.router.navigate([
-    '/'
-  ]);
+    this.router.navigate([
+      '/'
+    ]);
 
-}
+  }
   logoutApi() {
 
     return this.http.post(
