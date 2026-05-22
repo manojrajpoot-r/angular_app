@@ -1,13 +1,8 @@
 <div class="container py-5">
-
   <div class="row">
-
     <!-- SIDEBAR -->
-
     <div class="col-lg-3">
-
       <div class="bg-white shadow rounded-4 p-4">
-
         <h4 class="fw-bold mb-4">
           Filters
         </h4>
@@ -21,18 +16,13 @@
             [(ngModel)]="search"
             placeholder="Search...">
           <button
+            type="button"
             class="btn btn-dark"
+            [disabled]="loading"
             (click)="onSearch()">
             Search
           </button>
         </div>
-
-
-
-
-
-
-
 
         <!-- CATEGORY -->
         <div class="mb-4">
@@ -81,12 +71,14 @@
             placeholder="Max"
             [(ngModel)]="maxPrice">
           <button
+           type="button"
             class="btn btn-dark w-100"
             (click)="applyPriceFilter()">
             Apply
           </button>
         </div>
         <button
+         type="button"
           class="btn btn-outline-secondary w-100 mt-2"
           (click)="resetAllFilters()">
           Reset Filters
@@ -102,6 +94,19 @@
        <h4 class="fw-bold display-6">
           {{ selectedFilterName }}
         </h4>
+          <h4 class="fw-bold mb-4">
+
+            {{ selectedCategoryName }}
+
+            <span *ngIf="selectedSubCategoryName">
+
+              > {{ selectedSubCategoryName }}
+
+            </span>
+
+          </h4>
+
+
         <p class="text-muted">
           Showing {{ products.length }} Products
         </p>
@@ -130,29 +135,29 @@
 
            <!-- PREMIUM LOADER -->
 
-      <div
-        *ngIf="loading"
-        class="text-center py-5">
+           <div class="position-relative">
+                <div
+                *ngIf="loading"
+                class="overlay-loader d-flex justify-content-center align-items-center">
+                <div
+                  class="spinner-border text-dark"
+                  style="width: 3rem; height: 3rem;">
+                </div>
+              </div>
 
-        <div
-          class="spinner-border text-dark"
-          style="width: 4rem; height: 4rem;">
-        </div>
+              <!-- Products -->
 
-        <h5 class="fw-bold mt-4">
-          Loading Products...
-        </h5>
+              <div class="row g-4">
+                <div
+                  class="col-lg-4 col-md-6"
+                  *ngFor="let product of products; trackBy: trackByProduct">
+                  <app-product-card
+                    [product]="product">
+                  </app-product-card>
+                </div>
+              </div>
 
-      </div>
-
-
-    <div class="row g-4" *ngIf="!loading">
-      <div class="col-lg-4 col-md-6" *ngFor="let product of products;trackBy: trackByProduct">
-        <app-product-card
-          [product]="product">
-        </app-product-card>
-      </div>
-    </div>
+            </div>
       <!-- PRODUCT GRID -->
 
 

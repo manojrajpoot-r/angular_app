@@ -12,30 +12,59 @@ import {
   withInterceptors
 } from '@angular/common/http';
 
-import { routes } from './app.routes';
+import {
+  provideAnimations
+} from '@angular/platform-browser/animations';
 
-import { authInterceptor }
-  from './interceptors/auth.interceptor';
+import { routes }
+  from './app.routes';
 
-import { errorInterceptor }
-  from './interceptors/errorInterceptor';
+import {
+  authInterceptor
+} from './interceptors/auth.interceptor';
 
-export const appConfig: ApplicationConfig = {
+import {
+  errorInterceptor
+} from './interceptors/errorInterceptor';
+
+export const appConfig:
+  ApplicationConfig = {
 
   providers: [
 
+    // ============================================
+    // GLOBAL ERROR LISTENER
+    // ============================================
+
     provideBrowserGlobalErrorListeners(),
 
+    // ============================================
+    // ROUTER
+    // ============================================
+
     provideRouter(routes),
+
+    // ============================================
+    // HTTP CLIENT + INTERCEPTORS
+    // ============================================
 
     provideHttpClient(
 
       withInterceptors([
+
         authInterceptor,
+
         errorInterceptor
+
       ])
 
-    )
+    ),
+
+    // ============================================
+    // ANGULAR ANIMATIONS
+    // ============================================
+
+    provideAnimations()
 
   ]
 

@@ -1,0 +1,166 @@
+<div class="container-fluid py-4">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-7">
+
+      <div class="card border-0 shadow-lg rounded-4">
+
+        <div class="card-body p-5">
+
+          <!-- TITLE -->
+          <div class="mb-4 text-center">
+
+            <h3 class="fw-bold">
+
+              {{
+                isEditMode
+                ? 'Update Size'
+                : 'Add New Size'
+              }}
+
+            </h3>
+
+            <p class="text-muted">
+
+              Manage product variants professionally
+
+            </p>
+
+          </div>
+
+          <!-- FORM -->
+          <form
+            [formGroup]="productVarientForm"
+            (ngSubmit)="onSubmit()">
+
+            <!-- PRODUCT -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Product
+              </label>
+
+              <select
+                class="form-select premium-input"
+                formControlName="productId">
+
+                <option value="">
+                  Select Product
+                </option>
+
+                    <option
+                      *ngFor="let item of products"
+                      [value]="item.id">
+
+                      {{ item.name }}
+
+                    </option>
+
+              </select>
+            </div>
+
+            <!-- COLOR -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Color
+              </label>
+
+              <select
+                class="form-select premium-input"
+                formControlName="colorId">
+
+                <option value="">
+                  Select Color
+                </option>
+
+                <option
+                  *ngFor="let item of colors"
+                  [value]="item.id">
+
+                  {{ item.name }}
+
+                </option>
+
+              </select>
+            </div>
+
+            <!-- SIZE -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Size
+              </label>
+
+              <select
+                class="form-select premium-input"
+                formControlName="sizeId">
+
+                <option value="">
+                  Select Size
+                </option>
+
+                <option
+                  *ngFor="let item of sizes"
+                  [value]="item.id">
+
+                  {{ item.name }}
+
+                </option>
+
+              </select>
+            </div>
+
+            <!-- PRICE -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Price
+              </label>
+
+              <input
+                type="number"
+                class="form-control premium-input"
+                formControlName="price"
+                placeholder="Enter price" />
+            </div>
+
+            <!-- STOCK -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Stock
+              </label>
+
+              <input
+                type="number"
+                class="form-control premium-input"
+                formControlName="stock"
+                placeholder="Enter stock" />
+            </div>
+
+
+
+            <!-- BUTTONS -->
+            <div
+              class="d-flex justify-content-center gap-3">
+              <app-submit-button-component
+                type="submit"
+                [loading]="loading"
+                [text]="isEditMode ? 'Update' : 'Add'">
+              </app-submit-button-component>
+
+              <button
+                type="button" (click)="router.navigate(['admin/product-varients'])"
+                class="btn btn-light border px-5 rounded-pill">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

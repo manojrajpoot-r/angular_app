@@ -1,73 +1,159 @@
-<app-form-wrapper-component [title]="isEdit ? 'Edit SubCategory' : 'Add SubCategory'">
+<app-form-wrapper-component
+  [title]="
+    isEditMode
+      ? 'Edit Sub Category'
+      : 'Add Sub Category'
+  "
+>
 
-<form [formGroup]="form" (ngSubmit)="saveSubCategory()">
+<form
+  [formGroup]="form"
+  (ngSubmit)="saveSubCategory()"
+>
 
-  <!-- Category -->
+  <!-- NAME -->
+
   <div class="mb-3">
-    <label>Select Category</label>
 
-    <select formControlName="categoryId" class="form-control">
-      <option value="">Select Category</option>
-      <option *ngFor="let c of categories" [value]="c.id">
-        {{ c.name }}
+    <label class="form-label">
+      Name
+    </label>
+
+    <input
+      type="text"
+      class="form-control"
+      formControlName="name"
+    >
+
+    <app-validation-error-component
+      [control]="form.get('name')"
+      label="Name"
+    />
+
+  </div>
+
+  <!-- DESCRIPTION -->
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Description
+    </label>
+
+    <textarea
+      rows="4"
+      class="form-control"
+      formControlName="description"
+    >
+    </textarea>
+
+    <app-validation-error-component
+      [control]="form.get('description')"
+      label="Description"
+    />
+
+  </div>
+
+  <!-- CATEGORY -->
+
+  <div class="mb-3">
+
+    <label class="form-label">
+      Category
+    </label>
+
+    <select
+      class="form-select"
+      formControlName="categoryId"
+    >
+
+      <option value="">
+        Select Category
       </option>
+
+      @for (
+        category of categories();
+        track category.id
+      ) {
+
+        <option
+          [value]="category.id"
+        >
+
+          {{ category.name }}
+
+        </option>
+
+      }
+
     </select>
 
     <app-validation-error-component
-      [control]="form.get('categoryId')">
-    </app-validation-error-component>
-  </div>
-
-  <!-- Name -->
-  <div class="mb-3">
-    <label>Name</label>
-
-    <input type="text" class="form-control" formControlName="name">
-
-    <app-validation-error-component
-      [control]="form.get('name')">
-    </app-validation-error-component>
-  </div>
-
-  <!-- Description -->
-  <div class="mb-3">
-    <label>Description</label>
-    <input type="text" class="form-control" formControlName="description">
-  </div>
-
-  <!-- Image -->
-  <div class="mb-3">
-
-    <app-image-upload
-      [multiple]="false"
-      [imageUrls]="imageUrls"
-      (fileChange)="onFileSelected($event)">
-    </app-image-upload>
-
-    <app-validation-error-component
-      [control]="form.get('image')">
-    </app-validation-error-component>
+      [control]="form.get('categoryId')"
+      label="Category"
+    />
 
   </div>
 
-  <!-- Buttons -->
-  <div class="d-flex justify-content-between">
+  <!-- IMAGE -->
 
-    <button type="button" class="btn btn-light"
-      (click)="router.navigate(['/admin/sub-categories'])">
+<app-image-upload
+  [multiple]="false"
+  [imageUrls]="imageUrls()"
+  (fileChange)="onFileSelected($event)"
+/>
+
+  <!-- BUTTONS -->
+
+  <div
+    class="
+      d-flex
+      justify-content-between
+      gap-2
+    "
+  >
+
+    <button
+
+      type="button"
+
+      class="btn btn-light"
+
+      (click)="
+        router.navigate([
+          '/admin/sub-categories'
+        ])
+      "
+
+    >
+
       Cancel
+
     </button>
 
+    <app-submit-button-component
 
-     <app-submit-button-component
-       type="submit"
-       class="btn btn-primary"
-      [loading]="loading"
-      [text]="isEdit ? 'Update' : 'Save'">
-     </app-submit-button-component>
+      type="submit"
 
+      class="btn btn-primary"
+
+      [loading]="loading()"
+
+      [text]="
+        isEditMode
+          ? 'Update'
+          : 'Save'
+      "
+
+    />
 
   </div>
 
 </form>
+
 </app-form-wrapper-component>
+
+
+
+
+

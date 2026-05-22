@@ -23,7 +23,12 @@ import { ProductsComponent } from './pages/admin/products/products.component/pro
 import { ProductFormComponent } from './pages/admin/products/product-form.component/product-form.component';
 import { ProductImagesComponent } from './pages/admin/productImages/product-images.component/product-images.component';
 import { ProductImageFormComponent } from './pages/admin/productImages/product-image-form.component/product-image-form.component';
-
+import { ColorComonent } from './pages/admin/colors/color/color';
+import { ColorFormComponent } from './pages/admin/colors/color-form/color-form';
+import { SizeComponent } from './pages/admin/sizes/size/size';
+import { SizeFormComponent } from './pages/admin/sizes/size-form/size-form';
+import { ProductVarientComponent } from './pages/admin/product_varient/product-varient/product-varient';
+import { ProductVarientFormComponent } from './pages/admin/product_varient/product-varient-form/product-varient-form';
 
 export const routes: Routes = [
   {
@@ -138,6 +143,22 @@ export const routes: Routes = [
 
       { path: 'products-images/:id', component: ProductImagesComponent },
       { path: 'products-images/add/:id', component: ProductImageFormComponent },
+
+      { path: 'colors', component: ColorComonent },
+      { path: 'colors/add', component: ColorFormComponent },
+      { path: 'colors/edit/:id', component: ColorFormComponent },
+
+
+      { path: 'sizes', component: SizeComponent },
+      { path: 'sizes/add', component: SizeFormComponent },
+      { path: 'sizes/edit/:id', component: SizeFormComponent },
+
+
+      { path: 'product-varients', component: ProductVarientComponent },
+      { path: 'product-varients/add', component: ProductVarientFormComponent },
+      { path: 'product-varients/edit/:id', component: ProductVarientFormComponent },
+
+
 
 
 

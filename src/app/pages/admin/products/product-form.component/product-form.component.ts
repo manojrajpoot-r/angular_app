@@ -9,7 +9,7 @@ import { SubCategoryService } from '../../../../services/subCategory/sub-categor
 import { BrandService } from '../../../../services/brands/brand.service';
 import { AlertService } from '../../../../services/alert/alert.service';
 import { ImageUploadComponent } from '../../../../shared/components/image-upload/image-upload';
-import { ValidationErrorComponent } from '../../../../shared/components/validation-error-component/validation-error-component';
+import { ValidationErrorComponent } from '../../../../shared/components/validators/validation-error-component/validation-error-component';
 import { SubmitButtonComponent } from '../../../../shared/components/submit-button-component/submit-button-component';
 import { FormWrapperComponent } from '../../../../shared/components/form-wrapper-component/form-wrapper-component';
 import { environment } from '../../../../environments/environment';

@@ -6,7 +6,7 @@ import { Inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../../services/alert/alert.service';
 import { CategoryService } from '../../../../services/category/category.service';
-import { ValidationErrorComponent } from '../../../../shared/components/validation-error-component/validation-error-component';
+import { ValidationErrorComponent } from '../../../../shared/components/validators/validation-error-component/validation-error-component';
 import { SubmitButtonComponent } from '../../../../shared/components/submit-button-component/submit-button-component';
 import { FormWrapperComponent } from '../../../../shared/components/form-wrapper-component/form-wrapper-component';
 import { environment } from '../../../../environments/environment';
@@ -29,7 +29,7 @@ export class CategoryFormComponent implements OnInit {
     name: '',
   };
 
-  isEdit = false;
+  isEditMode = false;
   id: number = 0;
 
   form!: FormGroup;
@@ -53,7 +53,7 @@ export class CategoryFormComponent implements OnInit {
 
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id) {
-      this.isEdit = true;
+      this.isEditMode = true;
       this.getCategoryById();
     }
   }
@@ -72,7 +72,7 @@ export class CategoryFormComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    if (this.isEdit) {
+    if (this.isEditMode) {
       this.categoryService.updateCategory(this.id, this.category).subscribe(() => {
         this.alert
           .success('Category details have been updated successfully!!')

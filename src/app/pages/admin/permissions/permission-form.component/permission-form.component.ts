@@ -8,7 +8,7 @@ import { AlertService } from '../../../../services/alert/alert.service';
 import { PermissionService } from '../../../../core/services/permission/permission.service';
 import { DynamicInputComponent } from '../../../../shared/components/dynamic-input/dynamic-input';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ValidationErrorComponent } from '../../../../shared/components/validation-error-component/validation-error-component';
+import { ValidationErrorComponent } from '../../../../shared/components/validators/validation-error-component/validation-error-component';
 import { SubmitButtonComponent } from '../../../../shared/components/submit-button-component/submit-button-component';
 import { FormWrapperComponent } from '../../../../shared/components/form-wrapper-component/form-wrapper-component';
 import { environment } from '../../../../environments/environment';
@@ -34,7 +34,7 @@ export class PermissionFormComponent implements OnInit {
     permissions: ['']
   };
 
-  isEdit = false;
+  isEditMode = false;
   id: number = 0;
 
   constructor(
@@ -55,7 +55,7 @@ export class PermissionFormComponent implements OnInit {
 
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id) {
-      this.isEdit = true;
+      this.isEditMode = true;
       this.getPermissionById();
     }
   }
@@ -83,7 +83,7 @@ export class PermissionFormComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    if (this.isEdit) {
+    if (this.isEditMode) {
       this.permissionService.updatePermission(this.id, this.permission).subscribe(() => {
         this.alert.success('Permission details have been updated successfully!');
         this.router.navigate(['/admin/permissions']);

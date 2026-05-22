@@ -46,7 +46,7 @@ export class CategoriesComponent implements OnInit {
       this.params.search
     ).subscribe({
       next: (res: any) => {
-        this.categories = res;
+        this.categories = res.data;
         this.totalRecords = res.totalRecords;
         this.loading = false;
         this.cd.detectChanges();

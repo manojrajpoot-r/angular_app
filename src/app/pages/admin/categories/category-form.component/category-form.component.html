@@ -1,42 +1,40 @@
 
-   <app-form-wrapper-component [title]="isEdit ? 'Edit Category' : 'Add Category'">
+   <app-form-wrapper-component [title]="isEditMode ? 'Edit Category' : 'Add Category'">
 
     <form [formGroup]="form" (ngSubmit)="saveCategory()">
 
-   <!-- Name -->
-  <div class="mb-3">
-    <label>Name</label>
+        <!-- Name -->
+        <div class="mb-3">
+          <label>Name</label>
 
-    <input type="text" class="form-control" formControlName="name">
+          <input type="text" class="form-control" formControlName="name">
 
-    <app-validation-error-component
-      [control]="form.get('name')">
-    </app-validation-error-component>
-  </div>
+          <app-validation-error-component
+            [control]="form.get('name')"
+            label="Name">
+          </app-validation-error-component>
+        </div>
 
-  <!-- Description -->
-  <div class="mb-3">
-    <label>Description</label>
-    <input type="text" class="form-control" formControlName="description">
-  </div>
+        <!-- Description -->
+        <div class="mb-3">
+          <label>Description</label>
+          <input type="text" class="form-control" formControlName="description">
+        </div>
 
-      <div class="d-flex justify-content-between">
+           <div
+              class="d-flex justify-content-center gap-3">
+              <app-submit-button-component
+                type="submit"
+                [loading]="loading"
+                [text]="isEditMode ? 'Update' : 'Add'">
+              </app-submit-button-component>
 
-        <button type="button"
-                class="btn btn-light"
-                (click)="router.navigate(['/admin/categories'])">
-          Cancel
-        </button>
-
-      <app-submit-button-component
-       type="submit"
-       class="btn btn-primary"
-      [loading]="loading"
-      [text]="isEdit ? 'Update' : 'Save'">
-     </app-submit-button-component>
-
-      </div>
-
+              <button
+                type="button" (click)="router.navigate(['admin/categories'])"
+                class="btn btn-light border px-5 rounded-pill">
+                Cancel
+              </button>
+            </div>
     </form>
 </app-form-wrapper-component>
 

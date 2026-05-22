@@ -47,14 +47,13 @@ export class ProductCardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(
-      'PRODUCT CHANGED',
-      this.product
-    );
+    // console.log(
+    //   'PRODUCT CHANGED',
+    //   this.product
+    // );
 
   }
   addToCart(productId: number) {
-
     const payload = {
       productId: productId,
       quantity: 1
@@ -63,11 +62,8 @@ export class ProductCardComponent implements OnInit, OnChanges {
     this.cartService
       .addToCart(payload)
       .subscribe({
-
         next: (res: any) => {
-
           this.alert.success('Added To Cart Successfully');
-
           this.cartService
             .getCart()
             .subscribe((cart: any) => {
@@ -80,13 +76,13 @@ export class ProductCardComponent implements OnInit, OnChanges {
         },
 
         error: (err) => {
+          const message =
+            err?.status === 401
+              ? 'You need to login first to add items to your cart'
+              : err?.error?.message || 'Unable to add product to cart';
 
-          this.alert.error(
-            err?.error?.message
-          );
-
+          this.alert.error(message);
         }
-
       });
 
   }
@@ -100,24 +96,17 @@ export class ProductCardComponent implements OnInit, OnChanges {
     this.wishlistService
       .addWishlist(data)
       .subscribe({
-
         next: (res: any) => {
-
           this.alert.success(res.message);
-
           this.loadWishlistProducts();
-
         },
-
         error: (err) => {
-
-          this.alert.error(
-            err?.error?.message ||
-            'Something went wrong'
-          );
-
+          let message = 'Failed to update wishlist. Please try again.';
+          if (err.status === 401) {
+            message = 'Please login to add items to your wishlist';
+          }
+          this.alert.error(message);
         }
-
       });
 
   }
@@ -127,11 +116,9 @@ export class ProductCardComponent implements OnInit, OnChanges {
     this.wishlistService
       .getWishlist(1)
       .subscribe((res: any) => {
-
         const ids = res.map(
           (x: any) => x.productId
         );
-
         this.wishlistService
           .updateWishlistProducts(ids);
 
@@ -146,26 +133,17 @@ export class ProductCardComponent implements OnInit, OnChanges {
     this.wishlistService
       .removeWishlist(productId)
       .subscribe({
-
         next: (res: any) => {
-
           this.alert.success(res.message);
-
           this.loadWishlistProducts();
-
           this.wishlistRemoved.emit();
-
         },
-
         error: (err) => {
-
           this.alert.error(
             err?.error?.message ||
             'Something went wrong'
           );
-
         }
-
       });
 
   }

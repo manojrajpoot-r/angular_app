@@ -1,40 +1,41 @@
-<app-form-wrapper-component [title]="isEdit ? 'Edit Role' : 'Add Role'">
+<app-form-wrapper-component [title]="isEditMode ? 'Edit Role' : 'Add Role'">
 
-<form [formGroup]="form" (ngSubmit)="saveRole()">
-
-
-
-  <!-- Name -->
-  <div class="mb-3">
-    <label>Name</label>
-
-    <input type="text" class="form-control" formControlName="name">
-
-    <app-validation-error-component
-      [control]="form.get('name')">
-    </app-validation-error-component>
-  </div>
+    <form [formGroup]="form" (ngSubmit)="saveRole()">
 
 
 
-  <!-- Buttons -->
-  <div class="d-flex justify-content-between">
+        <!-- Name -->
+        <div class="mb-3">
+          <label>Name</label>
 
-    <button type="button" class="btn btn-light"
-      (click)="router.navigate(['/admin/roles'])">
-      Cancel
-    </button>
+          <input type="text" class="form-control" formControlName="name">
 
+          <app-validation-error-component
+              [control]="form.get('name')"
+              label="Name"
+            />
 
-     <app-submit-button-component
-       type="submit"
-       class="btn btn-primary"
-      [loading]="loading"
-      [text]="isEdit ? 'Update' : 'Save'">
-     </app-submit-button-component>
+        </div>
 
 
-  </div>
+
+         <!-- Buttons -->
+
+            <div
+              class="d-flex justify-content-center gap-3">
+              <app-submit-button-component
+                type="submit"
+                [loading]="loading"
+                [text]="isEditMode ? 'Update' : 'Add'">
+              </app-submit-button-component>
+
+              <button
+                type="button" (click)="router.navigate(['admin/roles'])"
+                class="btn btn-light border px-5 rounded-pill">
+                Cancel
+              </button>
+            </div>
+
 
 </form>
 </app-form-wrapper-component>

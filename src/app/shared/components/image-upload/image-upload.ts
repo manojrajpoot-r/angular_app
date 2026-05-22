@@ -1,10 +1,8 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { environment } from '../../../environments/environment';
-import { ValidationErrorComponent } from '../../../shared/components/validation-error-component/validation-error-component';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-image-upload',
   standalone: true,
@@ -16,65 +14,168 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 })
 
 export class ImageUploadComponent implements OnChanges {
-  constructor(private cdr: ChangeDetectorRef) { }
+
+  // ============================================
+  // CONSTRUCTOR
+  // ============================================
+
+  constructor(
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  // ============================================
+  // INPUTS
+  // ============================================
+
   @Input() multiple = false;
+
   @Input() imageUrls: string[] = [];
 
-  @Output() fileChange = new EventEmitter<File[]>();
-  form!: FormGroup;
+  @Input() maxFileSize = 5; // MB
 
-  previews: string[] = [];
-  files: File[] = [];
+  @Input() acceptedTypes = [
+    'image/jpeg',
+    'image/png',
+    'image/webp'
+  ];
+
+  // ============================================
+  // OUTPUTS
+  // ============================================
+
+  @Output()
+  fileChange = new EventEmitter<File[]>();
+
+  // ============================================
+  // SIGNALS
+  // ============================================
+
+  previews = signal<string[]>([]);
+  files = signal<File[]>([]);
+
+  // ============================================
+  // VARIABLES
+  // ============================================
+
   imageBaseUrl = environment.apiUrlImage;
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['imageUrls'] && this.imageUrls?.length) {
-      this.previews = [...this.imageUrls];
+
+  // ============================================
+  // CHANGES
+  // ============================================
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (
+
+      changes['imageUrls'] &&
+      this.imageUrls?.length
+
+    ) {
+
+      this.previews.set([
+        ...this.imageUrls
+      ]);
+
     }
+
   }
 
+  // ============================================
+  // IMAGE URL
+  // ============================================
 
   getImageUrl(img: string): string {
-    if (!img) return '';
 
-    //  base64 image
+    if (!img) {
+      return '';
+    }
+
+    // BASE64 IMAGE
     if (img.startsWith('data:')) {
       return img;
     }
 
-    // server image
-    return this.imageBaseUrl + '/' + img;
+    // SERVER IMAGE
+    return ` ${this.imageBaseUrl}/${img}`;
   }
-  onSelect(event: any) {
 
-    if (!this.multiple) {
-      this.files = [];
-      this.previews = [];
+  // ============================================
+  // SELECT FILES
+  // ============================================
+
+  onSelect(event: {
+    addedFiles: File[]
+  }): void {
+
+    const selectedFiles =
+      event.addedFiles;
+
+    if (!selectedFiles.length) {
+      return;
     }
 
-    for (let file of event.addedFiles) {
+    // SINGLE IMAGE MODE
+    if (!this.multiple) {
+      this.files.set([]);
+      this.previews.set([]);
+    }
 
-      this.files.push(file);
+    selectedFiles.forEach((file) => {
+      // FILE TYPE VALIDATION
+      if (!this.acceptedTypes.includes(file.type)) {
+        alert('Only JPG, PNG, WEBP allowed');
+        return;
+      }
 
+      // FILE SIZE VALIDATION
+
+      const fileSizeMB = file.size / 1024 / 1024;
+      if (fileSizeMB > this.maxFileSize) {
+        alert(`Max file size is ${this.maxFileSize} MB`);
+        return;
+      }
+
+      // FILES
+      this.files.update((files) => [
+        ...files,
+        file
+
+      ]);
+
+      // PREVIEW
       const reader = new FileReader();
-
       reader.onload = () => {
-        this.previews.push(reader.result as string);
-
+        this.previews.update(
+          (previews) => [
+            ...previews,
+            reader.result as string
+          ]
+        );
         this.cdr.detectChanges();
       };
-
       reader.readAsDataURL(file);
-    }
+    });
 
-    this.fileChange.emit(this.files);
+    // EMIT FILES
+    this.fileChange.emit(this.files());
   }
 
-  removeImage(index: number) {
+  // ============================================
+  // REMOVE IMAGE
+  // ============================================
 
-    this.previews.splice(index, 1);
-    this.files.splice(index, 1);
+  removeImage(index: number): void {
+    this.previews.update(
+      (previews) =>
+        previews.filter((_, i) => i !== index)
+    );
 
-    this.fileChange.emit(this.files);
+    this.files.update(
+      (files) => files.filter((_, i) => i !== index));
+    this.fileChange.emit(
+      this.files()
+    );
+
   }
+
 }
-

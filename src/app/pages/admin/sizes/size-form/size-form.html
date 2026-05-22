@@ -1,0 +1,93 @@
+<div class="container-fluid py-4">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-7">
+
+      <div class="card border-0 shadow-lg rounded-4">
+
+        <div class="card-body p-5">
+
+          <!-- TITLE -->
+          <div class="mb-4 text-center">
+
+            <h3 class="fw-bold">
+
+              {{
+                isEditMode
+                ? 'Update Size'
+                : 'Add New Size'
+              }}
+
+            </h3>
+
+            <p class="text-muted">
+
+              Manage product sizes professionally
+
+            </p>
+
+          </div>
+
+          <!-- FORM -->
+          <form
+            [formGroup]="sizeForm"
+            (ngSubmit)="onSubmit()">
+
+            <!-- NAME -->
+            <div class="mb-4">
+
+              <label class="form-label fw-semibold">
+
+                Size Name
+
+              </label>
+
+              <input
+                type="text"
+                class="form-control premium-input"
+                formControlName="name"
+                placeholder="Enter size name" />
+
+              <app-validation-error-component
+                [control]="f['name']">
+              </app-validation-error-component>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+            <!-- BUTTONS -->
+            <div
+              class="d-flex justify-content-center gap-3">
+              <app-submit-button-component
+                type="submit"
+                [loading]="loading"
+                [text]="isEditMode ? 'Update' : 'Add'">
+              </app-submit-button-component>
+
+              <button
+                type="button" (click)="router.navigate(['admin/sizes'])"
+                class="btn btn-light border px-5 rounded-pill">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

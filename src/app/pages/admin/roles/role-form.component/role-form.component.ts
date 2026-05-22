@@ -6,7 +6,7 @@ import { Inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../../services/alert/alert.service';
 import { RoleService } from '../../../../core/services/roles/role.service';
-import { ValidationErrorComponent } from '../../../../shared/components/validation-error-component/validation-error-component';
+import { ValidationErrorComponent } from '../../../../shared/components/validators/validation-error-component/validation-error-component';
 import { SubmitButtonComponent } from '../../../../shared/components/submit-button-component/submit-button-component';
 import { FormWrapperComponent } from '../../../../shared/components/form-wrapper-component/form-wrapper-component';
 import { environment } from '../../../../environments/environment';
@@ -29,7 +29,7 @@ export class RoleFormComponent implements OnInit {
   loading = false;
   form!: FormGroup;
 
-  isEdit = false;
+  isEditMode = false;
   id: number = 0;
 
   constructor(
@@ -47,7 +47,7 @@ export class RoleFormComponent implements OnInit {
 
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     if (this.id) {
-      this.isEdit = true;
+      this.isEditMode = true;
       this.getRoleById();
     }
   }
@@ -75,7 +75,7 @@ export class RoleFormComponent implements OnInit {
 
     const payload = this.form.value;
 
-    if (this.isEdit) {
+    if (this.isEditMode) {
       this.roleService.updateRole(this.id, payload).subscribe(() => {
         this.alert
           .success('Role details have been updated successfully!!')

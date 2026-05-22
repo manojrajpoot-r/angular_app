@@ -7,17 +7,33 @@ export class PermissionAuthService {
 
   getPermissions(): string[] {
 
-    return JSON.parse(
-      localStorage.getItem('permissions') || '[]'
-    );
+    try {
+
+      return JSON.parse(
+        localStorage.getItem('permissions') || '[]'
+      );
+
+    } catch {
+
+      return [];
+
+    }
 
   }
 
   getRoles(): string[] {
 
-    return JSON.parse(
-      localStorage.getItem('roles') || '[]'
-    );
+    try {
+
+      return JSON.parse(
+        localStorage.getItem('roles') || '[]'
+      );
+
+    } catch {
+
+      return [];
+
+    }
 
   }
 

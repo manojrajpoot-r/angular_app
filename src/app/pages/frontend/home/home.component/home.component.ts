@@ -10,6 +10,7 @@ import { ProductService } from '../../../../services/products/product.service';
 import { BrandService } from '../../../../services/brands/brand.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AlertService } from '../../../../services/alert/alert.service';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,8 @@ import { AlertService } from '../../../../services/alert/alert.service';
     CategoryCardComponent,
     ProductCardComponent,
     BrandSliderComponent,
-    NewsletterComponent
+    NewsletterComponent,
+    RouterLink,
   ],
 
   templateUrl: './home.component.html',
@@ -41,42 +43,20 @@ export class HomeComponent implements OnInit {
     private productService: ProductService,
     private brandService: BrandService,
     private cd: ChangeDetectorRef,
-    private alert: AlertService
+    private alert: AlertService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
 
-    this.loadCategories();
     this.loadFeaturedProducts();
     this.loadLatestProducts();
     this.loadBrands();
+    this.loadHomeCategoryProducts();
   }
 
-  // Categories
-  loadCategories() {
 
-    this.categoryService
-      .getAllCategories()
-      .subscribe({
 
-        next: (res: any) => {
-
-          this.categories = res.data;
-          this.loading = false;
-          this.cd.detectChanges();
-
-        },
-
-        error: (err) => {
-
-          this.loading = false;
-          this.alert.error(err);
-
-        }
-
-      });
-
-  }
 
   // Featured Products
   loadFeaturedProducts() {
@@ -145,6 +125,34 @@ export class HomeComponent implements OnInit {
 
           this.loading = false;
           this.alert.error(err);
+
+        }
+
+      });
+
+  }
+
+
+  loadHomeCategoryProducts(): void {
+
+    this.loading = true;
+
+    this.productService
+      .getHomeCategoryProducts()
+
+      .subscribe({
+
+        next: (res: any) => {
+          console.log("categories", res);
+          this.categories = res.data;
+
+          this.loading = false;
+
+        },
+
+        error: () => {
+
+          this.loading = false;
 
         }
 

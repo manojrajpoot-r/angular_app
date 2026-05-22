@@ -7,11 +7,13 @@ import { Inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../../services/alert/alert.service';
 import { PasswordInputComponent } from '../../../../shared/password-input/password-input';
-import { ValidationErrorComponent } from '../../../../shared/components/validation-error-component/validation-error-component';
+import { ValidationErrorComponent } from '../../../../shared/components/validators/validation-error-component/validation-error-component';
 import { SubmitButtonComponent } from '../../../../shared/components/submit-button-component/submit-button-component';
 import { FormWrapperComponent } from '../../../../shared/components/form-wrapper-component/form-wrapper-component';
 import { environment } from '../../../../environments/environment';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { fadeAnimation } from '../../../../shared/animations/fade.animation';
+
 @Component({
   standalone: true,
   selector: 'app-user-form',
@@ -20,7 +22,12 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
     ReactiveFormsModule,
     ValidationErrorComponent,
     SubmitButtonComponent,
-    FormWrapperComponent
+    FormWrapperComponent,
+    PasswordInputComponent,
+    FormsModule
+  ],
+  animations: [
+    fadeAnimation
   ],
   templateUrl: './user-form.component.html'
 })
@@ -29,7 +36,7 @@ export class UserFormComponent implements OnInit {
   loading = false;
   form!: FormGroup;
 
-  isEdit = false;
+  isEditMode = false;
   id: number = 0;
 
   constructor(
@@ -61,7 +68,7 @@ export class UserFormComponent implements OnInit {
 
       password: [
         '',
-        this.isEdit
+        this.isEditMode
           ? [] // edit me optional
           : [
             Validators.required,
@@ -74,7 +81,7 @@ export class UserFormComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (this.id) {
-      this.isEdit = true;
+      this.isEditMode = true;
 
       //  password validator remove karo
       this.form.get('password')?.clearValidators();
@@ -108,7 +115,7 @@ export class UserFormComponent implements OnInit {
 
     const payload = this.form.value;
 
-    if (this.isEdit) {
+    if (this.isEditMode) {
       this.userService.updateUser(this.id, payload).subscribe(() => {
         this.alert
           .success('User details have been updated successfully!!')

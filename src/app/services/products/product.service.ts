@@ -66,6 +66,12 @@ export class ProductService {
     );
 
   }
+  getHomeCategoryProducts() {
+
+    return this.http.get<any>(`${this.apiUrl}/home-category-products`
+    );
+
+  }
 
 }
 

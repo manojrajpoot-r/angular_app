@@ -1,43 +1,45 @@
-<app-form-wrapper-component [title]="isEdit ? 'Edit Permission' : 'Add Permission'">
+<app-form-wrapper-component [title]="isEditMode ? 'Edit Permission' : 'Add Permission'">
 
 <form [formGroup]="form" (ngSubmit)="savePermission()">
 
-  <div class="mb-3">
-    <label class="form-label">Group Name</label>
-    <input type="text" class="form-control" formControlName="groupName">
-  </div>
-   <app-validation-error-component
-      [control]="form.get('groupName')">
-    </app-validation-error-component>
+        <div class="mb-3">
+          <label class="form-label">Group Name</label>
+          <input type="text" class="form-control" formControlName="groupName">
+        </div>
+
+          <app-validation-error-component
+              [control]="form.get('groupName')"
+              label="Group Name"
+            />
 
 
-  <app-dynamic-input
-    label="Permissions"
-    [items]="permissionsArray.value"
-    (itemsChange)="permissionsArray.clear(); $event.forEach(p => permissionsArray.push(fb.control(p)))"
-    [showAddButton]="!isEdit">
-  </app-dynamic-input>
+        <app-dynamic-input
+          label="Permissions"
+          [items]="permissionsArray.value"
+          (itemsChange)="permissionsArray.clear(); $event.forEach(p => permissionsArray.push(fb.control(p)))"
+          [showAddButton]="!isEditMode">
+        </app-dynamic-input>
 
-   <app-validation-error-component
-  [control]="permissionsArray.at(0)">
-</app-validation-error-component>
-
-  <div class="d-flex justify-content-between">
-    <button type="button"
-            class="btn btn-light"
-            (click)="router.navigate(['/admin/permissions'])">
-      Cancel
-    </button>
-
-     <app-submit-button-component
-       type="submit"
-       class="btn btn-primary"
-      [loading]="loading"
-      [text]="isEdit ? 'Update' : 'Save'">
-     </app-submit-button-component>
+        <app-validation-error-component
+           [control]="permissionsArray.at(0)"/>
 
 
-  </div>
+           <div
+              class="d-flex justify-content-center gap-3">
+              <app-submit-button-component
+                type="submit"
+                [loading]="loading"
+                [text]="isEditMode ? 'Update' : 'Add'">
+              </app-submit-button-component>
+
+              <button
+                type="button" (click)="router.navigate(['admin/permissions'])"
+                class="btn btn-light border px-5 rounded-pill">
+                Cancel
+              </button>
+            </div>
+
+
 
 </form>
 </app-form-wrapper-component>

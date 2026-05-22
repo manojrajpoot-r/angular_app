@@ -6,9 +6,16 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+     <button
+                type="submit"
+                class="btn btn-primary px-5 rounded-pill"
+                [disabled]="loading">
 
-      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2">
+                </span>
+
 
       {{ loading ? 'Processing...' : text }}
 

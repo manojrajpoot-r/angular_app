@@ -6,8 +6,15 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="card shadow-lg border-0 mt-4" style="max-width: 500px; margin:auto;">
-      <div class="card-body">
+   <div class="container-fluid py-4">
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-7">
+
+      <div class="card border-0 shadow-lg rounded-4">
+
+        <div class="card-body p-5">
 
         <h4 class="mb-4 text-center fw-bold">
           {{ title }}
@@ -16,7 +23,15 @@ import { CommonModule } from '@angular/common';
         <ng-content></ng-content>
 
       </div>
+
+      </div>
+
     </div>
+
+  </div>
+
+</div>
+
   `
 })
 export class FormWrapperComponent {

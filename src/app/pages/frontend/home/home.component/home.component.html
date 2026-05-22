@@ -1,28 +1,83 @@
 <!-- Hero Banner -->
 <app-hero-slider></app-hero-slider>
+<div
+  *ngIf="loading"
+  class="text-center py-5">
 
-<!-- Categories -->
-<section class="container mt-5">
+  <div class="spinner-border"></div>
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Shop By Categories</h2>
-    <a href="#" class="btn btn-outline-dark">View All</a>
+</div>
+<section class="container py-5">
+
+  <div
+    class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2 class="fw-bold">
+      Shop By Categories
+    </h2>
+
+    <a
+      routerLink="/shop"
+      class="btn btn-outline-dark rounded-pill px-4">
+
+      View All
+
+    </a>
+
   </div>
 
-  <div class="row">
+  <!-- Categories -->
 
-    <div class="col-md-3 mb-4" *ngFor="let category of categories">
+  <div
+    class="category-wrapper mb-4"
+    *ngFor="let category of categories">
 
-      <app-category-card
-        [category]="category">
-      </app-category-card>
+    <!-- Category Header -->
+
+    <div class="d-flex align-items-center mb-3">
+
+      <div class="category-dot"></div>
+
+      <h4 class="fw-bold mb-0 ms-2">
+        {{ category.name }}
+      </h4>
+
+    </div>
+
+    <!-- Subcategories -->
+
+    <div class="subcategory-scroll">
+
+      <div
+        class="subcategory-card"
+        *ngFor="let sub of category.subCategories"
+
+        [routerLink]="['/shop']"
+
+        [queryParams]="{
+          categoryId: category.id,
+          subCategoryId: sub.id
+        }">
+
+        <div class="subcategory-content">
+
+          <h6 class="fw-bold mb-1">
+            {{ sub.name }}
+          </h6>
+
+          <small class="text-muted">
+            Explore Products
+          </small>
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
 </section>
-
 <!-- Featured Products -->
 <section class="container mt-5">
 
