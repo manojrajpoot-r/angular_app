@@ -25,12 +25,12 @@
                 "input": "public"
               }
             ],
-          "styles": [
-                "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                "node_modules/bootstrap-icons/font/bootstrap-icons.css"
-              ]
-
-                        },
+            "styles": [
+              "src/material-theme.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
+            ]
+          },
           "configurations": {
             "production": {
               "budgets": [
