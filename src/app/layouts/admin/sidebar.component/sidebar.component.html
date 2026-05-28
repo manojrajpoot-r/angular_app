@@ -181,7 +181,63 @@
 
               <i class="fa-solid fa-cart-shopping"></i>
               Product Variants
+            </a>
+          </li>
 
+        </ul>
+
+      </li>
+
+
+
+
+
+
+
+
+
+
+
+
+      <li>
+
+        <div class="dropdown-btn"
+             (click)="bookingOpen = !bookingOpen">
+
+          <div>
+            <i class="fa-solid fa-box"></i>
+
+            <span *ngIf="!sidebarCollapsed">
+              Booking Management
+            </span>
+          </div>
+
+          <i *ngIf="!sidebarCollapsed"
+             class="fa-solid"
+             [ngClass]="bookingOpen ? 'fa-chevron-down' : 'fa-chevron-right'">
+          </i>
+
+        </div>
+
+        <ul *ngIf="bookingOpen && !sidebarCollapsed"
+            class="submenu animated-menu">
+
+       <li>
+            <a routerLink="/admin/services"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-layer-group"></i>
+              Service List
+
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/admin/bookings"
+               routerLinkActive="active-link">
+
+              <i class="fa-solid fa-layer-group"></i>
+              Booking List
 
             </a>
           </li>
@@ -189,6 +245,8 @@
         </ul>
 
       </li>
+
+
 
     </ul>
 

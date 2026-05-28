@@ -1,0 +1,115 @@
+<app-form-wrapper-component
+
+          [title]="isEditMode ? 'Edit Service' : 'Add Service'">
+          <div class="mb-4 text-center">
+
+            <h3 class="fw-bold">
+
+              {{
+                isEditMode
+                ? 'Update Service'
+                : 'Add New Service'
+              }}
+
+            </h3>
+
+            <p class="text-muted">
+
+              Manage service professionally
+
+            </p>
+
+          </div>
+
+          <!-- FORM -->
+          <form
+            [formGroup]="serviceForm"
+            (ngSubmit)="onSubmit()">
+
+            <!-- NAME -->
+            <div class="mb-4">
+
+              <label class="form-label fw-semibold">
+
+                Service Name
+
+              </label>
+
+              <input
+                type="text"
+                class="form-control premium-input"
+                formControlName="serviceName"
+                placeholder="Enter service name" />
+
+              <app-validation-error-component
+                [control]="f['serviceName']">
+              </app-validation-error-component>
+
+            </div>
+
+            <!-- COLOR CODE -->
+            <div class="mb-4">
+
+              <label class="form-label fw-semibold">
+
+                Price
+
+              </label>
+
+              <input
+                type="number"
+                class="form-control premium-input"
+                formControlName="price"
+                placeholder="Enter service price" />
+
+              <app-validation-error-component
+                [control]="f['price']">
+              </app-validation-error-component>
+
+            </div>
+
+            <!-- DURATION -->
+            <div class="mb-4">
+
+              <label class="form-label fw-semibold">
+
+                Duration (minutes)
+
+              </label>
+
+              <input
+                type="number"
+                class="form-control premium-input"
+                formControlName="durationMinutes"
+                placeholder="Enter duration in minutes" />
+
+              <app-validation-error-component
+                [control]="f['durationMinutes']">
+              </app-validation-error-component>
+
+            </div>
+
+
+
+
+
+
+            <!-- BUTTONS -->
+            <div
+              class="d-flex justify-content-center gap-3">
+              <app-submit-button-component
+                type="submit"
+                [loading]="loading"
+                [text]="isEditMode ? 'Update' : 'Add'">
+              </app-submit-button-component>
+
+              <button
+                type="button" (click)="router.navigate(['admin/services'])"
+                class="btn btn-light border px-5 rounded-pill">
+                Cancel
+              </button>
+            </div>
+
+          </form>
+
+      </app-form-wrapper-component>

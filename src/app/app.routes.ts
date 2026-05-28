@@ -30,6 +30,12 @@ import { SizeFormComponent } from './pages/admin/sizes/size-form/size-form';
 import { ProductVarientComponent } from './pages/admin/product_varient/product-varient/product-varient';
 import { ProductVarientFormComponent } from './pages/admin/product_varient/product-varient-form/product-varient-form';
 
+import { BookingComponent } from './pages/admin/booking/booking';
+
+import { ServicesComponent } from './pages/admin/services/services';
+import { ServicesFormComponent } from './pages/admin/services/services-form/services-form';
+
+
 export const routes: Routes = [
   {
 
@@ -99,6 +105,13 @@ export const routes: Routes = [
       },
 
 
+      {
+        path: 'bookings',
+        loadComponent: () =>
+          import('./pages/frontend/booking/booking.component/booking.component')
+            .then(m => m.BookingComponent)
+      }
+
     ]
   },
 
@@ -157,6 +170,14 @@ export const routes: Routes = [
       { path: 'product-varients', component: ProductVarientComponent },
       { path: 'product-varients/add', component: ProductVarientFormComponent },
       { path: 'product-varients/edit/:id', component: ProductVarientFormComponent },
+
+      { path: 'bookings', component: BookingComponent },
+
+
+      { path: 'services', component: ServicesComponent },
+      { path: 'services/add', component: ServicesFormComponent },
+      { path: 'services/edit/:id', component: ServicesFormComponent }
+
 
 
 

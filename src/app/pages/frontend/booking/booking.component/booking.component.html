@@ -1,0 +1,173 @@
+<div class="container mt-4">
+
+  <div class="card">
+
+    <div class="card-header">
+      <h3>Booking Form</h3>
+    </div>
+
+    <div class="card-body">
+
+      <form [formGroup]="form">
+
+        <!-- USER -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            User Id
+          </label>
+
+          <input
+            type="number"
+            class="form-control"
+            formControlName="userId">
+
+        </div>
+
+        <!-- DATE -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Booking Date
+          </label>
+
+          <input
+            type="date"
+            class="form-control"
+            formControlName="bookingDate">
+
+        </div>
+
+        <!-- TIME -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Booking Time
+          </label>
+
+          <input
+            type="time"
+            class="form-control"
+            formControlName="bookingTime">
+
+        </div>
+
+        <!-- SERVICES -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Select Services
+          </label>
+
+          <div
+            *ngFor="let item of services"
+            class="form-check">
+
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [value]="item.id"
+              (change)="onServiceChange($event)">
+
+            <label class="form-check-label">
+
+              {{ item.serviceName }}
+
+              -
+              ₹{{ item.price }}
+
+            </label>
+
+          </div>
+
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Payment Method
+          </label>
+
+          <select
+            class="form-control"
+            formControlName="paymentMethod">
+
+            <option value="Cash">
+              Cash
+            </option>
+
+            <option value="UPI">
+              UPI
+            </option>
+
+            <option value="Card">
+              Card
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Address
+          </label>
+
+          <textarea
+            rows="2"
+            class="form-control"
+            formControlName="address">
+          </textarea>
+
+        </div>
+
+        <!-- NOTES -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Notes
+          </label>
+
+          <textarea
+            rows="2"
+            class="form-control"
+            formControlName="notes">
+          </textarea>
+
+        </div>
+
+        <!-- TOTAL -->
+        <div class="mb-3">
+
+          <label class="form-label">
+            Total Amount
+          </label>
+
+          <input
+            type="text"
+            class="form-control"
+            [value]="totalAmount"
+            readonly>
+
+        </div>
+
+        <!-- BUTTON -->
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="submit()">
+
+          Save Booking
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

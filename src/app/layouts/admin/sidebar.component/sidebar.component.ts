@@ -23,6 +23,8 @@ export class SidebarComponent {
   userOpen = false;
   productOpen = false;
   profileOpen = false;
+  bookingOpen = false;
+
 
 
   constructor(
