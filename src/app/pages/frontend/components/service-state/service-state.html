@@ -1,0 +1,99 @@
+<!-- Premium Service Section -->
+
+<section class="py-5 bg-light">
+  <div class="container">
+
+    <!-- Heading -->
+    <div class="text-center mb-5">
+      <h2 class="fw-bold display-5">Our Premium Services</h2>
+      <p class="text-muted">
+        Professional beauty & salon services crafted for your comfort and style.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="row g-4">
+
+      <!-- Card Start -->
+    @if(services.length > 0)
+    {
+   
+        @for(service of services; track service.id)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-lg rounded-4 service-card h-100">
+
+                <!-- Top Badge -->
+                <div class="position-absolute top-0 end-0 m-3">
+                    <span class="badge bg-dark px-3 py-2 rounded-pill">
+                    Premium
+                    </span>
+                </div>
+
+                <!-- Image -->
+                <img
+                    src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f"
+                    class="card-img-top rounded-top-4 service-image"
+                    alt="service"
+                >
+
+                <!-- Body -->
+                <div class="card-body p-4">
+
+            
+                    
+                    <h4 class="fw-bold mb-3">
+                    {{service.serviceName}}
+                    </h4>
+
+                    <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <small class="text-muted">Price</small>
+                        <h5 class="fw-bold text-primary mb-0">
+                        ₹ {{service.price}}
+                        </h5>
+                    </div>
+
+                    <div class="text-end">
+                        <small class="text-muted">Duration</small>
+                        <h6 class="fw-semibold mb-0">
+                        {{service.durationMinutes}} Min
+                        </h6>
+                    </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-4">
+                    <span
+                        class="badge rounded-pill"
+                        [ngClass]="service.isActive ? 'bg-success' : 'bg-danger'"
+                    >
+                        {{service.isActive ? 'Available' : 'Unavailable'}}
+                    </span>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-grid gap-2">
+
+                    <button class="btn btn-dark rounded-pill py-2 fw-semibold"
+                         (click)="openBooking()"> Book Appointment
+                    </button>
+
+                    <button class="btn btn-outline-dark rounded-pill py-2">
+                        View Details
+                    </button>
+
+                    </div>
+
+
+            
+                </div>
+                </div>
+            </div>
+         }
+    }
+      <!-- Card End -->
+
+    </div>
+  </div>
+</section>

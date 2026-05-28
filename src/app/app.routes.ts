@@ -106,12 +106,18 @@ export const routes: Routes = [
 
 
       {
+        path: 'services',
+        loadComponent: () =>
+          import('./pages/frontend/components/service-state/service-state')
+            .then(m => m.ServiceState)
+      },
+
+         {
         path: 'bookings',
         loadComponent: () =>
-          import('./pages/frontend/booking/booking.component/booking.component')
+          import('./pages/frontend/components/booking/booking.component/booking.component')
             .then(m => m.BookingComponent)
       }
-
     ]
   },
 

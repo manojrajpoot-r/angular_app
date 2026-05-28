@@ -1,53 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule
-} from '@angular/forms';
-
+import {FormBuilder,FormGroup,ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-
+import { ServiceSevice } from '../../../../../services/service/service.service';
+import { BookingService } from '../../../../../services/booking/booking.service';
+import { AlertService } from '../../../../../services/alert/alert.service';
 @Component({
-  selector: 'app-booking',
+  selector: 'app-booking-component',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule
   ],
-  templateUrl: './booking.html'
+  templateUrl: './booking.component.html'
 })
 export class BookingComponent implements OnInit {
 
   form!: FormGroup;
-
   services: any[] = [];
-
   selectedServices: number[] = [];
-
   totalAmount = 0;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private service: ServiceSevice,
+    private alert :AlertService,
+    private booking:BookingService
   ) { }
 
-  ngOnInit(): void {
+ ngOnInit(): void {
+
+  const storedUser = localStorage.getItem('user');
+
+    if (!storedUser) return;
+      const user = JSON.parse(storedUser);
+      const userId =user?.id;
+          setTimeout(() => {
+            this.form.patchValue({
+              userId: userId
+            });
+        });
+    
+
+
+
 
     this.form = this.fb.group({
 
       userId: [''],
-
       bookingDate: [''],
-
       bookingTime: [''],
-
       paymentMethod: ['Cash'],
-
       notes: [''],
-
       address: [''],
-
       serviceIds: [[]]
     });
 
@@ -57,34 +63,24 @@ export class BookingComponent implements OnInit {
   // GET SERVICES
   getServices() {
 
-    this.http.get<any>(
-      'https://localhost:7284/api/services/frontend'
-    ).subscribe({
-
-      next: (res) => {
-
-        console.log(res);
-
+    this.service.getAllServices().subscribe({
+      next: (res:any) => {
         this.services = res.data;
       },
 
       error: (err) => {
-        console.log(err);
+        this.alert.error(err);
       }
     });
   }
 
   // CHECKBOX
   onServiceChange(event: any) {
-
     const id = +event.target.value;
 
     if (event.target.checked) {
-
       this.selectedServices.push(id);
-
     } else {
-
       this.selectedServices =
         this.selectedServices.filter(x => x != id);
     }
@@ -108,30 +104,16 @@ export class BookingComponent implements OnInit {
 
   // SUBMIT
   submit() {
-
-    console.log(this.form.value);
-
-    this.http.post(
-      'https://localhost:7284/api/booking/add',
-      this.form.value
-    ).subscribe({
-
+    this.booking.addBooking(this.form.value).subscribe({
       next: (res) => {
-
-        console.log(res);
-
-        alert('Booking Added Successfully');
-
+         this.alert.success('Booking Added Successfully');
         this.form.reset();
-
         this.totalAmount = 0;
-
         this.selectedServices = [];
       },
 
       error: (err) => {
-
-        console.log(err);
+        this.alert.error(err);
       }
     });
   }

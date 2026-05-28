@@ -47,10 +47,7 @@ export class ProductCardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(
-    //   'PRODUCT CHANGED',
-    //   this.product
-    // );
+
 
   }
   addToCart(productId: number) {

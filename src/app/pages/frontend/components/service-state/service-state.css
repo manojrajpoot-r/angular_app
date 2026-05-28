@@ -1,0 +1,37 @@
+.service-card{
+  transition: all 0.35s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.service-card:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.15) !important;
+}
+
+.service-image{
+  height: 240px;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.service-card:hover .service-image{
+  transform: scale(1.05);
+}
+
+.card-body h4{
+  color: #111;
+}
+
+.btn-dark{
+  background: linear-gradient(135deg,#111,#333);
+  border: none;
+}
+
+.btn-dark:hover{
+  background: #000;
+}
+
+.bg-light{
+  background: #f8f9fc !important;
+}
