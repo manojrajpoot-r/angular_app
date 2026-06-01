@@ -12,39 +12,43 @@ import { Modal } from 'bootstrap';
   styleUrl: './service-state.css',
 })
 export class ServiceState {
-  services:any[] = [];
+  services: any[] = [];
 
-constructor( 
-  private service:ServiceSevice,
-  private alert:AlertService,
-  private auth:AuthService,
-  private router:Router
+  constructor(
+    private service: ServiceSevice,
+    private alert: AlertService,
+    private auth: AuthService,
+    private router: Router
 
-){}
+  ) { }
 
   ngOnInit(): void {
     this.getServices();
   }
 
-  openBooking(){
-    if(!this.auth.isLoggedIn()){
+  openBooking() {
+    if (!this.auth.isLoggedIn()) {
       const modalEl = document.getElementById('loginModal');
 
-        if (modalEl) {
-          const modal = new Modal(modalEl);
-          modal.show();
-        }
+      if (modalEl) {
+        const modal = new Modal(modalEl);
+        modal.show();
+      }
 
-          return;
-        }
-        
-       this.router.navigate(['bookings'])
+      return;
     }
 
+    this.router.navigate(['bookings'])
+  }
+
+
+  viewBooking(id: number) {
+    this.router.navigate(['/booking-details', id]);
+  }
 
   getServices() {
     this.service.getAllServices().subscribe({
-      next: (res:any) => {
+      next: (res: any) => {
         console.log(res.data);
         this.services = res.data;
       },

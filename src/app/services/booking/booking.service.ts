@@ -50,4 +50,12 @@ export class BookingService {
     return this.http.get(`${this.apiUrl}/frontend`);
 
   }
+
+  getUserBookings(userId: number) {
+    return this.http.get(
+      `${this.apiUrl}/user/${userId}`
+    );
+  }
+
+
 }

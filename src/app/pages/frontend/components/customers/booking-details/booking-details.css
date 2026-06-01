@@ -1,0 +1,8 @@
+.card {
+  border-radius: 16px;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+}

@@ -112,12 +112,31 @@ export const routes: Routes = [
             .then(m => m.ServiceState)
       },
 
-         {
+      {
         path: 'bookings',
         loadComponent: () =>
           import('./pages/frontend/components/booking/booking.component/booking.component')
             .then(m => m.BookingComponent)
+      },
+
+      {
+        path: 'my-bookings',
+        loadComponent: () =>
+          import('./pages/frontend/components/customers/my-bookings/my-bookings')
+            .then(m => m.MyBookingsComponent)
+      },
+
+      {
+        path: 'booking-details/:id',
+        loadComponent: () =>
+          import('./pages/frontend/components/customers/booking-details/booking-details')
+            .then(m => m.BookingDetails)
       }
+
+
+
+
+      // end of children
     ]
   },
 

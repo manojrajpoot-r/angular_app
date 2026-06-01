@@ -10,6 +10,7 @@ import { AlertService } from '../../../services/alert/alert.service';
 import { SubmitButtonComponent } from '../../../shared/components/submit-button-component/submit-button-component';
 import { passwordMatchValidator } from '../../../shared/components/validators/confirm-password.validator';
 import * as bootstrap from 'bootstrap';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -39,7 +40,8 @@ export class HeaderComponent implements OnInit {
     private wishlistService: WishlistService,
     private fb: FormBuilder,
     private authService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -71,11 +73,19 @@ export class HeaderComponent implements OnInit {
 
   }
 
+  myBooking() {
+
+    this.router.navigate(['/my-bookings']);
+  }
+
+
   logout() {
 
     this.authService.logout();
 
   }
+
+
   initializeForms(): void {
 
     // REGISTER FORM

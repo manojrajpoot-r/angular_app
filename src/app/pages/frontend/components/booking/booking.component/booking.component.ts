@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup,ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ServiceSevice } from '../../../../../services/service/service.service';
 import { BookingService } from '../../../../../services/booking/booking.service';
 import { AlertService } from '../../../../../services/alert/alert.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-booking-component',
   standalone: true,
@@ -25,23 +26,24 @@ export class BookingComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private service: ServiceSevice,
-    private alert :AlertService,
-    private booking:BookingService
+    private alert: AlertService,
+    private booking: BookingService,
+    private router: Router
   ) { }
 
- ngOnInit(): void {
+  ngOnInit(): void {
 
-  const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('user');
 
     if (!storedUser) return;
-      const user = JSON.parse(storedUser);
-      const userId =user?.id;
-          setTimeout(() => {
-            this.form.patchValue({
-              userId: userId
-            });
-        });
-    
+    const user = JSON.parse(storedUser);
+    const userId = user?.id;
+    setTimeout(() => {
+      this.form.patchValue({
+        userId: userId
+      });
+    });
+
 
 
 
@@ -64,7 +66,7 @@ export class BookingComponent implements OnInit {
   getServices() {
 
     this.service.getAllServices().subscribe({
-      next: (res:any) => {
+      next: (res: any) => {
         this.services = res.data;
       },
 
@@ -73,6 +75,8 @@ export class BookingComponent implements OnInit {
       }
     });
   }
+
+
 
   // CHECKBOX
   onServiceChange(event: any) {
@@ -106,7 +110,7 @@ export class BookingComponent implements OnInit {
   submit() {
     this.booking.addBooking(this.form.value).subscribe({
       next: (res) => {
-         this.alert.success('Booking Added Successfully');
+        this.alert.success('Booking Added Successfully');
         this.form.reset();
         this.totalAmount = 0;
         this.selectedServices = [];

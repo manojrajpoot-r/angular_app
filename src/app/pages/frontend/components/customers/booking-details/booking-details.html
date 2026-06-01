@@ -1,0 +1,65 @@
+
+
+<div class="container mt-4">
+<div class="container mt-4">
+
+
+
+  <div class="card shadow-lg border-0 rounded-4">
+
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">💇 Booking Details #{{ booking.id }}</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <p><strong>📅 Date:</strong> {{ booking.bookingDate }}</p>
+          <p><strong>⏰ Time:</strong> {{ booking.bookingTime }}</p>
+          <p><strong>🏠 Address:</strong> {{ booking.address }}</p>
+        </div>
+
+        <div class="col-md-6 text-end">
+          <span class="badge bg-warning me-2">
+            {{ booking.bookingStatus }}
+          </span>
+
+          <span class="badge bg-success">
+            {{ booking.paymentStatus }}
+          </span>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <h5>💅 Services</h5>
+
+      <ul class="list-group mb-3">
+
+        <li class="list-group-item"
+            *ngFor="let s of booking.services">
+
+          {{ s.serviceName }} - ₹{{ s.price }}
+
+        </li>
+
+      </ul>
+
+      <h5 class="text-end">
+        💰 Total: ₹{{ booking.totalAmount }}
+      </h5>
+
+      <hr>
+
+      <p><strong>📝 Notes:</strong> {{ booking.notes }}</p>
+
+      <p><strong>💳 Payment Method:</strong> {{ booking.paymentMethod }}</p>
+
+    </div>
+
+  </div>
+
+</div>
