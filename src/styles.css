@@ -1,6 +1,10 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+
+
+/* src/styles.css */
+@import 'quill/dist/quill.snow.css';
 .dark-theme {
 
   background: #0f172a;

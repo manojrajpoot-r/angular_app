@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ServiceSevice } from '../../../services/service/service.service';
 import { AlertService } from '../../../services/alert/alert.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component/pagination.component';
-
+import { DurationPipe } from '../../../shared/pipes/duration-pipe';
 
 @Component({
   selector: 'app-services',
@@ -15,7 +15,8 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   imports: [
     CommonModule,
     FormsModule,
-    PaginationComponent
+    PaginationComponent,
+    DurationPipe
   ],
   templateUrl: './services.html',
   styleUrl: './services.css',

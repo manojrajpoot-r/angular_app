@@ -12,7 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 export class MyBookingsComponent implements OnInit {
 
   bookings: any[] = [];
-
+  trackByBookingId = (_: number, item: any) => item.id;
   constructor(private bookingService: BookingService, private router: Router) { }
 
   ngOnInit(): void {

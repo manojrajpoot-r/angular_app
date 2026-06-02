@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookingService } from '../../../../../services/booking/booking.service';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-booking-details',
   standalone: true,
-  imports: [JsonPipe],
+  imports: [JsonPipe, CommonModule],
   templateUrl: './booking-details.html',
   styleUrl: './booking-details.css',
 })

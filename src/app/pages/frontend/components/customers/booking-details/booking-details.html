@@ -4,12 +4,35 @@
 <div class="container mt-4">
 
 
-
   <div class="card shadow-lg border-0 rounded-4">
 
-    <div class="card-header bg-dark text-white">
-      <h4 class="mb-0">💇 Booking Details #{{ booking.id }}</h4>
+ <div class="bg-dark text-white rounded-4 p-4 mb-4">
+
+  <div class="d-flex justify-content-between">
+
+    <div>
+      <h3 class="fw-bold">
+        Booking #{{ booking?.id }}
+      </h3>
+
+      <p class="mb-0">
+        {{ booking?.bookingDate }} • {{ booking?.bookingTime }}
+      </p>
     </div>
+
+    <div class="text-end">
+      <h4>
+        ₹{{ booking?.totalAmount }}
+      </h4>
+
+      <span class="badge bg-success">
+        {{ booking?.bookingStatus }}
+      </span>
+    </div>
+
+  </div>
+
+</div>
 
     <div class="card-body">
 
@@ -22,11 +45,13 @@
         </div>
 
         <div class="col-md-6 text-end">
+           <p><strong>Booking Status:</strong></p>
           <span class="badge bg-warning me-2">
             {{ booking.bookingStatus }}
           </span>
 
-          <span class="badge bg-success">
+       <p><strong>Payment Status:</strong></p>
+          <span class="badge bg-warning me-2">
             {{ booking.paymentStatus }}
           </span>
         </div>
@@ -36,17 +61,24 @@
       <hr>
 
       <h5>💅 Services</h5>
+    <div class="row mt-4">
 
-      <ul class="list-group mb-3">
+   @if (booking?.services?.length) {
+  @for (service of booking.services; track service.serviceId) {
+    <div class="col-md-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>{{ service.serviceName }}</h5>
+          <p>Price: ₹{{ service.price }}</p>
+        </div>
+      </div>
+    </div>
+  }
+} @else {
+  <p>No services found.</p>
+}
 
-        <li class="list-group-item"
-            *ngFor="let s of booking.services">
-
-          {{ s.serviceName }} - ₹{{ s.price }}
-
-        </li>
-
-      </ul>
+    </div>
 
       <h5 class="text-end">
         💰 Total: ₹{{ booking.totalAmount }}

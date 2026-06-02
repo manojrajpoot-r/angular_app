@@ -119,16 +119,16 @@
               </td>
 
               <td class="fw-semibold">
-                {{ item.serviceName }}
+               {{ item.serviceName | titlecase  }}
               </td>
 
               <td>
-                {{ item.price | currency }}
+              {{ item.price | currency:'INR':'symbol':'1.0-0' }}
               </td>
 
               <td>
 
-                {{ item.durationMinutes }} mins
+            {{ item.durationMinutes | duration }}
               </td>
 
               <td>

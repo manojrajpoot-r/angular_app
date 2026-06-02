@@ -96,7 +96,7 @@ export class ImageUploadComponent implements OnChanges {
     }
 
     // SERVER IMAGE
-    return ` ${this.imageBaseUrl}/${img}`;
+    return `${this.imageBaseUrl}/${img}`;
   }
 
   // ============================================

@@ -90,9 +90,39 @@
             </div>
 
 
+              <div class="mb-4">
+
+                <label class="form-label fw-semibold">
+                  Description
+                </label>
 
 
+             <quill-editor
+                formControlName="description"
+                [styles]="{'min-height': '150px', 'font-size': '14px'}"
+                placeholder="Enter description...">
+              </quill-editor>
 
+                <app-validation-error-component
+                  [control]="f['description']">
+                </app-validation-error-component>
+
+              </div>
+
+          <!-- Image -->
+          <div class="mb-3">
+
+            <app-image-upload
+              [multiple]="false"
+              [imageUrls]="imageUrls"
+              (fileChange)="onFileSelected($event)">
+            </app-image-upload>
+
+            <app-validation-error-component
+              [control]="serviceForm.get('image')">
+            </app-validation-error-component>
+
+          </div>
 
             <!-- BUTTONS -->
             <div
