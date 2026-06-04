@@ -131,6 +131,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/frontend/components/customers/booking-details/booking-details')
             .then(m => m.BookingDetails)
+      },
+
+      {
+        path: 'service-details/:id',
+        loadComponent: () =>
+          import('./pages/frontend/components/service-details/service-details')
+            .then(m => m.ServiceDetailsComponent)
       }
 
 

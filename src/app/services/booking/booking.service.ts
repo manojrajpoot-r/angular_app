@@ -42,10 +42,28 @@ export class BookingService {
     return this.http.delete(`${this.apiUrl}/delete/${id}`);
   }
 
-  statusBooking(id: number) {
-    return this.http.get(`${this.apiUrl}/status/${id}`);
+
+  changeStatus(id: number) {
+
+    return this.http.put(
+      `${this.apiUrl}/change-status/${id}`,
+      {}
+    );
   }
 
+  changePaymentStatus(id: number) {
+    return this.http.put(
+      `${this.apiUrl}/change-payment-status/${id}`,
+      {}
+    );
+  }
+
+  changeBookingStatus(id: number) {
+    return this.http.put(
+      `${this.apiUrl}/change-booking-status/${id}`,
+      {}
+    );
+  }
   getAllBookings() {
     return this.http.get(`${this.apiUrl}/frontend`);
 

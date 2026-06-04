@@ -3,22 +3,30 @@ import { ServiceSevice } from '../../../../services/service/service.service';
 import { AlertService } from '../../../../services/alert/alert.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Modal } from 'bootstrap';
+import { environment } from "../../../../environments/environment";
+
+import { RouterModule } from '@angular/router';
 @Component({
+  standalone: true,
   selector: 'app-service-state',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './service-state.html',
   styleUrl: './service-state.css',
 })
+
+
 export class ServiceState {
   services: any[] = [];
-
+  imgurls = environment.apiUrlImage;
+  pageNumber: number = 1
   constructor(
     private service: ServiceSevice,
     private alert: AlertService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+
 
   ) { }
 
@@ -42,15 +50,13 @@ export class ServiceState {
   }
 
 
-  viewBooking(id: number) {
-    this.router.navigate(['/booking-details', id]);
-  }
 
   getServices() {
     this.service.getAllServices().subscribe({
       next: (res: any) => {
-        console.log(res.data);
+
         this.services = res.data;
+
       },
 
       error: (err) => {

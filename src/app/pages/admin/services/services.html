@@ -58,7 +58,7 @@
             <tr>
 
               <th>#</th>
-
+              <th>Image</th>
               <th>Service Name</th>
 
               <th>Price</th>
@@ -117,6 +117,13 @@
                   ((pageNumber - 1) * pageSize) + i + 1
                 }}
               </td>
+                 <td>
+            <img
+              [src]="imgurls + '/' + item.imageUrl"
+              width="60"
+              height="60"
+              class="rounded border object-fit-cover">
+          </td>
 
               <td class="fw-semibold">
                {{ item.serviceName | titlecase  }}

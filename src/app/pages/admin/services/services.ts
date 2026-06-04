@@ -8,7 +8,7 @@ import { ServiceSevice } from '../../../services/service/service.service';
 import { AlertService } from '../../../services/alert/alert.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component/pagination.component';
 import { DurationPipe } from '../../../shared/pipes/duration-pipe';
-
+import { environment } from "../../../environments/environment";
 @Component({
   selector: 'app-services',
   standalone: true,
@@ -22,6 +22,8 @@ import { DurationPipe } from '../../../shared/pipes/duration-pipe';
   styleUrl: './services.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
+
 export class ServicesComponent implements OnInit {
 
   services: any[] = [];
@@ -31,13 +33,15 @@ export class ServicesComponent implements OnInit {
   pageSize: number = 10;
   search: string = '';
 
+  imgurls = environment.apiUrlImage;
   private searchSubject = new Subject<string>();
 
   constructor(
     private serviceService: ServiceSevice,
     private alertService: AlertService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+
   ) { }
 
   ngOnInit(): void {
@@ -92,6 +96,7 @@ export class ServicesComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
 
   // PAGINATION
   onPageChange(page: number): void {

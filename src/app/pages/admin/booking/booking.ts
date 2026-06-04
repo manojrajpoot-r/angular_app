@@ -85,19 +85,16 @@ export class BookingComponent implements OnInit {
       });
   }
 
+
   // SEARCH
   onSearch(event: any): void {
-
     this.search = event.target.value;
-
     this.searchSubject.next(this.search);
   }
 
   // PAGINATION
   onPageChange(page: number): void {
-
     this.pageNumber = page;
-
     this.loadBookings();
   }
 
@@ -124,9 +121,7 @@ export class BookingComponent implements OnInit {
             .subscribe({
 
               next: (response: any) => {
-
                 this.alertService.success(response.message);
-
                 this.loadBookings();
               },
 
@@ -142,13 +137,53 @@ export class BookingComponent implements OnInit {
   // STATUS CHANGE
   changeStatus(booking: any): void {
 
-    booking.isActive = !booking.isActive;
+    this.bookingService.changeStatus(booking.id)
+      .subscribe({
+        next: (res) => {
 
-    // AGAR API HAI
-    // this.colorService.changeStatus(color.id)
+          this.alertService.success('Status updated');
 
-    this.alertService.success('Status updated');
+          this.loadBookings();
+        },
+        error: () => {
+          this.alertService.error('Status update failed');
+        }
+      });
   }
+
+
+
+
+  changeBookingStatus(id: number): void {
+
+    this.bookingService
+      .changeBookingStatus(id)
+      .subscribe({
+        next: (res) => {
+          this.alertService.success('Status Booking updated');
+          this.loadBookings();
+        }
+      });
+  }
+
+  changePaymentStatus(id: number): void {
+
+    this.bookingService
+      .changePaymentStatus(id)
+      .subscribe({
+        next: (res) => {
+          this.alertService.success('Payment Status updated');
+          this.loadBookings();
+        }
+      });
+  }
+
+
+
+
+
+
+
 
   // TRACKBY PERFORMANCE
   trackById(index: number, item: any): number {

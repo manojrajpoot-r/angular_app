@@ -1,0 +1,45 @@
+<div class="container py-5">
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border"></div>
+  </div>
+
+  <div *ngIf="service" class="row">
+
+    <div class="col-md-6">
+
+ <img
+  [src]="imgurl + '/' + service.imageUrl"
+  class="service-image rounded shadow"
+  [alt]="service.serviceName">
+
+    </div>
+
+    <div class="col-md-6">
+
+      <h2 class="fw-bold">
+        {{ service.serviceName }}
+      </h2>
+
+      <h4 class="text-success my-3">
+        ₹{{ service.price }}
+      </h4>
+
+      <p>
+        <strong>Duration:</strong>
+        {{ service.durationMinutes }} Minutes
+      </p>
+
+      <div
+        [innerHTML]="service.description">
+      </div>
+
+     <button class="btn btn-dark rounded-pill py-2 fw-semibold"
+          (click)="openBooking()"> Book Appointment
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

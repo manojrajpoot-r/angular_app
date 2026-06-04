@@ -48,11 +48,12 @@ export class ServicesFormComponent implements OnInit {
       serviceName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       price: ['', Validators.required],
       durationMinutes: ['', Validators.required],
-      description: [''],
+      description: [null],
       imageUrl: [null, Validators.required]
     });
 
     this.serviceId = Number(this.route.snapshot.paramMap.get('id'));
+    alert(this.serviceId);
     if (this.serviceId) {
       this.isEditMode = true;
       this.getServiceById();
@@ -96,9 +97,14 @@ export class ServicesFormComponent implements OnInit {
     }
   }
 
-
   buildFormData(): FormData {
+
     const formData = new FormData();
+
+    if (this.isEditMode) {
+      formData.append('Id', this.serviceId.toString());
+    }
+
     formData.append('ServiceName', this.serviceForm.value.serviceName);
     formData.append('Price', this.serviceForm.value.price);
     formData.append('DurationMinutes', this.serviceForm.value.durationMinutes);
@@ -113,7 +119,6 @@ export class ServicesFormComponent implements OnInit {
 
   onSubmit(): void {
     this.submitted = true;
-
     if (this.serviceForm.invalid) {
       this.serviceForm.markAllAsTouched();
       return;

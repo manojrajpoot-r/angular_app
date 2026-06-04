@@ -63,9 +63,18 @@
 
               <th>Booking Date</th>
 
+              <th>Booking Time</th>
+
               <th>TotalAmount</th>
 
-              <th>Status</th>
+              <th>Address</th>
+
+              <th>Notes</th>
+
+              <th>Payment Method</th>
+              <th>Payment Status</th>
+              <th>Booking Status</th>
+
 
               <th class="text-center">
                 Actions
@@ -119,20 +128,62 @@
               </td>
 
               <td class="fw-semibold">
-                {{ item.name }}
+                {{ item.userName  }}
               </td>
 
               <td>
-                {{ item.BookingDate | date:'mediumDate' }}
+                {{ item.bookingDate  }}
+              </td>
+
+              <td>
+                {{ item.bookingTime  }}
               </td>
 
               <td>
 
-                {{ item.TotalAmount | currency }}
+                {{ item.totalAmount  }}
 
               </td>
 
               <td>
+                {{ item.address }}
+              </td>
+
+              <td>
+                {{ item.notes }}
+              </td>
+
+              <td>
+                {{ item.paymentMethod  }}
+              </td>
+
+              <td>
+               <button
+              class="btn btn-sm"
+              [ngClass]="item.paymentStatus === 'Paid'
+                ? 'btn-success'
+                : 'btn-warning'"
+              (click)="changePaymentStatus(item.id)">
+
+              {{ item.paymentStatus }}
+            </button>
+
+              </td>
+
+              <td>
+                <button
+                    class="btn btn-sm"
+                    [ngClass]="item.bookingStatus === 'Confirmed'
+                      ? 'btn-success'
+                      : 'btn-warning'"
+                    (click)="changeBookingStatus(item.id)">
+
+                    {{ item.bookingStatus }}
+                  </button>
+
+              </td>
+
+               <td>
 
                 <span
                   class="badge rounded-pill"
@@ -151,7 +202,6 @@
                 </span>
 
               </td>
-
               <td>
 
                 <div
@@ -195,6 +245,7 @@
                     </i>
 
                   </button>
+
 
                 </div>
 
